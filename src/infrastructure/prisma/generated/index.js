@@ -140,7 +140,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/femiolatubousun/dev/projects/2025/fastify-nest-25/src/infrastructure/prisma/generated",
+      "value": "/Users/femiolatubousun/dev/projects/2025/floq/src/infrastructure/prisma/generated",
       "fromEnvVar": null
     },
     "config": {
@@ -154,7 +154,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/Users/femiolatubousun/dev/projects/2025/fastify-nest-25/prisma/schema.prisma",
+    "sourceFilePath": "/Users/femiolatubousun/dev/projects/2025/floq/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
