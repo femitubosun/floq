@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { TokenTypeSchema } from '../inputTypeSchemas/TokenTypeSchema';
+import { TokenTypeSchema } from '../inputTypeSchemas/TokenTypeSchema'
 
 /////////////////////////////////////////
 // OTP TOKEN SCHEMA
@@ -7,13 +7,13 @@ import { TokenTypeSchema } from '../inputTypeSchemas/TokenTypeSchema';
 
 export const OtpTokenSchema = z.object({
   tokenType: TokenTypeSchema,
-  id: z.string(),
+  id: z.string().cuid(),
   userId: z.string(),
   tokenHash: z.string(),
   expiresAt: z.coerce.date(),
   isUsed: z.boolean(),
-});
+})
 
-export type OtpToken = z.infer<typeof OtpTokenSchema>;
+export type OtpToken = z.infer<typeof OtpTokenSchema>
 
 export default OtpTokenSchema;
