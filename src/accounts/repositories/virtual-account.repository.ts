@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@/infrastructure/prisma/prisma.service';
-import { CreateVirtualAccountDto } from '@/accounts/__defs__/accounts';
+import {
+  CreateVirtualAccountDto,
+  VirtualAccountDto,
+} from '@/accounts/__defs__/accounts';
 
 @Injectable()
 export class VirtualAccountRepository {
@@ -12,7 +15,7 @@ export class VirtualAccountRepository {
     });
   }
 
-  async list() {
+  async list(): Promise<VirtualAccountDto[]> {
     return this.#accountDelegate.findMany();
   }
 

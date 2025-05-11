@@ -24,3 +24,5 @@ export type UpdateVirtualAccountSchema = z.infer<
 export class UpdateVirtualAccountDto extends createZodDto(
   UpdateVirtualAccountSchema,
 ) {}
+
+export class VirtualAccountDto extends createZodDto(VirtualAccountSchema) {}
