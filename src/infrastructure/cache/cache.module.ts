@@ -7,7 +7,7 @@ export interface RedisModuleOptions {
 }
 
 @Module({})
-export class RedisModule {
+export class CacheModule {
   static forRoot(options: RedisModuleOptions): DynamicModule {
     const redisProvider: Provider = {
       provide: 'REDIS_CLIENT',
@@ -20,7 +20,7 @@ export class RedisModule {
       },
     };
     return {
-      module: RedisModule,
+      module: CacheModule,
       providers: [redisProvider, RedisService],
       exports: [RedisService],
       global: true,
@@ -46,7 +46,7 @@ export class RedisModule {
     };
 
     return {
-      module: RedisModule,
+      module: CacheModule,
       providers: [asyncRedisProvider, RedisService],
       exports: [RedisService],
     };

@@ -1,13 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from './infrastructure/prisma/prisma.service';
-import { RedisService } from './infrastructure/redis/services/redis.service';
+import { RedisService } from '@/infrastructure/cache/services/redis.service';
 
 @Injectable()
 export class AppService {
-  constructor(
-    private prismaService: PrismaService,
-    private cacheService: RedisService,
-  ) {}
+  constructor(private cacheService: RedisService) {}
 
   async getHello() {
     const cacheKey = 'hello';

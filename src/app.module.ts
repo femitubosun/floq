@@ -8,6 +8,7 @@ import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { ZodSerializerInterceptor, ZodValidationPipe } from 'nestjs-zod';
 import { ConfigModule } from './config/config.module';
 import { CommonModule } from './common/common.module';
+import { AccountsModule } from './accounts/accounts.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { CommonModule } from './common/common.module';
     IdentityModule,
     ConfigModule,
     CommonModule,
+    AccountsModule,
   ],
   controllers: [AppController],
   providers: [
