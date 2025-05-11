@@ -19,13 +19,12 @@ export class CacheService {
     config: {
       key: (...args: TArgs) => string;
       resolver: (...args: TArgs) => Promise<TResult>;
-      tags?: string[]; // Tags to associate with this cache entry
-      ttlSeconds?: number; // Optional TTL for this specific entry, if needed
+      tags?: string[];
+      ttlSeconds?: number;
     },
   ): Promise<TResult> {
     const cacheKey = config.key(...args);
 
-    // 1. Try to get from cache
     const cachedValue = await this.redisService.get<TResult>(cacheKey);
     if (cachedValue !== null) {
       console.log(`Cache HIT for key: ${cacheKey}`);
@@ -33,14 +32,12 @@ export class CacheService {
     }
 
     console.log(`Cache MISS for key: ${cacheKey}. Fetching from resolver.`);
-    // 2. If not in cache, call resolver
     const result = await config.resolver(...args);
 
-    // 3. Store in cache
     await this.redisService.set({
       key: cacheKey,
       value: result,
-      ttlSeconds: config.ttlSeconds, // Pass TTL if provided
+      ttlSeconds: config.ttlSeconds,
     });
 
     // 4. If tags are provided, associate the key with these tags
@@ -63,11 +60,7 @@ export class CacheService {
     if (keysToDelete.length === 0) {
       return;
     }
-    // The PRD implies `invalidate` is for direct key invalidation.
-    // `invalidateByTag` handles tag-based invalidation, which includes removing keys from sets.
-    // If a key is part of a tag and is invalidated directly using this method,
-    // its reference in the tag set might become stale.
-    // A more complex system would involve tracking key-to-tag memberships to clean them up here.
+
     await this.redisService.delete(keysToDelete);
     console.log(`Invalidated key(s): ${keysToDelete.join(', ')}`);
   }
@@ -80,18 +73,16 @@ export class CacheService {
   async invalidateByPrefix(prefix: string): Promise<void> {
     console.log(`Attempting to invalidate keys with prefix: ${prefix}`);
     const keysToDelete: string[] = [];
-    // The pattern for SCAN should end with '*' to match anything after the prefix
+
     const scanPattern = prefix.endsWith('*') ? prefix : `${prefix}*`;
 
     for await (const key of this.redisService.scan(scanPattern)) {
-      // Ensure we are not accidentally deleting tag sets if they match the prefix
       if (!key.startsWith(TAG_SET_PREFIX)) {
         keysToDelete.push(key);
       }
     }
 
     if (keysToDelete.length > 0) {
-      // Batch delete keys
       await this.redisService.delete(keysToDelete);
       console.log(
         `Invalidated ${keysToDelete.length} keys with prefix ${prefix}:`,
@@ -119,7 +110,6 @@ export class CacheService {
         `Found ${keysToInvalidate.length} keys for tag ${tag}:`,
         keysToInvalidate,
       );
-      // Create a list of keys to delete: the actual cache entries + the tag set itself
       const allKeysToDelete = [...keysToInvalidate, tagSetKey];
       await this.redisService.delete(allKeysToDelete);
 
