@@ -33,7 +33,8 @@ model User {
   name     String?
   password String
 
-  tokens OtpToken[]
+  tokens       OtpToken[]
+  transactions Transaction[]
 }
 
 enum TokenType {
@@ -49,4 +50,96 @@ model OtpToken {
   tokenHash String
   expiresAt DateTime
   isUsed    Boolean   @default(false)
+}
+
+enum Currency {
+  PHP
+  USD
+  EUR
+  GBP
+  NGN
+}
+
+model VirtualAccount {
+  id String @id @default(cuid())
+
+  name     String
+  currency Currency
+
+  ledgerEntries LedgerEntry[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
+enum TransactionType {
+  TRANSFER
+  FxConversion
+  DEPOSIT
+  WITHDRAWAL
+  REVERSAL
+}
+
+enum TransactionStatus {
+  PENDING
+  COMMITTED
+  FAILED
+  REVERSED
+}
+
+enum InitiatorType {
+  USER
+  SYSTEM
+  ADMIN
+}
+
+model Transaction {
+  id String @id @default(cuid())
+
+  type   TransactionType
+  status TransactionStatus @default(PENDING)
+
+  initiatorId   String?
+  initiator     User?          @relation(fields: [initiatorId], references: [id], onDelete: Cascade)
+  initiatorType InitiatorType?
+
+  idempotencyKey String? @unique
+  metadata       Json    @default("{}")
+
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  deletedAt  DateTime?
+  executedAt DateTime?
+
+  ledgerEntries LedgerEntry[]
+}
+
+enum EntryType {
+  DEBIT
+  CREDIT
+}
+
+model LedgerEntry {
+  id String @id @default(cuid())
+
+  transactionId String
+  transaction   Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+
+  accountId String
+  account   VirtualAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  currency Currency
+
+  amount    Decimal   @db.Decimal(20, 8)
+  entryType EntryType
+  fxRate    Decimal?  @db.Decimal(20, 8)
+  metadata  Json      @default("{}")
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  @@index([accountId])
+  @@index([transactionId])
 }

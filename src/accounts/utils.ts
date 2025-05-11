@@ -1,6 +1,6 @@
 import { BaseKeyBuilder } from '@/infrastructure/cache/utils';
 
-class AccountsKeyBuilder extends BaseKeyBuilder {
+class VirtualAccountsKeyBuilder extends BaseKeyBuilder {
   /**
    * @param version The version for account keys
    */
@@ -9,4 +9,4 @@ class AccountsKeyBuilder extends BaseKeyBuilder {
   }
 }
 
-export const AccountsCacheKeys = new AccountsKeyBuilder();
+export const VirtualAccountsCacheKeys = new VirtualAccountsKeyBuilder();

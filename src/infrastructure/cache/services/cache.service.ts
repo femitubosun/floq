@@ -40,7 +40,6 @@ export class CacheService {
       ttlSeconds: config.ttlSeconds,
     });
 
-    // 4. If tags are provided, associate the key with these tags
     if (config.tags && config.tags.length > 0) {
       for (const tag of config.tags) {
         const tagSetKey = `${TAG_SET_PREFIX}${tag}`;
@@ -119,5 +118,36 @@ export class CacheService {
     } else {
       console.log(`No keys found for tag: ${tag}`);
     }
+  }
+
+  /**
+   * Sets a value in Redis.
+   * @param key
+   * @param value
+   * @param ttlSeconds
+   */
+  async set(key: string, value: unknown, ttlSeconds?: number) {
+    return this.redisService.set({
+      key,
+      value,
+      ttlSeconds,
+    });
+  }
+
+  /**
+   * Retrieves a value from cache by key.
+   * @param key The key to retrieve.
+   * @returns The value if found, otherwise null.
+   */
+  async get<T>(key: string) {
+    return this.redisService.get<T>(key);
+  }
+
+  /**
+   * Deletes one or more keys from cache.
+   * @param key
+   */
+  async delete(key: string | string[]) {
+    return this.redisService.delete(key);
   }
 }
