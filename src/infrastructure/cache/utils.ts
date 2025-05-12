@@ -30,6 +30,13 @@ export class BaseKeyBuilder {
   }
 
   /**
+   * returns the domain prefix string
+   */
+  public getDomainPrefix(key?: string): string {
+    return key ? `${this.domainPrefix}:${key}` : this.domainPrefix;
+  }
+
+  /**
    * Builds a cache key string from the given parts, automatically including
    * the domain prefix and version.
    * @param parts Individual segments of the key. Numbers will be converted to strings.
@@ -39,7 +46,7 @@ export class BaseKeyBuilder {
   protected buildKey(...parts: (string | number | null | undefined)[]): string {
     const stringParts = parts
       .filter((part) => part !== null && part !== undefined)
-      .map((part) => part.toString());
+      .map((part) => part?.toString());
     return [this.getVersionedPrefix(), ...stringParts].join(this.separator);
   }
 
@@ -68,9 +75,11 @@ export class BaseKeyBuilder {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             result[key] = this.sortObjectKeys(value);
           } else if (Array.isArray(value)) {
-            result[key] = value.map((item) =>
+            result[key] = value?.map((item) =>
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-return
               typeof item === 'object' && item !== null && !Array.isArray(item)
-                ? this.sortObjectKeys(item)
+                ? // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+                  this.sortObjectKeys(item)
                 : item,
             );
           } else {

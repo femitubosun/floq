@@ -1,126 +1,120 @@
+import { Test, TestingModule } from '@nestjs/testing';
+import { BadRequestException } from '@nestjs/common';
+import { Mocked } from 'jest-mock';
+
 import { LoginUserUseCase } from './login-user.use-case';
-import { UserRepository } from '@/identity/user/repositories';
-import { HashService } from '@/infrastructure/crypto/services/hash.service';
+import { UserService } from '@/identity/user/services/user.service';
 import { SessionService } from '@/identity/auth/services/session.service';
 import { JwtService } from '@/infrastructure/crypto/services/jwt.service';
 import { LoginUserDto } from '@/identity/auth/__defs__/auth.dto';
-import { BadRequestException } from '@nestjs/common';
-import { Test, TestingModule } from '@nestjs/testing';
-import { Mocked } from 'jest-mock';
-import { SessionUserSchema } from '@/identity/auth/__defs__';
+import { User } from '@/infrastructure/prisma/__defs__'; // Assuming User type from Prisma
 
-jest.mock('@/identity/user/repositories');
-jest.mock('@/infrastructure/crypto/services/hash.service');
+// Mock the services that LoginUserUseCase depends on
+jest.mock('@/identity/user/services/user.service');
 jest.mock('@/identity/auth/services/session.service');
 jest.mock('@/infrastructure/crypto/services/jwt.service');
 
 describe('LoginUserUseCase', () => {
   let loginUserUseCase: LoginUserUseCase;
-  let userRepository: Mocked<UserRepository>;
-  let hashService: Mocked<HashService>;
+  let userService: Mocked<UserService>;
   let sessionService: Mocked<SessionService>;
   let jwtService: Mocked<JwtService>;
+
+  const mockLoginDto: LoginUserDto = {
+    email: 'test@example.com',
+    password: 'password123',
+  };
+
+  const mockUser: User = {
+    id: 'user-id-123',
+    email: 'test@example.com',
+    name: 'Test User',
+    password: 'hashedPasswordFromDB',
+  };
+
+  const mockSessionVersion = 1;
+  const mockJwtToken = 'mock.jwt.token';
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         LoginUserUseCase,
-        UserRepository,
-        HashService,
+        UserService, // Provide the actual service class for NestJS DI to work with mocks
         SessionService,
         JwtService,
       ],
     }).compile();
 
     loginUserUseCase = module.get<LoginUserUseCase>(LoginUserUseCase);
-    userRepository = module.get(UserRepository);
-    hashService = module.get(HashService);
+    userService = module.get(UserService);
     sessionService = module.get(SessionService);
     jwtService = module.get(JwtService);
   });
 
-  it('should login successfully', async () => {
-    const input: LoginUserDto = {
-      email: 'test@example.com',
-      password: 'password',
-    };
-    const user = {
-      id: '1',
-      password: 'hashedPassword',
-      email: '',
-      name: '',
-    };
-    const session: SessionUserSchema = {
-      email: '',
-      id: '',
-      name: '',
-      roles: [],
-      sessionVersion: 1,
-    };
-    const token = 'jwtToken';
+  it('should login successfully and return a token', async () => {
+    userService.authenticateUser.mockResolvedValue(mockUser);
+    sessionService.refreshSession.mockResolvedValue(mockSessionVersion);
+    jwtService.generateAuthToken.mockResolvedValue(mockJwtToken);
 
-    userRepository.findFullUserByEmail.mockResolvedValue(user);
-    hashService.verify.mockResolvedValue(true);
-    sessionService.getSession.mockResolvedValue(session);
-    jwtService.generateAuthToken.mockResolvedValue(token);
+    const result = await loginUserUseCase.execute(mockLoginDto);
 
-    const result = await loginUserUseCase.execute(input);
-
-    expect(result).toEqual({ message: 'User logged in successfully', token });
+    expect(userService.authenticateUser).toHaveBeenCalledWith(mockLoginDto);
+    expect(sessionService.refreshSession).toHaveBeenCalledWith(mockUser);
+    expect(jwtService.generateAuthToken).toHaveBeenCalledWith(
+      mockUser,
+      mockSessionVersion,
+    );
+    expect(result).toEqual({
+      message: 'User logged in successfully',
+      token: mockJwtToken,
+    });
   });
 
-  it('should throw Invalid Authentication Method', async () => {
-    const input: LoginUserDto = {
-      email: 'test@example.com',
-      password: 'password',
-    };
+  it('should throw BadRequestException if user authentication fails', async () => {
+    const authError = new BadRequestException('Invalid credentials');
+    userService.authenticateUser.mockRejectedValue(authError);
 
-    userRepository.findFullUserByEmail.mockResolvedValue(null);
-
-    await expect(loginUserUseCase.execute(input)).rejects.toThrow(
+    await expect(loginUserUseCase.execute(mockLoginDto)).rejects.toThrow(
       BadRequestException,
     );
-  });
-
-  it('should throw Invalid Password', async () => {
-    const input: LoginUserDto = {
-      email: 'test@example.com',
-      password: 'wrongPassword',
-    };
-    const user = {
-      id: '1',
-      password: 'hashedPassword',
-      name: 'Test test',
-      email: 'test@example.com',
-    };
-
-    userRepository.findFullUserByEmail.mockResolvedValue(user);
-    hashService.verify.mockResolvedValue(false);
-
-    await expect(loginUserUseCase.execute(input)).rejects.toThrow(
-      BadRequestException,
+    await expect(loginUserUseCase.execute(mockLoginDto)).rejects.toThrow(
+      'Invalid credentials',
     );
+
+    expect(userService.authenticateUser).toHaveBeenCalledWith(mockLoginDto);
+    expect(sessionService.refreshSession).not.toHaveBeenCalled();
+    expect(jwtService.generateAuthToken).not.toHaveBeenCalled();
   });
 
-  it('should throw Invalid Session', async () => {
-    const input: LoginUserDto = {
-      email: 'test@example.com',
-      password: 'password',
-    };
+  it('should throw an exception if session refresh fails', async () => {
+    const sessionError = new Error('Session refresh failed');
+    userService.authenticateUser.mockResolvedValue(mockUser);
+    sessionService.refreshSession.mockRejectedValue(sessionError);
 
-    const user = {
-      id: '1',
-      password: 'hashedPassword',
-      name: 'Test test',
-      email: 'test@example.com',
-    };
+    await expect(loginUserUseCase.execute(mockLoginDto)).rejects.toThrow(
+      'Session refresh failed',
+    );
 
-    userRepository.findFullUserByEmail.mockResolvedValue(user);
-    hashService.verify.mockResolvedValue(true);
-    sessionService.getSession.mockResolvedValue(null);
+    expect(userService.authenticateUser).toHaveBeenCalledWith(mockLoginDto);
+    expect(sessionService.refreshSession).toHaveBeenCalledWith(mockUser);
+    expect(jwtService.generateAuthToken).not.toHaveBeenCalled();
+  });
 
-    await expect(loginUserUseCase.execute(input)).rejects.toThrow(
-      BadRequestException,
+  it('should throw an exception if token generation fails', async () => {
+    const tokenError = new Error('Token generation failed');
+    userService.authenticateUser.mockResolvedValue(mockUser);
+    sessionService.refreshSession.mockResolvedValue(mockSessionVersion);
+    jwtService.generateAuthToken.mockRejectedValue(tokenError);
+
+    await expect(loginUserUseCase.execute(mockLoginDto)).rejects.toThrow(
+      'Token generation failed',
+    );
+
+    expect(userService.authenticateUser).toHaveBeenCalledWith(mockLoginDto);
+    expect(sessionService.refreshSession).toHaveBeenCalledWith(mockUser);
+    expect(jwtService.generateAuthToken).toHaveBeenCalledWith(
+      mockUser,
+      mockSessionVersion,
     );
   });
 });

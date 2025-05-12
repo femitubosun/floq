@@ -133,9 +133,51 @@ exports.Prisma.OtpTokenScalarFieldEnum = {
   isUsed: 'isUsed'
 };
 
+exports.Prisma.VirtualAccountScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  currency: 'currency',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt',
+  idempotencyKey: 'idempotencyKey'
+};
+
+exports.Prisma.TransactionScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  status: 'status',
+  initiatorId: 'initiatorId',
+  initiatorType: 'initiatorType',
+  idempotencyKey: 'idempotencyKey',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt',
+  executedAt: 'executedAt'
+};
+
+exports.Prisma.LedgerEntryScalarFieldEnum = {
+  id: 'id',
+  transactionId: 'transactionId',
+  accountId: 'accountId',
+  currency: 'currency',
+  amount: 'amount',
+  entryType: 'entryType',
+  fxRate: 'fxRate',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.JsonNullValueInput = {
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.QueryMode = {
@@ -147,14 +189,57 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
+};
 exports.TokenType = exports.$Enums.TokenType = {
   PASSWORD_RESET: 'PASSWORD_RESET',
   SIGNUP: 'SIGNUP'
 };
 
+exports.Currency = exports.$Enums.Currency = {
+  PHP: 'PHP',
+  USD: 'USD',
+  EUR: 'EUR',
+  GBP: 'GBP',
+  NGN: 'NGN'
+};
+
+exports.TransactionType = exports.$Enums.TransactionType = {
+  TRANSFER: 'TRANSFER',
+  FxConversion: 'FxConversion',
+  DEPOSIT: 'DEPOSIT',
+  WITHDRAWAL: 'WITHDRAWAL',
+  REVERSAL: 'REVERSAL'
+};
+
+exports.TransactionStatus = exports.$Enums.TransactionStatus = {
+  PENDING: 'PENDING',
+  COMMITTED: 'COMMITTED',
+  FAILED: 'FAILED',
+  REVERSED: 'REVERSED'
+};
+
+exports.InitiatorType = exports.$Enums.InitiatorType = {
+  USER: 'USER',
+  SYSTEM: 'SYSTEM',
+  ADMIN: 'ADMIN'
+};
+
+exports.EntryType = exports.$Enums.EntryType = {
+  DEBIT: 'DEBIT',
+  CREDIT: 'CREDIT'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
-  OtpToken: 'OtpToken'
+  OtpToken: 'OtpToken',
+  VirtualAccount: 'VirtualAccount',
+  Transaction: 'Transaction',
+  LedgerEntry: 'LedgerEntry'
 };
 
 /**

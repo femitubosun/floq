@@ -1,115 +1,147 @@
+import { RegisterUserUseCase } from '@/identity/auth/use-cases';
+import { JwtService } from '@/infrastructure/crypto/services/jwt.service';
+import { UserService } from '@/identity/user/services/user.service';
+import { SessionService } from '@/identity/auth/services/session.service';
+import { MailDispatcherService } from '@/infrastructure/mail/mail-dispatcher.service';
+import { OtpService } from '@/identity/auth/services/otp.service';
 import { Test, TestingModule } from '@nestjs/testing';
-import { RedisService } from './redis.service';
 
-const mockRedisClient = {
-  set: jest.fn(),
-  get: jest.fn(),
-  del: jest.fn(),
-  scanIterator: jest.fn(),
-  disconnect: jest.fn(),
-};
-
-describe('RedisService', () => {
-  let service: RedisService;
+describe('RegisterUserUseCase', () => {
+  let registerUserUseCase: RegisterUserUseCase;
+  let jwtService: JwtService;
+  let userService: UserService;
+  let sessionService: SessionService;
+  let mailDispatcher: MailDispatcherService;
+  let otpService: OtpService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        RedisService,
+        RegisterUserUseCase,
         {
-          provide: 'REDIS_CLIENT',
-          useValue: mockRedisClient,
+          provide: JwtService,
+          useValue: {
+            generateAuthToken: jest.fn(),
+          },
+        },
+        {
+          provide: UserService,
+          useValue: {
+            registerUser: jest.fn(),
+          },
+        },
+        {
+          provide: SessionService,
+          useValue: {
+            initializeSession: jest.fn(),
+          },
+        },
+        {
+          provide: MailDispatcherService,
+          useValue: {
+            sendWelcomeMail: jest.fn(),
+          },
+        },
+        {
+          provide: OtpService,
+          useValue: {
+            createOtpToken: jest.fn(),
+          },
         },
       ],
     }).compile();
 
-    service = module.get<RedisService>(RedisService);
+    registerUserUseCase = module.get<RegisterUserUseCase>(RegisterUserUseCase);
+    jwtService = module.get<JwtService>(JwtService);
+    userService = module.get<UserService>(UserService);
+    sessionService = module.get<SessionService>(SessionService);
+    mailDispatcher = module.get<MailDispatcherService>(MailDispatcherService);
+    otpService = module.get<OtpService>(OtpService);
   });
 
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
+  const testCases = [
+    {
+      description: 'should register user successfully with valid input',
+      input: {
+        email: 'test@example.com',
+        name: 'John Doe',
+        password: 'password123',
+      },
+      userServiceResponse: {
+        id: 'user123',
+        email: 'test@example.com',
+        name: 'John Doe',
+        password: 'password123',
+      },
+      otpServiceResponse: {
+        otp: '123456',
+        otpToken: {
+          id: '123',
+          userId: 'string',
+          tokenType: 'SIGNUP' as const,
+          tokenHash: 'string',
+          expiresAt: new Date(),
+          isUsed: false,
+        },
+      },
+      sessionServiceResponse: 123,
+      jwtServiceResponse: 'token123',
+      expected: {
+        message: 'User registered successfully',
+        token: 'token123',
+      },
+    },
+    {
+      description: 'should handle missing name gracefully',
+      input: { email: 'test@example.com', name: '', password: 'password123' },
+      userServiceResponse: {
+        id: 'user123',
+        email: 'test@example.com',
+        name: '',
+        password: '',
+      },
+      otpServiceResponse: {
+        otp: '123456',
+        otpToken: {
+          id: '123',
+          userId: 'string',
+          tokenType: 'SIGNUP' as const,
+          tokenHash: 'string',
+          expiresAt: new Date(),
+          isUsed: false,
+        },
+      },
+      sessionServiceResponse: 1,
+      jwtServiceResponse: 'token123',
+      expected: {
+        message: 'User registered successfully',
+        token: 'token123',
+      },
+    },
+  ];
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
+  testCases.forEach((testCase) => {
+    it(testCase.description, async () => {
+      jest
+        .spyOn(userService, 'registerUser')
+        .mockResolvedValue(testCase.userServiceResponse);
 
-  describe('set', () => {
-    it('should set string value without TTL', async () => {
-      await service.set({ key: 'test', value: 'value' });
-      expect(mockRedisClient.set).toHaveBeenCalledWith('test', 'value');
-    });
+      jest
+        .spyOn(otpService, 'createOtpToken')
+        .mockResolvedValue(testCase.otpServiceResponse);
 
-    it('should set object value without TTL', async () => {
-      const value = { test: 'value' };
-      await service.set({ key: 'test', value });
-      expect(mockRedisClient.set).toHaveBeenCalledWith(
-        'test',
-        JSON.stringify(value),
-      );
-    });
+      jest
+        .spyOn(mailDispatcher, 'sendWelcomeMail')
+        .mockResolvedValue(undefined);
+      jest
+        .spyOn(sessionService, 'initializeSession')
+        .mockResolvedValue(testCase.sessionServiceResponse);
+      jest
+        .spyOn(jwtService, 'generateAuthToken')
+        .mockResolvedValue(testCase.jwtServiceResponse);
 
-    it('should set value with TTL', async () => {
-      await service.set({ key: 'test', value: 'value', ttlSeconds: 60 });
-      expect(mockRedisClient.set).toHaveBeenCalledWith('test', 'value', {
-        EX: 60,
-      });
-    });
-  });
-
-  describe('get', () => {
-    it('should return null for non-existent key', async () => {
-      mockRedisClient.get.mockResolvedValue(null);
-      const result = await service.get('test');
-      expect(result).toBeNull();
-    });
-
-    it('should return parsed JSON for object values', async () => {
-      const value = { test: 'value' };
-      mockRedisClient.get.mockResolvedValue(JSON.stringify(value));
-      const result = await service.get('test');
-      expect(result).toEqual(value);
-    });
-
-    it('should return raw value for non-JSON strings', async () => {
-      mockRedisClient.get.mockResolvedValue('value');
-      const result = await service.get('test');
-      expect(result).toBe('value');
-    });
-  });
-
-  describe('delete', () => {
-    it('should delete key', async () => {
-      mockRedisClient.del.mockResolvedValue(1);
-      await service.delete('test');
-      expect(mockRedisClient.del).toHaveBeenCalledWith('test');
-    });
-  });
-
-  //   describe('scan', () => {
-  //     it('should yield keys matching pattern', async () => {
-  //       const keys = ['key1', 'key2'];
-  //       mockRedisClient.scanIterator.mockReturnValue(keys);
-  //       const result = [];
-  //       for await (const key of service.scan('test*')) {
-  //         result.push(key);
-  //       }
-  //       expect(result).toEqual(keys);
-  //       expect(mockRedisClient.scanIterator).toHaveBeenCalledWith({
-  //         MATCH: 'test*',
-  //       });
-  //     });
-
-  //     it('should use default pattern if none provided', async () => {
-  //       await service.scan().next();
-  //       expect(mockRedisClient.scanIterator).toHaveBeenCalledWith({ MATCH: '*' });
-  //     });
-  //   });
-
-  describe('onModuleDestroy', () => {
-    it('should disconnect redis client', async () => {
-      await service.onModuleDestroy();
-      expect(mockRedisClient.disconnect).toHaveBeenCalled();
+      const result = await registerUserUseCase.execute(testCase.input);
+      expect(result).toEqual(testCase.expected);
     });
   });
 });

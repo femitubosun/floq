@@ -12,15 +12,15 @@ import { JwtPayloadSchema, SessionUserSchema } from '../__defs__';
 
 import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
 import { JwtService } from 'src/infrastructure/crypto/services/jwt.service';
-import { RedisService } from '@/infrastructure/cache/services/redis.service';
 import { AuthedRequest } from 'src/common/__defs__';
+import { CacheService } from '@/infrastructure/cache/services/cache.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
     private jwtService: JwtService,
     private reflector: Reflector,
-    private redisService: RedisService,
+    private cacheService: CacheService,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -47,7 +47,7 @@ export class AuthGuard implements CanActivate {
 
       const payload = JwtPayloadSchema.parse(jwtPayload);
 
-      const session = await this.redisService.get<SessionUserSchema>(
+      const session = await this.cacheService.get<SessionUserSchema>(
         makeSessionKey(payload.sub),
       );
 

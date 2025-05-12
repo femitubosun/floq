@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { RedisService } from '@/infrastructure/cache/services/redis.service';
+import { CacheService } from '@/infrastructure/cache/services/cache.service';
 
 @Injectable()
 export class AppService {
-  constructor(private cacheService: RedisService) {}
+  constructor(private cacheService: CacheService) {}
 
   async getHello() {
     const cacheKey = 'hello';
