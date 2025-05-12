@@ -12,7 +12,6 @@ describe('VirtualAccountService', () => {
     id: 'account-123',
     name: 'Test Account',
     currency: 'USD',
-    idempotencyKey: 'unique-key-123',
     createdAt: new Date(),
     updatedAt: new Date(),
   };

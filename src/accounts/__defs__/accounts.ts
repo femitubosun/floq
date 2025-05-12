@@ -26,8 +26,16 @@ export class UpdateVirtualAccountDto extends createZodDto(
   UpdateVirtualAccountSchema,
 ) {}
 
+export const VirtualAccountDtoSchema = VirtualAccountSchema.omit({
+  deletedAt: true,
+  idempotencyKey: true,
+});
+
+export type VirtualAccountDtoSchema = z.infer<typeof VirtualAccountDtoSchema>;
+
 export class VirtualAccountDto extends createZodDto(
   VirtualAccountSchema.omit({
     deletedAt: true,
+    idempotencyKey: true,
   }),
 ) {}

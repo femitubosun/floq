@@ -27,7 +27,6 @@ describe('CreateVirtualAccountUseCase', () => {
     id: 'va-id-123',
     name: 'Account 1',
     currency: 'USD',
-    idempotencyKey: '111',
     createdAt: new Date(),
     updatedAt: new Date(),
   };
@@ -36,7 +35,6 @@ describe('CreateVirtualAccountUseCase', () => {
     id: 'va-id-existing-789',
     name: 'Account 1',
     currency: 'NGN',
-    idempotencyKey: 'idempotency-key-123',
     createdAt: new Date(Date.now() - 100000),
     updatedAt: new Date(Date.now() - 50000),
   };
