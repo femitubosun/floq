@@ -1,12 +1,12 @@
+import { PaginationInputSchema } from '@/common/utils';
 import {
   CurrencySchema,
   LedgerEntrySchema,
   VirtualAccountSchema,
 } from '@/infrastructure/prisma/__defs__';
-import { undefined, z } from 'zod';
-import { createZodDto } from 'nestjs-zod';
-import { PaginationInputSchema } from '@/common/utils';
 import { PaginatedResultGenericSchema } from '@/infrastructure/prisma/utils';
+import { createZodDto } from 'nestjs-zod';
+import { z } from 'zod';
 
 // Create Virtual Account Dto
 export const CreateVirtualAccountSchema = VirtualAccountSchema.pick({
