@@ -7,6 +7,7 @@ import { VirtualAccountService } from '@/accounts/services/virtual-account.servi
 @Injectable()
 export class CreateVirtualAccountUseCase {
   private logger = new Logger(CreateVirtualAccountUseCase.name);
+
   constructor(
     private readonly cacheService: CacheService,
     private readonly virtualAccountService: VirtualAccountService,

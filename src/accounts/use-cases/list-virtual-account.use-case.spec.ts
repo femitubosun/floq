@@ -99,6 +99,7 @@ describe('ListVirtualAccountsUseCase', () => {
       cacheFetchCalledWith,
       repositoryError,
     }) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       it(description, async () => {
         // Mock cacheService.fetch behavior
         cacheService.fetch.mockImplementation(async (_, options) => {
@@ -110,10 +111,12 @@ describe('ListVirtualAccountsUseCase', () => {
         });
 
         // Mock virtualAccountRepository.list behavior
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         virtualAccountRepository.list.mockResolvedValue(repositoryResult);
 
         if (repositoryError) {
           await expect(useCase.execute(mockInput)).rejects.toThrow(
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             repositoryError,
           );
         } else {

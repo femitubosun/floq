@@ -75,9 +75,11 @@ export class BaseKeyBuilder {
             // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
             result[key] = this.sortObjectKeys(value);
           } else if (Array.isArray(value)) {
-            result[key] = value.map((item) =>
+            result[key] = value?.map((item) =>
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-return
               typeof item === 'object' && item !== null && !Array.isArray(item)
-                ? this.sortObjectKeys(item)
+                ? // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+                  this.sortObjectKeys(item)
                 : item,
             );
           } else {

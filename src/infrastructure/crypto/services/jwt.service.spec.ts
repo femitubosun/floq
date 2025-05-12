@@ -39,7 +39,8 @@ describe('JwtService', () => {
       const payload = { sub: mockUser.id };
       const token = 'signed-token';
       (jwt.sign as jest.Mock).mockImplementation(
-        (payload, secret, options, callback) => {
+        (_payload, _secret, _options, callback) => {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-call
           callback(null, token);
         },
       );
@@ -61,6 +62,7 @@ describe('JwtService', () => {
       const decoded = { sub: mockUser.id };
       (jwt.verify as jest.Mock).mockImplementation(
         (_token, _secret, callback) => {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-call
           callback(null, decoded);
         },
       );
@@ -78,6 +80,7 @@ describe('JwtService', () => {
       const token = 'invalid-token';
       (jwt.verify as jest.Mock).mockImplementation(
         (_token, _secret, callback) => {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-call
           callback(new Error('Invalid token'));
         },
       );
@@ -92,6 +95,7 @@ describe('JwtService', () => {
       const token = 'auth-token';
       (jwt.sign as jest.Mock).mockImplementation(
         (_payload, _secret, _options, callback) => {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-call
           callback(null, token);
         },
       );

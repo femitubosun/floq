@@ -27,6 +27,7 @@ function extractInnerType(type: z.ZodTypeAny): z.ZodTypeAny {
     type._def.typeName === 'ZodOptional' ||
     type._def.typeName === 'ZodNullable'
   ) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     return extractInnerType(type._def.innerType);
   }
   return type;
