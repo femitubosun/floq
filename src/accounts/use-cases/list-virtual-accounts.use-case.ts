@@ -17,7 +17,7 @@ export class ListVirtualAccountsUseCase {
       resolver: async () => {
         return this.virtualAccountRepository.list();
       },
-      tags: ['virtual_accounts'],
+      tags: [VirtualAccountsCacheKeys.getDomainPrefix()],
     });
   }
 }

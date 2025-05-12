@@ -1,11 +1,20 @@
-import { Injectable } from '@nestjs/common';
-import { RedisService } from './redis.service'; // Assuming redis.service.ts is in the same directory
+import { Injectable, Logger } from '@nestjs/common';
+import { RedisService } from './redis.service';
+import { ConfigService } from '@nestjs/config';
 
 const TAG_SET_PREFIX = 'tagset:';
 
 @Injectable()
 export class CacheService {
-  constructor(private readonly redisService: RedisService) {}
+  private readonly appPrefix: string;
+  private readonly logger = new Logger(CacheService.name);
+
+  constructor(
+    private readonly redisService: RedisService,
+    private readonly configService: ConfigService,
+  ) {
+    this.appPrefix = this.configService.get<string>('APP_NAME') || 'app';
+  }
 
   /**
    * Fetches data from cache if available, otherwise resolves it and caches the result.
@@ -23,15 +32,15 @@ export class CacheService {
       ttlSeconds?: number;
     },
   ): Promise<TResult> {
-    const cacheKey = config.key(...args);
+    const cacheKey = this.#makeKey(config.key(...args));
 
     const cachedValue = await this.redisService.get<TResult>(cacheKey);
     if (cachedValue !== null) {
-      console.log(`Cache HIT for key: ${cacheKey}`);
+      this.logger.log(`Cache HIT for key: ${cacheKey}`);
       return cachedValue;
     }
 
-    console.log(`Cache MISS for key: ${cacheKey}. Fetching from resolver.`);
+    this.logger.log(`Cache MISS for key: ${cacheKey}. Fetching from resolver.`);
     const result = await config.resolver(...args);
 
     await this.redisService.set({
@@ -55,13 +64,16 @@ export class CacheService {
    * @param keys A single key or an array of keys to invalidate.
    */
   async invalidate(keys: string | string[]): Promise<void> {
-    const keysToDelete = Array.isArray(keys) ? keys : [keys];
+    const keysToDelete = Array.isArray(keys)
+      ? keys.map((k) => this.#makeKey(k))
+      : [this.#makeKey(keys)];
+
     if (keysToDelete.length === 0) {
       return;
     }
 
     await this.redisService.delete(keysToDelete);
-    console.log(`Invalidated key(s): ${keysToDelete.join(', ')}`);
+    this.logger.log(`Invalidated key(s): ${keysToDelete.join(', ')}`);
   }
 
   /**
@@ -70,10 +82,12 @@ export class CacheService {
    * @param prefix The prefix to match (e.g., "transactions:user:").
    */
   async invalidateByPrefix(prefix: string): Promise<void> {
-    console.log(`Attempting to invalidate keys with prefix: ${prefix}`);
+    this.logger.log(`Attempting to invalidate keys with prefix: ${prefix}`);
     const keysToDelete: string[] = [];
 
-    const scanPattern = prefix.endsWith('*') ? prefix : `${prefix}*`;
+    const scanPattern = this.#makeKey(
+      prefix.endsWith('*') ? prefix : `${prefix}*`,
+    );
 
     for await (const key of this.redisService.scan(scanPattern)) {
       if (!key.startsWith(TAG_SET_PREFIX)) {
@@ -83,12 +97,12 @@ export class CacheService {
 
     if (keysToDelete.length > 0) {
       await this.redisService.delete(keysToDelete);
-      console.log(
+      this.logger.log(
         `Invalidated ${keysToDelete.length} keys with prefix ${prefix}:`,
         keysToDelete,
       );
     } else {
-      console.log(`No keys found with prefix: ${prefix}`);
+      this.logger.log(`No keys found with prefix: ${prefix}`);
     }
   }
 
@@ -98,25 +112,25 @@ export class CacheService {
    */
   async invalidateByTag(tag: string): Promise<void> {
     const tagSetKey = `${TAG_SET_PREFIX}${tag}`;
-    console.log(
+    this.logger.log(
       `Attempting to invalidate keys for tag: ${tag} (set key: ${tagSetKey})`,
     );
 
     const keysToInvalidate = await this.redisService.sMembers(tagSetKey);
 
     if (keysToInvalidate.length > 0) {
-      console.log(
+      this.logger.log(
         `Found ${keysToInvalidate.length} keys for tag ${tag}:`,
         keysToInvalidate,
       );
       const allKeysToDelete = [...keysToInvalidate, tagSetKey];
       await this.redisService.delete(allKeysToDelete);
 
-      console.log(
+      this.logger.log(
         `Invalidated ${keysToInvalidate.length} keys and removed tag set ${tagSetKey}.`,
       );
     } else {
-      console.log(`No keys found for tag: ${tag}`);
+      this.logger.log(`No keys found for tag: ${tag}`);
     }
   }
 
@@ -128,7 +142,7 @@ export class CacheService {
    */
   async set(key: string, value: unknown, ttlSeconds?: number) {
     return this.redisService.set({
-      key,
+      key: this.#makeKey(key),
       value,
       ttlSeconds,
     });
@@ -140,7 +154,7 @@ export class CacheService {
    * @returns The value if found, otherwise null.
    */
   async get<T>(key: string) {
-    return this.redisService.get<T>(key);
+    return this.redisService.get<T>(this.#makeKey(key));
   }
 
   /**
@@ -148,6 +162,14 @@ export class CacheService {
    * @param key
    */
   async delete(key: string | string[]) {
-    return this.redisService.delete(key);
+    const keysToDel = Array.isArray(key)
+      ? key.map((k) => this.#makeKey(k))
+      : [this.#makeKey(key)];
+
+    return this.redisService.delete(keysToDel);
+  }
+
+  #makeKey(key: string) {
+    return `${this.appPrefix}:${key}`;
   }
 }

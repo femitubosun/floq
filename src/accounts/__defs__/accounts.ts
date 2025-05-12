@@ -25,4 +25,8 @@ export class UpdateVirtualAccountDto extends createZodDto(
   UpdateVirtualAccountSchema,
 ) {}
 
-export class VirtualAccountDto extends createZodDto(VirtualAccountSchema) {}
+export class VirtualAccountDto extends createZodDto(
+  VirtualAccountSchema.omit({
+    deletedAt: true,
+  }),
+) {}

@@ -9,7 +9,9 @@ import {
 export class VirtualAccountRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async createAccount(input: CreateVirtualAccountDto) {
+  async createAccount(
+    input: CreateVirtualAccountDto,
+  ): Promise<VirtualAccountDto> {
     return this.#accountDelegate.create({
       data: input,
     });

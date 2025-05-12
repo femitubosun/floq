@@ -25,7 +25,6 @@ export class RequestPasswordResetOtpUseCase {
     );
 
     // TODO send otp to email
-    console.log('otp', otp);
 
     return {
       message: OTP_TOKEN_SENT,

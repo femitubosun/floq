@@ -30,6 +30,13 @@ export class BaseKeyBuilder {
   }
 
   /**
+   * returns the domain prefix string
+   */
+  public getDomainPrefix(): string {
+    return this.domainPrefix;
+  }
+
+  /**
    * Builds a cache key string from the given parts, automatically including
    * the domain prefix and version.
    * @param parts Individual segments of the key. Numbers will be converted to strings.

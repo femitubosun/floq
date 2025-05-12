@@ -4,7 +4,6 @@ import { makeSessionKey, makeSessionUser } from '../utils/session.utils';
 import { SessionUserSchema } from '../__defs__';
 
 import { User } from '@/infrastructure/prisma/__defs__';
-import { RedisService } from '@/infrastructure/cache/services/redis.service';
 import { CacheService } from '@/infrastructure/cache/services/cache.service';
 
 @Injectable()
