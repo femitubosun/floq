@@ -107,30 +107,43 @@ export class CacheService {
   }
 
   /**
-   * Invalidates all cache keys associated with a given tag.
-   * @param tag The tag to invalidate.
+   * Invalidates all cache keys associated with given tag(s).
+   * @param tags A single tag or array of tags to invalidate.
    */
-  async invalidateByTag(tag: string): Promise<void> {
-    const tagSetKey = `${TAG_SET_PREFIX}${tag}`;
-    this.logger.log(
-      `Attempting to invalidate keys for tag: ${tag} (set key: ${tagSetKey})`,
-    );
+  async invalidateByTag(tags: string | string[]): Promise<void> {
+    const tagArray = Array.isArray(tags) ? tags : [tags];
+    const allKeysToInvalidate = new Set<string>();
+    const tagSetKeys: string[] = [];
 
-    const keysToInvalidate = await this.redisService.sMembers(tagSetKey);
-
-    if (keysToInvalidate.length > 0) {
+    for (const tag of tagArray) {
+      const tagSetKey = `${TAG_SET_PREFIX}${tag}`;
+      tagSetKeys.push(tagSetKey);
       this.logger.log(
-        `Found ${keysToInvalidate.length} keys for tag ${tag}:`,
-        keysToInvalidate,
+        `Attempting to invalidate keys for tag: ${tag} (set key: ${tagSetKey})`,
       );
-      const allKeysToDelete = [...keysToInvalidate, tagSetKey];
+
+      const keysForTag = await this.redisService.sMembers(tagSetKey);
+      keysForTag.forEach((key) => allKeysToInvalidate.add(key));
+
+      if (keysForTag.length > 0) {
+        this.logger.log(
+          `Found ${keysForTag.length} keys for tag ${tag}:`,
+          keysForTag,
+        );
+      } else {
+        this.logger.log(`No keys found for tag: ${tag}`);
+      }
+    }
+
+    if (allKeysToInvalidate.size > 0) {
+      const allKeysToDelete = [...allKeysToInvalidate, ...tagSetKeys];
       await this.redisService.delete(allKeysToDelete);
 
       this.logger.log(
-        `Invalidated ${keysToInvalidate.length} keys and removed tag set ${tagSetKey}.`,
+        `Invalidated ${allKeysToInvalidate.size} keys and removed ${tagSetKeys.length} tag sets.`,
       );
     } else {
-      this.logger.log(`No keys found for tag: ${tag}`);
+      this.logger.log(`No keys found for any of the provided tags.`);
     }
   }
 

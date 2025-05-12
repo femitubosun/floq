@@ -222,7 +222,7 @@ describe('VirtualAccountRepository', () => {
 
       expect(result).toEqual(mockVirtualAccountDetail);
       expect(prismaService.virtualAccount.findUnique).toHaveBeenCalledWith({
-        where: { id },
+        where: { id, deletedAt: null },
         select: mockVirtualAccountDetailSelect,
       });
     });
@@ -235,7 +235,7 @@ describe('VirtualAccountRepository', () => {
 
       expect(result).toBeNull();
       expect(prismaService.virtualAccount.findUnique).toHaveBeenCalledWith({
-        where: { id },
+        where: { id, deletedAt: null },
         select: mockVirtualAccountDetailSelect,
       });
     });

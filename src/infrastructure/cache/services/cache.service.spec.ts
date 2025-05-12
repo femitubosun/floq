@@ -81,7 +81,7 @@ describe('CacheService', () => {
 
   describe('invalidateByPrefix', () => {
     it('should delete keys matching prefix', async () => {
-      mockRedisService.scan.mockImplementation(async function* () {
+      mockRedisService.scan.mockImplementation(function* () {
         yield 'prefix:key1';
         yield 'prefix:key2';
       });

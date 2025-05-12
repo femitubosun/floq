@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { VirtualAccountRepository } from '@/accounts/repositories/virtual-account.repository';
 import {
   CreateVirtualAccountInput,
+  UpdateVirtualAccountDto,
+  VirtualAccountDetailOutputDto,
   VirtualAccountListingInput,
   VirtualAccountListingOutput,
 } from '../__defs__/accounts.dto';
@@ -30,5 +32,16 @@ export class VirtualAccountService {
 
   async getById(id: string) {
     return this.repo.getById(id);
+  }
+
+  async update(
+    id: string,
+    data: UpdateVirtualAccountDto,
+  ): Promise<VirtualAccountDetailOutputDto> {
+    const va = await this.repo.getById(id);
+    if (!va) {
+      throw new Error('Virtual Account not found');
+    }
+    return this.repo.update(id, data);
   }
 }

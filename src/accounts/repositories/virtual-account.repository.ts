@@ -8,6 +8,7 @@ import { zodToPrismaSelect } from '@/infrastructure/prisma/utils/prisma';
 import { Injectable } from '@nestjs/common';
 import {
   CreateVirtualAccountDto,
+  UpdateVirtualAccountDto,
   VirtualAccountDetailOutputDto,
   VirtualAccountDetailSchema,
   VirtualAccountDto,
@@ -61,11 +62,25 @@ export class VirtualAccountRepository {
     });
   }
 
-  getById(id: string): Promise<VirtualAccountDetailOutputDto | null> {
+  async getById(id: string): Promise<VirtualAccountDetailOutputDto | null> {
     return this.#Account.findUnique({
       where: {
         id,
+        deletedAt: null,
       },
+      select: zodToPrismaSelect(VirtualAccountDetailSchema),
+    });
+  }
+
+  async update(
+    id: string,
+    data: UpdateVirtualAccountDto,
+  ): Promise<VirtualAccountDetailSchema> {
+    return this.#Account.update({
+      where: {
+        id,
+      },
+      data,
       select: zodToPrismaSelect(VirtualAccountDetailSchema),
     });
   }

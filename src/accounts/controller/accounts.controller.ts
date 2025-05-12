@@ -1,5 +1,6 @@
 import {
   CreateVirtualAccountDto,
+  UpdateVirtualAccountDto,
   VirtualAccountDto,
   VirtualAccountListingInputDto,
   VirtualAccountListingOutputDto,
@@ -13,11 +14,13 @@ import {
   HttpCode,
   HttpStatus,
   Param,
+  Patch,
   Post,
 } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
 import { ZodSerializerDto } from 'nestjs-zod';
 import { GetVirtualAccountByIdUseCase } from '../use-cases/get-virtual-account-by-id.use-case';
+import { UpdateVirtualAccountUseCase } from '../use-cases/update-virtual-account.use-case';
 
 @Controller('accounts')
 export class AccountsController {
@@ -25,6 +28,7 @@ export class AccountsController {
     private readonly createAccountUseCase: CreateVirtualAccountUseCase,
     private readonly listAccountUseCase: ListVirtualAccountsUseCase,
     private readonly getAccountUseCase: GetVirtualAccountByIdUseCase,
+    private readonly updateVirtualAccountUseCase: UpdateVirtualAccountUseCase,
   ) {}
 
   @Post()
@@ -50,5 +54,13 @@ export class AccountsController {
   @Get(':id')
   getAccount(@Param('id') id: string) {
     return this.getAccountUseCase.execute(id);
+  }
+
+  @Patch(':id')
+  async updateAccount(
+    @Param('id') id: string,
+    @Body() body: UpdateVirtualAccountDto,
+  ) {
+    return this.updateVirtualAccountUseCase.execute(id, body);
   }
 }
