@@ -5,7 +5,7 @@ import { VirtualAccountsCacheKeys } from '@/accounts/utils';
 import {
   VirtualAccountListingInput,
   VirtualAccountListingOutputDto,
-} from '@/accounts/__defs__/accounts';
+} from '@/accounts/__defs__/accounts.dto';
 
 @Injectable()
 export class ListVirtualAccountsUseCase {
@@ -19,7 +19,7 @@ export class ListVirtualAccountsUseCase {
       [VirtualAccountListingInput],
       VirtualAccountListingOutputDto
     >([input], {
-      key: (f) => VirtualAccountsCacheKeys.list(f),
+      key: VirtualAccountsCacheKeys.list(input),
       resolver: async (i) => {
         return this.virtualAccountRepository.list(i);
       },

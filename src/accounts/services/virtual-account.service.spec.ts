@@ -2,7 +2,10 @@ import { VirtualAccountService } from '@/accounts/services/virtual-account.servi
 import { VirtualAccountRepository } from '@/accounts/repositories/virtual-account.repository';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Mocked } from 'jest-mock';
-import { VirtualAccountDto } from '@/accounts/__defs__/accounts';
+import {
+  VirtualAccountDetailOutputDto,
+  VirtualAccountDto,
+} from '@/accounts/__defs__/accounts.dto';
 
 describe('VirtualAccountService', () => {
   let service: VirtualAccountService;
@@ -16,6 +19,15 @@ describe('VirtualAccountService', () => {
     updatedAt: new Date(),
   };
 
+  const mockVirtualAccountDetail: VirtualAccountDetailOutputDto = {
+    id: 'detail-account-456',
+    name: 'Detailed Test Account',
+    currency: 'NGN',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    ledgerEntries: [], // Assuming ledgerEntries is part of the detail DTO
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -26,6 +38,7 @@ describe('VirtualAccountService', () => {
             createAccount: jest.fn(),
             list: jest.fn(),
             findByIdempotencyKey: jest.fn(),
+            getById: jest.fn(),
           },
         },
       ],
@@ -77,5 +90,27 @@ describe('VirtualAccountService', () => {
 
     expect(mockRepository.createAccount).not.toHaveBeenCalled();
     expect(result).toEqual(mockVirtualAccount);
+  });
+
+  describe('getById', () => {
+    it('should return a virtual account detail when found by ID', async () => {
+      const accountId = 'detail-account-456';
+      mockRepository.getById.mockResolvedValue(mockVirtualAccountDetail);
+
+      const result = await service.getById(accountId);
+
+      expect(mockRepository.getById).toHaveBeenCalledWith(accountId);
+      expect(result).toEqual(mockVirtualAccountDetail);
+    });
+
+    it('should return null when no virtual account is found by ID', async () => {
+      const accountId = 'non-existent-id';
+      mockRepository.getById.mockResolvedValue(null);
+
+      const result = await service.getById(accountId);
+
+      expect(mockRepository.getById).toHaveBeenCalledWith(accountId);
+      expect(result).toBeNull();
+    });
   });
 });

@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { CacheService } from '@/infrastructure/cache/services/cache.service';
-import { CreateVirtualAccountDto } from '@/accounts/__defs__/accounts';
+import { CreateVirtualAccountDto } from '@/accounts/__defs__/accounts.dto';
 import { VirtualAccountsCacheKeys } from '@/accounts/utils';
 import { VirtualAccountService } from '@/accounts/services/virtual-account.service';
 

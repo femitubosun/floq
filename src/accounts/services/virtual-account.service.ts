@@ -4,7 +4,7 @@ import {
   CreateVirtualAccountInput,
   VirtualAccountListingInput,
   VirtualAccountListingOutput,
-} from '../__defs__/accounts';
+} from '../__defs__/accounts.dto';
 
 @Injectable()
 export class VirtualAccountService {
@@ -26,5 +26,9 @@ export class VirtualAccountService {
     input: VirtualAccountListingInput,
   ): Promise<VirtualAccountListingOutput> {
     return this.repo.list(input);
+  }
+
+  async getById(id: string) {
+    return this.repo.getById(id);
   }
 }

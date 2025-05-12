@@ -4,6 +4,7 @@ import { VirtualAccountService } from '@/accounts/services/virtual-account.servi
 import { CreateVirtualAccountUseCase } from '@/accounts/use-cases/create-virtual-account.use-case';
 import { AccountsController } from '@/accounts/controller/accounts.controller';
 import { ListVirtualAccountsUseCase } from '@/accounts/use-cases/list-virtual-accounts.use-case';
+import { GetVirtualAccountByIdUseCase } from './use-cases/get-virtual-account-by-id.use-case';
 
 @Module({
   providers: [
@@ -11,6 +12,7 @@ import { ListVirtualAccountsUseCase } from '@/accounts/use-cases/list-virtual-ac
     VirtualAccountService,
     CreateVirtualAccountUseCase,
     ListVirtualAccountsUseCase,
+    GetVirtualAccountByIdUseCase,
   ],
   controllers: [AccountsController],
 })

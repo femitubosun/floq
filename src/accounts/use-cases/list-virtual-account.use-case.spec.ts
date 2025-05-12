@@ -3,7 +3,7 @@ import { ListVirtualAccountsUseCase } from '@/accounts/use-cases/list-virtual-ac
 import { VirtualAccountRepository } from '@/accounts/repositories/virtual-account.repository';
 import { CacheService } from '@/infrastructure/cache/services/cache.service';
 import { VirtualAccountsCacheKeys } from '@/accounts/utils';
-import { VirtualAccountListingInput } from '@/accounts/__defs__/accounts';
+import { VirtualAccountListingInput } from '@/accounts/__defs__/accounts.dto';
 
 describe('ListVirtualAccountsUseCase', () => {
   let useCase: ListVirtualAccountsUseCase;
@@ -49,7 +49,7 @@ describe('ListVirtualAccountsUseCase', () => {
       repositoryResult: [],
       expectedResult: [{ id: '1', name: 'Account 1' }],
       cacheFetchCalledWith: {
-        key: expect.any(Function),
+        key: expect.any(String),
         resolver: expect.any(Function),
         tags: [VirtualAccountsCacheKeys.getDomainPrefix()],
       },
@@ -60,7 +60,7 @@ describe('ListVirtualAccountsUseCase', () => {
       repositoryResult: [{ id: '2', name: 'Account 2' }],
       expectedResult: [{ id: '2', name: 'Account 2' }],
       cacheFetchCalledWith: {
-        key: expect.any(Function),
+        key: expect.any(String),
         resolver: expect.any(Function),
         tags: [VirtualAccountsCacheKeys.getDomainPrefix()],
       },
@@ -71,7 +71,7 @@ describe('ListVirtualAccountsUseCase', () => {
       repositoryResult: [],
       expectedResult: [],
       cacheFetchCalledWith: {
-        key: expect.any(Function),
+        key: expect.any(String),
         resolver: expect.any(Function),
         tags: [VirtualAccountsCacheKeys.getDomainPrefix()],
       },
@@ -82,7 +82,7 @@ describe('ListVirtualAccountsUseCase', () => {
       repositoryResult: null,
       expectedResult: null,
       cacheFetchCalledWith: {
-        key: expect.any(Function),
+        key: expect.any(String),
         resolver: expect.any(Function),
         tags: [VirtualAccountsCacheKeys.getDomainPrefix()],
       },

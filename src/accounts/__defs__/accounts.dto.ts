@@ -1,8 +1,9 @@
 import {
   CurrencySchema,
+  LedgerEntrySchema,
   VirtualAccountSchema,
 } from '@/infrastructure/prisma/__defs__';
-import { z } from 'zod';
+import { undefined, z } from 'zod';
 import { createZodDto } from 'nestjs-zod';
 import { PaginationInputSchema } from '@/common/utils';
 import { PaginatedResultGenericSchema } from '@/infrastructure/prisma/utils';
@@ -76,4 +77,25 @@ export type VirtualAccountListingOutput = z.infer<
 
 export class VirtualAccountListingOutputDto extends createZodDto(
   VirtualAccountListingOutput,
+) {}
+
+// Virtual Account Detail
+export const VirtualAccountDetailSchema = VirtualAccountDtoSchema.extend({
+  ledgerEntries: z.array(
+    LedgerEntrySchema.pick({
+      id: true,
+      currency: true,
+      amount: true,
+      entryType: true,
+      fxRate: true,
+    }),
+  ),
+});
+
+export type VirtualAccountDetailSchema = z.infer<
+  typeof VirtualAccountDetailSchema
+>;
+
+export class VirtualAccountDetailOutputDto extends createZodDto(
+  VirtualAccountDetailSchema,
 ) {}

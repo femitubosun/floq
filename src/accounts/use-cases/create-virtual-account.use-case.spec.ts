@@ -5,7 +5,7 @@ import { CacheService } from '@/infrastructure/cache/services/cache.service';
 import {
   CreateVirtualAccountDto,
   VirtualAccountDto,
-} from '@/accounts/__defs__/accounts';
+} from '@/accounts/__defs__/accounts.dto';
 import { VirtualAccountsCacheKeys } from '@/accounts/utils';
 import { VirtualAccountService } from '@/accounts/services/virtual-account.service';
 

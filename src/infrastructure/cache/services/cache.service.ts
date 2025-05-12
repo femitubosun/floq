@@ -26,13 +26,13 @@ export class CacheService {
   async fetch<TArgs extends unknown[], TResult>(
     args: TArgs,
     config: {
-      key: (...args: TArgs) => string;
+      key: string;
       resolver: (...args: TArgs) => Promise<TResult>;
       tags?: string[];
       ttlSeconds?: number;
     },
   ): Promise<TResult> {
-    const cacheKey = this.#makeKey(config.key(...args));
+    const cacheKey = this.#makeKey(config.key);
 
     const cachedValue = await this.redisService.get<TResult>(cacheKey);
     if (cachedValue !== null) {

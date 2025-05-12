@@ -1,22 +1,5 @@
 import { z } from 'zod';
 
-export type MaybeZodValue<
-  T = z.ZodType | undefined,
-  FB = any,
-> = T extends z.ZodType ? z.infer<T> : FB;
-
-export function isZodType(value: any): value is z.ZodType {
-  return (
-    value instanceof z.ZodType && typeof (value as any)?.parse === 'function'
-  );
-}
-
-export function isZodObject(value: any): value is z.ZodObject<any> {
-  return (
-    value instanceof z.ZodObject && typeof value?.passthrough === 'function'
-  );
-}
-
 export type DeepZodToPrismaSelectMapper<T extends z.ZodTypeAny> =
   T extends z.ZodObject<infer Shape>
     ? {
@@ -52,9 +35,11 @@ function extractInnerType(type: z.ZodTypeAny): z.ZodTypeAny {
 export function zodToPrismaSelect<T extends z.ZodType<any, any>>(
   schema: T,
 ): ZodToPrismaSelectMapper<T> {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-assignment
   const fields = schema._def.shape();
   const result = {};
   for (const key in fields) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     const field = extractInnerType(fields[key]);
     if (
       field._def.typeName === 'ZodArray' &&
@@ -71,5 +56,6 @@ export function zodToPrismaSelect<T extends z.ZodType<any, any>>(
       result[key] = true;
     }
   }
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return result as any;
 }

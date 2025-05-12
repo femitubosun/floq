@@ -32,8 +32,8 @@ export class BaseKeyBuilder {
   /**
    * returns the domain prefix string
    */
-  public getDomainPrefix(): string {
-    return this.domainPrefix;
+  public getDomainPrefix(key?: string): string {
+    return key ? `${this.domainPrefix}:${key}` : this.domainPrefix;
   }
 
   /**
@@ -46,7 +46,7 @@ export class BaseKeyBuilder {
   protected buildKey(...parts: (string | number | null | undefined)[]): string {
     const stringParts = parts
       .filter((part) => part !== null && part !== undefined)
-      .map((part) => part.toString());
+      .map((part) => part?.toString());
     return [this.getVersionedPrefix(), ...stringParts].join(this.separator);
   }
 

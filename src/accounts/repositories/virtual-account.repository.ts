@@ -1,10 +1,3 @@
-import {
-  CreateVirtualAccountDto,
-  VirtualAccountDto,
-  VirtualAccountDtoSchema,
-  VirtualAccountListingInput,
-  VirtualAccountListingOutputDto,
-} from '@/accounts/__defs__/accounts';
 import { Prisma } from '@/infrastructure/prisma/generated';
 import { PrismaService } from '@/infrastructure/prisma/prisma.service';
 import {
@@ -13,6 +6,15 @@ import {
 } from '@/infrastructure/prisma/utils';
 import { zodToPrismaSelect } from '@/infrastructure/prisma/utils/prisma';
 import { Injectable } from '@nestjs/common';
+import {
+  CreateVirtualAccountDto,
+  VirtualAccountDetailOutputDto,
+  VirtualAccountDetailSchema,
+  VirtualAccountDto,
+  VirtualAccountDtoSchema,
+  VirtualAccountListingInput,
+  VirtualAccountListingOutputDto,
+} from '@/accounts/__defs__/accounts.dto';
 
 @Injectable()
 export class VirtualAccountRepository {
@@ -56,6 +58,15 @@ export class VirtualAccountRepository {
         idempotencyKey,
       },
       select: zodToPrismaSelect(VirtualAccountDtoSchema),
+    });
+  }
+
+  getById(id: string): Promise<VirtualAccountDetailOutputDto | null> {
+    return this.#Account.findUnique({
+      where: {
+        id,
+      },
+      select: zodToPrismaSelect(VirtualAccountDetailSchema),
     });
   }
 

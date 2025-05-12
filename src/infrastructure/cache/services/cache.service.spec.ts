@@ -32,7 +32,7 @@ describe('CacheService', () => {
       const resolver = jest.fn();
 
       const result = await cacheService.fetch([1, 'test'], {
-        key: (a, b) => `key-${a}-${b}`,
+        key: `key-a-b`,
         resolver,
       });
 
@@ -45,7 +45,7 @@ describe('CacheService', () => {
       const resolver = jest.fn().mockResolvedValue('new-value');
 
       const result = await cacheService.fetch([], {
-        key: () => 'test-key',
+        key: 'test-key',
         resolver,
         tags: ['tag1'],
         ttlSeconds: 60,
