@@ -2,7 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { VirtualAccountRepository } from '@/accounts/repositories/virtual-account.repository';
 import { CacheService } from '@/infrastructure/cache/services/cache.service';
 import { VirtualAccountsCacheKeys } from '@/accounts/utils';
-import { VirtualAccountDto } from '@/accounts/__defs__/accounts';
+import {
+  VirtualAccountListingInput,
+  VirtualAccountListingOutputDto,
+} from '@/accounts/__defs__/accounts';
 
 @Injectable()
 export class ListVirtualAccountsUseCase {
@@ -11,11 +14,14 @@ export class ListVirtualAccountsUseCase {
     private readonly cacheService: CacheService,
   ) {}
 
-  execute() {
-    return this.cacheService.fetch<[], Array<VirtualAccountDto>>([], {
-      key: () => VirtualAccountsCacheKeys.list(),
-      resolver: async () => {
-        return this.virtualAccountRepository.list();
+  execute(input: VirtualAccountListingInput) {
+    return this.cacheService.fetch<
+      [VirtualAccountListingInput],
+      VirtualAccountListingOutputDto
+    >([input], {
+      key: (f) => VirtualAccountsCacheKeys.list(f),
+      resolver: async (i) => {
+        return this.virtualAccountRepository.list(i);
       },
       tags: [VirtualAccountsCacheKeys.getDomainPrefix()],
     });

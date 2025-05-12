@@ -1,6 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { VirtualAccountRepository } from '@/accounts/repositories/virtual-account.repository';
-import { CreateVirtualAccountInput } from '../__defs__/accounts';
+import {
+  CreateVirtualAccountInput,
+  VirtualAccountListingInput,
+  VirtualAccountListingOutput,
+} from '../__defs__/accounts';
 
 @Injectable()
 export class VirtualAccountService {
@@ -18,7 +22,9 @@ export class VirtualAccountService {
     return this.repo.createAccount(input);
   }
 
-  async list() {
-    return this.repo.list();
+  async list(
+    input: VirtualAccountListingInput,
+  ): Promise<VirtualAccountListingOutput> {
+    return this.repo.list(input);
   }
 }

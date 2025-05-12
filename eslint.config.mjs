@@ -61,8 +61,13 @@ export default tseslint.config(
     files: ['**/*.spec.ts'],
     rules: {
       '@typescript-eslint/unbound-method': 'off',
-      '@typescript-eslint/no-unsafe-assignment': 'off'
-
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+    },
+  },
+  {
+    files: ['src/infrastructure/prisma/utils/*.ts'],
+    rules: {
+      '@typescript-eslint/no-unsafe-member-access': 'off',
     },
   },
 );

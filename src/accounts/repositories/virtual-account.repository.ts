@@ -1,11 +1,18 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaService } from '@/infrastructure/prisma/prisma.service';
 import {
   CreateVirtualAccountDto,
   VirtualAccountDto,
   VirtualAccountDtoSchema,
+  VirtualAccountListingInput,
+  VirtualAccountListingOutputDto,
 } from '@/accounts/__defs__/accounts';
-import { zodToPrismaSelect } from '@/infrastructure/prisma/utils';
+import { Prisma } from '@/infrastructure/prisma/generated';
+import { PrismaService } from '@/infrastructure/prisma/prisma.service';
+import {
+  findManyWithPagination,
+  toPrismaSkipTake,
+} from '@/infrastructure/prisma/utils';
+import { zodToPrismaSelect } from '@/infrastructure/prisma/utils/prisma';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class VirtualAccountRepository {
@@ -14,22 +21,37 @@ export class VirtualAccountRepository {
   async createAccount(
     input: CreateVirtualAccountDto,
   ): Promise<VirtualAccountDto> {
-    return this.#accountDelegate.create({
+    return this.#Account.create({
       data: input,
       select: zodToPrismaSelect(VirtualAccountDtoSchema),
     });
   }
 
-  async list(): Promise<VirtualAccountDto[]> {
-    return this.#accountDelegate.findMany({
+  async list(
+    input: VirtualAccountListingInput,
+  ): Promise<VirtualAccountListingOutputDto> {
+    const findManyArgs: Prisma.VirtualAccountFindManyArgs = {
+      where: {
+        ...(input.filters?.currency && { currency: input.filters.currency }),
+        ...(input.search && {
+          name: { contains: input.search, mode: 'insensitive' },
+        }),
+      },
       select: zodToPrismaSelect(VirtualAccountDtoSchema),
-    });
+    };
+
+    return findManyWithPagination(
+      (args: typeof findManyArgs) => this.#Account.findMany(args),
+      () => this.#Account.count({ where: findManyArgs.where }),
+      toPrismaSkipTake(input.pagination || { page: 1, perPage: 100 }),
+      findManyArgs,
+    );
   }
 
   async findByIdempotencyKey(
     idempotencyKey: string,
   ): Promise<VirtualAccountDto | null> {
-    return this.#accountDelegate.findFirst({
+    return this.#Account.findFirst({
       where: {
         idempotencyKey,
       },
@@ -37,5 +59,5 @@ export class VirtualAccountRepository {
     });
   }
 
-  #accountDelegate = this.prismaService.virtualAccount;
+  #Account = this.prismaService.virtualAccount;
 }

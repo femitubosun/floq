@@ -1,77 +1,62 @@
+import { PaginationInput } from '@/common/utils';
 import { z } from 'zod';
 
-/* eslint-disable */
-
-export type MaybeZodValue<
-  T = z.ZodType | undefined,
-  FB = any,
-> = T extends z.ZodType ? z.infer<T> : FB;
-
-export function isZodType(value: any): value is z.ZodType {
-  return (
-    value instanceof z.ZodType && typeof (value as any)?.parse === 'function'
-  );
+export interface PaginationParams {
+  skip?: number;
+  take?: number;
 }
 
-export function isZodObject(value: any): value is z.ZodObject<any> {
-  return (
-    value instanceof z.ZodObject && typeof value?.passthrough === 'function'
-  );
+export interface PaginatedResult<T> {
+  data: T[];
+  meta: {
+    total: number;
+    totalPages: number;
+    perPage: number;
+    page: number;
+  };
 }
 
-export type DeepZodToPrismaSelectMapper<T extends z.ZodTypeAny> =
-  T extends z.ZodObject<infer Shape>
-    ? {
-        select: {
-          [K in keyof Shape]: DeepZodToPrismaSelectMapper<Shape[K]>;
-        };
-      }
-    : T extends z.ZodArray<infer Item>
-      ? DeepZodToPrismaSelectMapper<Item>
-      : true;
+export const PaginatedResultGenericSchema = <T extends z.ZodType>(schema: T) =>
+  z.object({
+    data: schema,
+    meta: z.object({
+      total: z.number(),
+      totalPages: z.number(),
+      perPage: z.number(),
+      page: z.number(),
+    }),
+  });
 
-export type ZodToPrismaSelectMapper<T extends z.ZodTypeAny> =
-  T extends z.ZodObject<infer Shape>
-    ? {
-        [K in keyof Shape]: DeepZodToPrismaSelectMapper<Shape[K]>;
-      }
-    : T extends z.ZodArray<infer Item>
-      ? DeepZodToPrismaSelectMapper<Item>
-      : true;
+export async function findManyWithPagination<T>(
+  findManyFn: (args: any) => Promise<T[]>,
+  countFn: () => Promise<number>,
+  params: PaginationParams = {},
+  findManyArgs: any = {},
+): Promise<PaginatedResult<T>> {
+  const skip = params.skip || 0;
+  const take = params.take || 10;
 
-function extractInnerType(type: z.ZodTypeAny): z.ZodTypeAny {
-  if (
-    type instanceof z.ZodOptional ||
-    type instanceof z.ZodNullable ||
-    type._def.typeName === 'ZodOptional' ||
-    type._def.typeName === 'ZodNullable'
-  ) {
-    return extractInnerType(type._def.innerType);
-  }
-  return type;
+  const [data, total] = await Promise.all([
+    findManyFn({
+      ...findManyArgs,
+      skip,
+      take,
+    }),
+    countFn(),
+  ]);
+
+  return {
+    data,
+    meta: {
+      total,
+      totalPages: Math.ceil(total / take),
+      perPage: take,
+      page: Math.floor(skip / take) + 1,
+    },
+  };
 }
 
-export function zodToPrismaSelect<T extends z.ZodType<any, any>>(
-  schema: T,
-): ZodToPrismaSelectMapper<T> {
-  const fields = schema._def.shape();
-  const result = {};
-  for (const key in fields) {
-    const field = extractInnerType(fields[key]);
-    if (
-      field._def.typeName === 'ZodArray' &&
-      field._def.type._def.typeName === 'ZodObject'
-    ) {
-      result[key] = {
-        select: zodToPrismaSelect(field._def.type),
-      };
-    } else if (field._def.typeName === 'ZodObject') {
-      result[key] = {
-        select: zodToPrismaSelect(field),
-      };
-    } else {
-      result[key] = true;
-    }
-  }
-  return result as any;
-}
+export const toPrismaSkipTake = (pagination: PaginationInput) => ({
+  skip: (pagination.page - 1) * pagination.perPage,
+  take: pagination.perPage,
+});

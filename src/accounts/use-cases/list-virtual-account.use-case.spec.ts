@@ -3,6 +3,7 @@ import { ListVirtualAccountsUseCase } from '@/accounts/use-cases/list-virtual-ac
 import { VirtualAccountRepository } from '@/accounts/repositories/virtual-account.repository';
 import { CacheService } from '@/infrastructure/cache/services/cache.service';
 import { VirtualAccountsCacheKeys } from '@/accounts/utils';
+import { VirtualAccountListingInput } from '@/accounts/__defs__/accounts';
 
 describe('ListVirtualAccountsUseCase', () => {
   let useCase: ListVirtualAccountsUseCase;
@@ -38,6 +39,8 @@ describe('ListVirtualAccountsUseCase', () => {
       CacheService,
     ) as jest.Mocked<CacheService>;
   });
+
+  const mockInput: VirtualAccountListingInput = {};
 
   const testCases: any[] = [
     {
@@ -102,6 +105,7 @@ describe('ListVirtualAccountsUseCase', () => {
           if (repositoryError) {
             throw repositoryError;
           }
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-return
           return cacheResult || (await options.resolver());
         });
 
@@ -109,14 +113,16 @@ describe('ListVirtualAccountsUseCase', () => {
         virtualAccountRepository.list.mockResolvedValue(repositoryResult);
 
         if (repositoryError) {
-          await expect(useCase.execute()).rejects.toThrow(repositoryError);
+          await expect(useCase.execute(mockInput)).rejects.toThrow(
+            repositoryError,
+          );
         } else {
-          const result = await useCase.execute();
+          const result = await useCase.execute(mockInput);
           expect(result).toEqual(expectedResult);
         }
 
         expect(cacheService.fetch).toHaveBeenCalledWith(
-          [],
+          [mockInput],
           cacheFetchCalledWith,
         );
         if (!repositoryError && !cacheResult) {

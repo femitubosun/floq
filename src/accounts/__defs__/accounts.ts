@@ -1,7 +1,13 @@
-import { VirtualAccountSchema } from '@/infrastructure/prisma/__defs__';
+import {
+  CurrencySchema,
+  VirtualAccountSchema,
+} from '@/infrastructure/prisma/__defs__';
 import { z } from 'zod';
 import { createZodDto } from 'nestjs-zod';
+import { PaginationInputSchema } from '@/common/utils';
+import { PaginatedResultGenericSchema } from '@/infrastructure/prisma/utils';
 
+// Create Virtual Account Dto
 export const CreateVirtualAccountSchema = VirtualAccountSchema.pick({
   name: true,
   currency: true,
@@ -16,6 +22,7 @@ export class CreateVirtualAccountDto extends createZodDto(
   CreateVirtualAccountSchema,
 ) {}
 
+// Update Virtual Account Dto
 export const UpdateVirtualAccountSchema = CreateVirtualAccountSchema.partial();
 
 export type UpdateVirtualAccountSchema = z.infer<
@@ -26,6 +33,7 @@ export class UpdateVirtualAccountDto extends createZodDto(
   UpdateVirtualAccountSchema,
 ) {}
 
+// Virtual Account Dto
 export const VirtualAccountDtoSchema = VirtualAccountSchema.omit({
   deletedAt: true,
   idempotencyKey: true,
@@ -38,4 +46,34 @@ export class VirtualAccountDto extends createZodDto(
     deletedAt: true,
     idempotencyKey: true,
   }),
+) {}
+
+//  Virtual Account Listing
+const VirtualAccountFilterSchema = z.object({
+  currency: CurrencySchema.optional(),
+});
+
+export const VirtualAccountListingInputSchema = z.object({
+  pagination: PaginationInputSchema.optional(),
+  search: z.string().optional(),
+  filters: VirtualAccountFilterSchema.optional(),
+});
+
+export type VirtualAccountListingInput = z.infer<
+  typeof VirtualAccountListingInputSchema
+>;
+
+export class VirtualAccountListingInputDto extends createZodDto(
+  VirtualAccountListingInputSchema,
+) {}
+
+export const VirtualAccountListingOutput = PaginatedResultGenericSchema(
+  VirtualAccountDtoSchema.array(),
+);
+export type VirtualAccountListingOutput = z.infer<
+  typeof VirtualAccountListingOutput
+>;
+
+export class VirtualAccountListingOutputDto extends createZodDto(
+  VirtualAccountListingOutput,
 ) {}

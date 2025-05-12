@@ -1,12 +1,14 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
 import {
   CreateVirtualAccountDto,
   VirtualAccountDto,
+  VirtualAccountListingInputDto,
+  VirtualAccountListingOutputDto,
 } from '@/accounts/__defs__/accounts';
-import { ZodSerializerDto } from 'nestjs-zod';
-import { ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
 import { CreateVirtualAccountUseCase } from '@/accounts/use-cases/create-virtual-account.use-case';
 import { ListVirtualAccountsUseCase } from '@/accounts/use-cases/list-virtual-accounts.use-case';
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import { ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
+import { ZodSerializerDto } from 'nestjs-zod';
 
 @Controller('accounts')
 export class AccountsController {
@@ -24,32 +26,14 @@ export class AccountsController {
     return this.createAccountUseCase.execute(body);
   }
 
-  @Get()
-  @ZodSerializerDto(VirtualAccountDto)
+  @Post('list')
+  @ZodSerializerDto(VirtualAccountListingOutputDto)
   @ApiOkResponse({
     description: 'A list of virtual accounts.',
-    type: VirtualAccountDto,
-    isArray: true,
+    type: VirtualAccountListingOutputDto,
   })
-  async listAccounts() {
-    return this.listAccountUseCase.execute();
+  @HttpCode(HttpStatus.OK)
+  async listAccounts(@Body() body: VirtualAccountListingInputDto) {
+    return this.listAccountUseCase.execute(body);
   }
-
-  // async getAccounts() {
-  //   const userId = 'sss';
-  //   const filters = {};
-  //
-  //   // const data = await this.cacheService.fetch<
-  //   //   [string, Record<any, any>],
-  //   //   Array<number>
-  //   // >([userId, filters], {
-  //   //   key: (uId: string, f: Record<any, any>) =>
-  //   //     AccountsCacheKeys.userList(uId, f),
-  //   //   resolver: async (uid, f) => {
-  //   //     return await this.transactionRepository.findByUser(uid, f);
-  //   //   },
-  //   //   tags: ['transactions', `transactions_list_user_${userId}`],
-  //   //   ttlSeconds: 200,
-  //   // });
-  // }
 }
