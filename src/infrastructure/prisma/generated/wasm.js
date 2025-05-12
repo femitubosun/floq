@@ -139,7 +139,8 @@ exports.Prisma.VirtualAccountScalarFieldEnum = {
   currency: 'currency',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  deletedAt: 'deletedAt'
+  deletedAt: 'deletedAt',
+  idempotencyKey: 'idempotencyKey'
 };
 
 exports.Prisma.TransactionScalarFieldEnum = {

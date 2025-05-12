@@ -1,28 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import { VirtualAccountRepository } from '@/accounts/repositories/virtual-account.repository';
-import { CacheService } from '@/infrastructure/cache/services/cache.service';
-import { CreateVirtualAccountDto } from '@/accounts/__defs__/accounts';
-import { VirtualAccount } from '@/infrastructure/prisma/__defs__';
-import { VirtualAccountsCacheKeys } from '@/accounts/utils';
+import { CreateVirtualAccountInput } from '../__defs__/accounts';
 
 @Injectable()
 export class VirtualAccountService {
-  constructor(
-    private readonly virtualAccountRepository: VirtualAccountRepository,
-    private readonly cacheService: CacheService,
-  ) {}
+  constructor(private readonly repo: VirtualAccountRepository) {}
 
-  async create(input: CreateVirtualAccountDto) {
-    const data = await this.virtualAccountRepository.createAccount(input);
+  async create(input: CreateVirtualAccountInput) {
+    const existingAccount = await this.repo.findByIdempotencyKey(
+      input.idempotencyKey,
+    );
 
-    await this.cacheService.invalidateByTag('virtual_accounts');
+    if (existingAccount) {
+      return existingAccount;
+    }
+
+    return this.repo.createAccount(input);
   }
 
   async list() {
-    return await this.cacheService.fetch<[], VirtualAccount[]>([], {
-      key: () => VirtualAccountsCacheKeys.list(),
-      resolver: () => this.virtualAccountRepository.list(),
-      tags: ['virtual_accounts'],
-    });
+    return this.repo.list();
   }
 }

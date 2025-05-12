@@ -21,5 +21,15 @@ export class VirtualAccountRepository {
     return this.#accountDelegate.findMany();
   }
 
+  async findByIdempotencyKey(
+    idempotencyKey: string,
+  ): Promise<VirtualAccountDto | null> {
+    return this.#accountDelegate.findFirst({
+      where: {
+        idempotencyKey,
+      },
+    });
+  }
+
   #accountDelegate = this.prismaService.virtualAccount;
 }

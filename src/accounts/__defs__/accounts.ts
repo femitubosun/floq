@@ -5,6 +5,7 @@ import { createZodDto } from 'nestjs-zod';
 export const CreateVirtualAccountSchema = VirtualAccountSchema.pick({
   name: true,
   currency: true,
+  idempotencyKey: true,
 });
 
 export type CreateVirtualAccountInput = z.infer<

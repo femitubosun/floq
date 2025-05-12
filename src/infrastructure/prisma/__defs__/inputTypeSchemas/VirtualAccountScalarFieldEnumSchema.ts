@@ -7,6 +7,7 @@ export const VirtualAccountScalarFieldEnumSchema = z.enum([
   'createdAt',
   'updatedAt',
   'deletedAt',
+  'idempotencyKey',
 ]);
 
 export default VirtualAccountScalarFieldEnumSchema;

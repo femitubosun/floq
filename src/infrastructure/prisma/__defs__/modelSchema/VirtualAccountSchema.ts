@@ -12,6 +12,7 @@ export const VirtualAccountSchema = z.object({
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date(),
   deletedAt: z.coerce.date().nullish(),
+  idempotencyKey: z.string(),
 });
 
 export type VirtualAccount = z.infer<typeof VirtualAccountSchema>;

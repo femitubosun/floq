@@ -4200,6 +4200,7 @@ export namespace Prisma {
     createdAt: Date | null;
     updatedAt: Date | null;
     deletedAt: Date | null;
+    idempotencyKey: string | null;
   };
 
   export type VirtualAccountMaxAggregateOutputType = {
@@ -4209,6 +4210,7 @@ export namespace Prisma {
     createdAt: Date | null;
     updatedAt: Date | null;
     deletedAt: Date | null;
+    idempotencyKey: string | null;
   };
 
   export type VirtualAccountCountAggregateOutputType = {
@@ -4218,6 +4220,7 @@ export namespace Prisma {
     createdAt: number;
     updatedAt: number;
     deletedAt: number;
+    idempotencyKey: number;
     _all: number;
   };
 
@@ -4228,6 +4231,7 @@ export namespace Prisma {
     createdAt?: true;
     updatedAt?: true;
     deletedAt?: true;
+    idempotencyKey?: true;
   };
 
   export type VirtualAccountMaxAggregateInputType = {
@@ -4237,6 +4241,7 @@ export namespace Prisma {
     createdAt?: true;
     updatedAt?: true;
     deletedAt?: true;
+    idempotencyKey?: true;
   };
 
   export type VirtualAccountCountAggregateInputType = {
@@ -4246,6 +4251,7 @@ export namespace Prisma {
     createdAt?: true;
     updatedAt?: true;
     deletedAt?: true;
+    idempotencyKey?: true;
     _all?: true;
   };
 
@@ -4335,6 +4341,7 @@ export namespace Prisma {
     createdAt: Date;
     updatedAt: Date;
     deletedAt: Date | null;
+    idempotencyKey: string;
     _count: VirtualAccountCountAggregateOutputType | null;
     _min: VirtualAccountMinAggregateOutputType | null;
     _max: VirtualAccountMaxAggregateOutputType | null;
@@ -4364,6 +4371,7 @@ export namespace Prisma {
       createdAt?: boolean;
       updatedAt?: boolean;
       deletedAt?: boolean;
+      idempotencyKey?: boolean;
       ledgerEntries?: boolean | VirtualAccount$ledgerEntriesArgs<ExtArgs>;
       _count?: boolean | VirtualAccountCountOutputTypeDefaultArgs<ExtArgs>;
     },
@@ -4380,6 +4388,7 @@ export namespace Prisma {
       createdAt?: boolean;
       updatedAt?: boolean;
       deletedAt?: boolean;
+      idempotencyKey?: boolean;
     },
     ExtArgs['result']['virtualAccount']
   >;
@@ -4394,6 +4403,7 @@ export namespace Prisma {
       createdAt?: boolean;
       updatedAt?: boolean;
       deletedAt?: boolean;
+      idempotencyKey?: boolean;
     },
     ExtArgs['result']['virtualAccount']
   >;
@@ -4405,12 +4415,19 @@ export namespace Prisma {
     createdAt?: boolean;
     updatedAt?: boolean;
     deletedAt?: boolean;
+    idempotencyKey?: boolean;
   };
 
   export type VirtualAccountOmit<
     ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
   > = $Extensions.GetOmit<
-    'id' | 'name' | 'currency' | 'createdAt' | 'updatedAt' | 'deletedAt',
+    | 'id'
+    | 'name'
+    | 'currency'
+    | 'createdAt'
+    | 'updatedAt'
+    | 'deletedAt'
+    | 'idempotencyKey',
     ExtArgs['result']['virtualAccount']
   >;
   export type VirtualAccountInclude<
@@ -4441,6 +4458,7 @@ export namespace Prisma {
         createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
+        idempotencyKey: string;
       },
       ExtArgs['result']['virtualAccount']
     >;
@@ -5048,6 +5066,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<'VirtualAccount', 'DateTime'>;
     readonly updatedAt: FieldRef<'VirtualAccount', 'DateTime'>;
     readonly deletedAt: FieldRef<'VirtualAccount', 'DateTime'>;
+    readonly idempotencyKey: FieldRef<'VirtualAccount', 'String'>;
   }
 
   // Custom InputTypes
@@ -8480,6 +8499,7 @@ export namespace Prisma {
     createdAt: 'createdAt';
     updatedAt: 'updatedAt';
     deletedAt: 'deletedAt';
+    idempotencyKey: 'idempotencyKey';
   };
 
   export type VirtualAccountScalarFieldEnum =
@@ -8877,6 +8897,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<'VirtualAccount'> | Date | string;
     updatedAt?: DateTimeFilter<'VirtualAccount'> | Date | string;
     deletedAt?: DateTimeNullableFilter<'VirtualAccount'> | Date | string | null;
+    idempotencyKey?: StringFilter<'VirtualAccount'> | string;
     ledgerEntries?: LedgerEntryListRelationFilter;
   };
 
@@ -8887,12 +8908,14 @@ export namespace Prisma {
     createdAt?: SortOrder;
     updatedAt?: SortOrder;
     deletedAt?: SortOrderInput | SortOrder;
+    idempotencyKey?: SortOrder;
     ledgerEntries?: LedgerEntryOrderByRelationAggregateInput;
   };
 
   export type VirtualAccountWhereUniqueInput = Prisma.AtLeast<
     {
       id?: string;
+      idempotencyKey?: string;
       AND?: VirtualAccountWhereInput | VirtualAccountWhereInput[];
       OR?: VirtualAccountWhereInput[];
       NOT?: VirtualAccountWhereInput | VirtualAccountWhereInput[];
@@ -8907,7 +8930,7 @@ export namespace Prisma {
         | null;
       ledgerEntries?: LedgerEntryListRelationFilter;
     },
-    'id'
+    'id' | 'idempotencyKey'
   >;
 
   export type VirtualAccountOrderByWithAggregationInput = {
@@ -8917,6 +8940,7 @@ export namespace Prisma {
     createdAt?: SortOrder;
     updatedAt?: SortOrder;
     deletedAt?: SortOrderInput | SortOrder;
+    idempotencyKey?: SortOrder;
     _count?: VirtualAccountCountOrderByAggregateInput;
     _max?: VirtualAccountMaxOrderByAggregateInput;
     _min?: VirtualAccountMinOrderByAggregateInput;
@@ -8942,6 +8966,7 @@ export namespace Prisma {
       | Date
       | string
       | null;
+    idempotencyKey?: StringWithAggregatesFilter<'VirtualAccount'> | string;
   };
 
   export type TransactionWhereInput = {
@@ -9337,6 +9362,7 @@ export namespace Prisma {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
+    idempotencyKey: string;
     ledgerEntries?: LedgerEntryCreateNestedManyWithoutAccountInput;
   };
 
@@ -9347,6 +9373,7 @@ export namespace Prisma {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
+    idempotencyKey: string;
     ledgerEntries?: LedgerEntryUncheckedCreateNestedManyWithoutAccountInput;
   };
 
@@ -9361,6 +9388,7 @@ export namespace Prisma {
       | Date
       | string
       | null;
+    idempotencyKey?: StringFieldUpdateOperationsInput | string;
     ledgerEntries?: LedgerEntryUpdateManyWithoutAccountNestedInput;
   };
 
@@ -9375,6 +9403,7 @@ export namespace Prisma {
       | Date
       | string
       | null;
+    idempotencyKey?: StringFieldUpdateOperationsInput | string;
     ledgerEntries?: LedgerEntryUncheckedUpdateManyWithoutAccountNestedInput;
   };
 
@@ -9385,6 +9414,7 @@ export namespace Prisma {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
+    idempotencyKey: string;
   };
 
   export type VirtualAccountUpdateManyMutationInput = {
@@ -9398,6 +9428,7 @@ export namespace Prisma {
       | Date
       | string
       | null;
+    idempotencyKey?: StringFieldUpdateOperationsInput | string;
   };
 
   export type VirtualAccountUncheckedUpdateManyInput = {
@@ -9411,6 +9442,7 @@ export namespace Prisma {
       | Date
       | string
       | null;
+    idempotencyKey?: StringFieldUpdateOperationsInput | string;
   };
 
   export type TransactionCreateInput = {
@@ -9969,6 +10001,7 @@ export namespace Prisma {
     createdAt?: SortOrder;
     updatedAt?: SortOrder;
     deletedAt?: SortOrder;
+    idempotencyKey?: SortOrder;
   };
 
   export type VirtualAccountMaxOrderByAggregateInput = {
@@ -9978,6 +10011,7 @@ export namespace Prisma {
     createdAt?: SortOrder;
     updatedAt?: SortOrder;
     deletedAt?: SortOrder;
+    idempotencyKey?: SortOrder;
   };
 
   export type VirtualAccountMinOrderByAggregateInput = {
@@ -9987,6 +10021,7 @@ export namespace Prisma {
     createdAt?: SortOrder;
     updatedAt?: SortOrder;
     deletedAt?: SortOrder;
+    idempotencyKey?: SortOrder;
   };
 
   export type EnumCurrencyWithAggregatesFilter<$PrismaModel = never> = {
@@ -12132,6 +12167,7 @@ export namespace Prisma {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
+    idempotencyKey: string;
   };
 
   export type VirtualAccountUncheckedCreateWithoutLedgerEntriesInput = {
@@ -12141,6 +12177,7 @@ export namespace Prisma {
     createdAt?: Date | string;
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
+    idempotencyKey: string;
   };
 
   export type VirtualAccountCreateOrConnectWithoutLedgerEntriesInput = {
@@ -12260,6 +12297,7 @@ export namespace Prisma {
       | Date
       | string
       | null;
+    idempotencyKey?: StringFieldUpdateOperationsInput | string;
   };
 
   export type VirtualAccountUncheckedUpdateWithoutLedgerEntriesInput = {
@@ -12273,6 +12311,7 @@ export namespace Prisma {
       | Date
       | string
       | null;
+    idempotencyKey?: StringFieldUpdateOperationsInput | string;
   };
 
   export type OtpTokenCreateManyUserInput = {

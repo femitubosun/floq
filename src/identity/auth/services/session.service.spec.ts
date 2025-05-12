@@ -46,7 +46,6 @@ describe('SessionService', () => {
     cacheService = module.get(CacheService);
     configService = module.get(ConfigService);
 
-    // Default mock for configService.get('SESSION_TTL')
     configService.get.mockImplementation((key: string) => {
       if (key === 'SESSION_TTL') {
         return mockSessionTTL;

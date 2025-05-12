@@ -68,9 +68,10 @@ model VirtualAccount {
 
   ledgerEntries LedgerEntry[]
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  deletedAt      DateTime?
+  idempotencyKey String    @unique
 }
 
 enum TransactionType {
