@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { CacheService } from '@/infrastructure/cache/services/cache.service';
-import { CreateVirtualAccountDto } from '@/accounts/__defs__/accounts.dto';
-import { VirtualAccountsCacheKeys } from '@/accounts/utils';
-import { VirtualAccountService } from '@/accounts/services/virtual-account.service';
+import { CreateVirtualAccountDto } from '@/ledger/__defs__/accounts.dto';
+import { VirtualAccountsCacheKeys } from '@/ledger/utils';
+import { VirtualAccountService } from '@/ledger/services/virtual-account.service';
 
 @Injectable()
 export class CreateVirtualAccountUseCase {

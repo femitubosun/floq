@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { GetVirtualAccountByIdUseCase } from './get-virtual-account-by-id.use-case';
 import { CacheService } from '@/infrastructure/cache/services/cache.service';
-import { VirtualAccountService } from '@/accounts/services/virtual-account.service';
-import { VirtualAccountsCacheKeys } from '@/accounts/utils';
+import { VirtualAccountService } from '@/ledger/services/virtual-account.service';
+import { VirtualAccountsCacheKeys } from '@/ledger/utils';
 import { NotFoundException } from '@nestjs/common';
 
 describe('GetVirtualAccountByIdUseCase', () => {

@@ -1,11 +1,11 @@
-import { VirtualAccountService } from '@/accounts/services/virtual-account.service';
-import { VirtualAccountRepository } from '@/accounts/repositories/virtual-account.repository';
+import { VirtualAccountService } from '@/ledger/services/virtual-account.service';
+import { VirtualAccountRepository } from '@/ledger/repositories/virtual-account.repository';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Mocked } from 'jest-mock';
 import {
   VirtualAccountDetailOutputDto,
   VirtualAccountDto,
-} from '@/accounts/__defs__/accounts.dto';
+} from '@/ledger/__defs__/accounts.dto';
 
 describe('VirtualAccountService', () => {
   let service: VirtualAccountService;

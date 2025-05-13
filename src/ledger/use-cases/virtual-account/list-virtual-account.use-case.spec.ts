@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ListVirtualAccountsUseCase } from '@/accounts/use-cases/list-virtual-accounts.use-case';
-import { VirtualAccountRepository } from '@/accounts/repositories/virtual-account.repository';
+import { ListVirtualAccountsUseCase } from '@/ledger/use-cases/virtual-account/list-virtual-accounts.use-case';
+import { VirtualAccountRepository } from '@/ledger/repositories/virtual-account.repository';
 import { CacheService } from '@/infrastructure/cache/services/cache.service';
-import { VirtualAccountsCacheKeys } from '@/accounts/utils';
-import { VirtualAccountListingInput } from '@/accounts/__defs__/accounts.dto';
+import { VirtualAccountsCacheKeys } from '@/ledger/utils';
+import { VirtualAccountListingInput } from '@/ledger/__defs__/accounts.dto';
 
 describe('ListVirtualAccountsUseCase', () => {
   let useCase: ListVirtualAccountsUseCase;

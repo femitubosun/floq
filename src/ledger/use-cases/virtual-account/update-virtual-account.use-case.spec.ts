@@ -5,9 +5,9 @@ import { Mocked } from 'jest-mock';
 import {
   UpdateVirtualAccountDto,
   VirtualAccountDetailOutputDto,
-} from '../__defs__/accounts.dto';
-import { VirtualAccountService } from '../services/virtual-account.service';
-import { VirtualAccountsCacheKeys } from '../utils';
+} from '../../__defs__/accounts.dto';
+import { VirtualAccountService } from '../../services/virtual-account.service';
+import { VirtualAccountsCacheKeys } from '../../utils';
 import { UpdateVirtualAccountUseCase } from './update-virtual-account.use-case';
 
 describe('UpdateVirtualAccountUseCase', () => {

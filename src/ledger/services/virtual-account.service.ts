@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { VirtualAccountRepository } from '@/accounts/repositories/virtual-account.repository';
+import { VirtualAccountRepository } from '@/ledger/repositories/virtual-account.repository';
 import {
   CreateVirtualAccountInput,
   UpdateVirtualAccountDto,

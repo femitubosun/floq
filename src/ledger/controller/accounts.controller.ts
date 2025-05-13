@@ -4,9 +4,9 @@ import {
   VirtualAccountDto,
   VirtualAccountListingInputDto,
   VirtualAccountListingOutputDto,
-} from '@/accounts/__defs__/accounts.dto';
-import { CreateVirtualAccountUseCase } from '@/accounts/use-cases/create-virtual-account.use-case';
-import { ListVirtualAccountsUseCase } from '@/accounts/use-cases/list-virtual-accounts.use-case';
+} from '@/ledger/__defs__/accounts.dto';
+import { CreateVirtualAccountUseCase } from '@/ledger/use-cases/virtual-account/create-virtual-account.use-case';
+import { ListVirtualAccountsUseCase } from '@/ledger/use-cases/virtual-account/list-virtual-accounts.use-case';
 import {
   Body,
   Controller,
@@ -19,8 +19,8 @@ import {
 } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOkResponse } from '@nestjs/swagger';
 import { ZodSerializerDto } from 'nestjs-zod';
-import { GetVirtualAccountByIdUseCase } from '../use-cases/get-virtual-account-by-id.use-case';
-import { UpdateVirtualAccountUseCase } from '../use-cases/update-virtual-account.use-case';
+import { GetVirtualAccountByIdUseCase } from '../use-cases/virtual-account/get-virtual-account-by-id.use-case';
+import { UpdateVirtualAccountUseCase } from '../use-cases/virtual-account/update-virtual-account.use-case';
 
 @Controller('accounts')
 export class AccountsController {

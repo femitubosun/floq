@@ -15,7 +15,7 @@ import {
   VirtualAccountDtoSchema,
   VirtualAccountListingInput,
   VirtualAccountListingOutputDto,
-} from '@/accounts/__defs__/accounts.dto';
+} from '@/ledger/__defs__/accounts.dto';
 
 @Injectable()
 export class VirtualAccountRepository {

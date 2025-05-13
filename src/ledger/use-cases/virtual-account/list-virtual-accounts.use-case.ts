@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { VirtualAccountRepository } from '@/accounts/repositories/virtual-account.repository';
+import { VirtualAccountRepository } from '@/ledger/repositories/virtual-account.repository';
 import { CacheService } from '@/infrastructure/cache/services/cache.service';
-import { VirtualAccountsCacheKeys } from '@/accounts/utils';
+import { VirtualAccountsCacheKeys } from '@/ledger/utils';
 import {
   VirtualAccountListingInput,
   VirtualAccountListingOutputDto,
-} from '@/accounts/__defs__/accounts.dto';
+} from '@/ledger/__defs__/accounts.dto';
 
 @Injectable()
 export class ListVirtualAccountsUseCase {

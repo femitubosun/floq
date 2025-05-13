@@ -9,7 +9,7 @@ import {
   VirtualAccountDto,
   VirtualAccountDetailOutputDto,
   VirtualAccountListingOutputDto,
-} from '@/accounts/__defs__/accounts.dto';
+} from '@/ledger/__defs__/accounts.dto';
 import { Prisma } from '@/infrastructure/prisma/generated';
 import { zodToPrismaSelect } from '@/infrastructure/prisma/utils/prisma';
 import { toPrismaSkipTake } from '@/infrastructure/prisma/utils';

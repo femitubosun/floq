@@ -8,23 +8,16 @@ import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { ZodSerializerInterceptor, ZodValidationPipe } from 'nestjs-zod';
 import { ConfigModule } from './config/config.module';
 import { CommonModule } from './common/common.module';
-import { AccountsModule } from './accounts/accounts.module';
+import { LedgerModule } from './ledger/ledger.module';
 
 @Module({
   imports: [
     InfrastructureModule,
     ConfigModule,
-    // RedisModule.forRootAsync({
-    //   useFactory: (configService: ConfigService) => ({
-    //     url: configService.get<string>('CACHE_URL')!,
-    //   }),
-    //   inject: [ConfigService],
-    // }),
-
     IdentityModule,
     ConfigModule,
     CommonModule,
-    AccountsModule,
+    LedgerModule,
   ],
   controllers: [AppController],
   providers: [
