@@ -41,6 +41,7 @@
     "@prisma/client": "^6.6.0",
     "argon2": "^0.43.0",
     "bullmq": "^5.52.2",
+    "decimal.js": "^10.5.0",
     "glob": "^11.0.2",
     "handlebars": "^4.7.8",
     "jsonwebtoken": "^9.0.2",

@@ -4,6 +4,8 @@ import { CacheService } from '@/infrastructure/cache/services/cache.service';
 import { VirtualAccountService } from '@/ledger/services/virtual-account.service';
 import { VirtualAccountsCacheKeys } from '@/ledger/utils';
 import { NotFoundException } from '@nestjs/common';
+import { Money } from '@/common/objects/money';
+import { FloqDecimal } from '@/common/__defs__';
 
 describe('GetVirtualAccountByIdUseCase', () => {
   let useCase: GetVirtualAccountByIdUseCase;
@@ -14,6 +16,7 @@ describe('GetVirtualAccountByIdUseCase', () => {
     id: 'va-123',
     name: 'Test Account',
     currency: 'USD' as const,
+    balance: new Money(new FloqDecimal(0), 'USD').amount,
     createdAt: new Date(),
     updatedAt: new Date(),
     ledgerEntries: [],

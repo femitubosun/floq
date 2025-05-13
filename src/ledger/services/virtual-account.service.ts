@@ -7,6 +7,8 @@ import {
   VirtualAccountListingInput,
   VirtualAccountListingOutput,
 } from '../__defs__/accounts.dto';
+import { Prisma } from '@/infrastructure/prisma/generated';
+import { Money } from '@/common/objects/money';
 
 @Injectable()
 export class VirtualAccountService {
@@ -43,5 +45,12 @@ export class VirtualAccountService {
       throw new Error('Virtual Account not found');
     }
     return this.repo.update(id, data);
+  }
+
+  async updateBalance(
+    input: { id: string; amount: Money },
+    tx?: Prisma.TransactionClient,
+  ) {
+    return this.repo.incrementBalance(input.id, input.amount.amount, tx);
   }
 }

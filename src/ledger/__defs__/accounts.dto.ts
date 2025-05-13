@@ -13,6 +13,7 @@ export const CreateVirtualAccountSchema = VirtualAccountSchema.pick({
   name: true,
   currency: true,
   idempotencyKey: true,
+  balance: true,
 });
 
 export type CreateVirtualAccountInput = z.infer<
@@ -24,7 +25,9 @@ export class CreateVirtualAccountDto extends createZodDto(
 ) {}
 
 // Update Virtual Account Dto
-export const UpdateVirtualAccountSchema = CreateVirtualAccountSchema.partial();
+export const UpdateVirtualAccountSchema = CreateVirtualAccountSchema.pick({
+  name: true,
+});
 
 export type UpdateVirtualAccountSchema = z.infer<
   typeof UpdateVirtualAccountSchema
@@ -42,12 +45,7 @@ export const VirtualAccountDtoSchema = VirtualAccountSchema.omit({
 
 export type VirtualAccountDtoSchema = z.infer<typeof VirtualAccountDtoSchema>;
 
-export class VirtualAccountDto extends createZodDto(
-  VirtualAccountSchema.omit({
-    deletedAt: true,
-    idempotencyKey: true,
-  }),
-) {}
+export class VirtualAccountDto extends createZodDto(VirtualAccountDtoSchema) {}
 
 //  Virtual Account Listing
 const VirtualAccountFilterSchema = z.object({

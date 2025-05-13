@@ -4189,14 +4189,25 @@ export namespace Prisma {
 
   export type AggregateVirtualAccount = {
     _count: VirtualAccountCountAggregateOutputType | null;
+    _avg: VirtualAccountAvgAggregateOutputType | null;
+    _sum: VirtualAccountSumAggregateOutputType | null;
     _min: VirtualAccountMinAggregateOutputType | null;
     _max: VirtualAccountMaxAggregateOutputType | null;
+  };
+
+  export type VirtualAccountAvgAggregateOutputType = {
+    balance: Decimal | null;
+  };
+
+  export type VirtualAccountSumAggregateOutputType = {
+    balance: Decimal | null;
   };
 
   export type VirtualAccountMinAggregateOutputType = {
     id: string | null;
     name: string | null;
     currency: $Enums.Currency | null;
+    balance: Decimal | null;
     createdAt: Date | null;
     updatedAt: Date | null;
     deletedAt: Date | null;
@@ -4207,6 +4218,7 @@ export namespace Prisma {
     id: string | null;
     name: string | null;
     currency: $Enums.Currency | null;
+    balance: Decimal | null;
     createdAt: Date | null;
     updatedAt: Date | null;
     deletedAt: Date | null;
@@ -4217,6 +4229,7 @@ export namespace Prisma {
     id: number;
     name: number;
     currency: number;
+    balance: number;
     createdAt: number;
     updatedAt: number;
     deletedAt: number;
@@ -4224,10 +4237,19 @@ export namespace Prisma {
     _all: number;
   };
 
+  export type VirtualAccountAvgAggregateInputType = {
+    balance?: true;
+  };
+
+  export type VirtualAccountSumAggregateInputType = {
+    balance?: true;
+  };
+
   export type VirtualAccountMinAggregateInputType = {
     id?: true;
     name?: true;
     currency?: true;
+    balance?: true;
     createdAt?: true;
     updatedAt?: true;
     deletedAt?: true;
@@ -4238,6 +4260,7 @@ export namespace Prisma {
     id?: true;
     name?: true;
     currency?: true;
+    balance?: true;
     createdAt?: true;
     updatedAt?: true;
     deletedAt?: true;
@@ -4248,6 +4271,7 @@ export namespace Prisma {
     id?: true;
     name?: true;
     currency?: true;
+    balance?: true;
     createdAt?: true;
     updatedAt?: true;
     deletedAt?: true;
@@ -4297,6 +4321,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      *
+     * Select which fields to average
+     **/
+    _avg?: VirtualAccountAvgAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to sum
+     **/
+    _sum?: VirtualAccountSumAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
      * Select which fields to find the minimum value
      **/
     _min?: VirtualAccountMinAggregateInputType;
@@ -4330,6 +4366,8 @@ export namespace Prisma {
     take?: number;
     skip?: number;
     _count?: VirtualAccountCountAggregateInputType | true;
+    _avg?: VirtualAccountAvgAggregateInputType;
+    _sum?: VirtualAccountSumAggregateInputType;
     _min?: VirtualAccountMinAggregateInputType;
     _max?: VirtualAccountMaxAggregateInputType;
   };
@@ -4338,11 +4376,14 @@ export namespace Prisma {
     id: string;
     name: string;
     currency: $Enums.Currency;
+    balance: Decimal;
     createdAt: Date;
     updatedAt: Date;
     deletedAt: Date | null;
     idempotencyKey: string;
     _count: VirtualAccountCountAggregateOutputType | null;
+    _avg: VirtualAccountAvgAggregateOutputType | null;
+    _sum: VirtualAccountSumAggregateOutputType | null;
     _min: VirtualAccountMinAggregateOutputType | null;
     _max: VirtualAccountMaxAggregateOutputType | null;
   };
@@ -4368,6 +4409,7 @@ export namespace Prisma {
       id?: boolean;
       name?: boolean;
       currency?: boolean;
+      balance?: boolean;
       createdAt?: boolean;
       updatedAt?: boolean;
       deletedAt?: boolean;
@@ -4385,6 +4427,7 @@ export namespace Prisma {
       id?: boolean;
       name?: boolean;
       currency?: boolean;
+      balance?: boolean;
       createdAt?: boolean;
       updatedAt?: boolean;
       deletedAt?: boolean;
@@ -4400,6 +4443,7 @@ export namespace Prisma {
       id?: boolean;
       name?: boolean;
       currency?: boolean;
+      balance?: boolean;
       createdAt?: boolean;
       updatedAt?: boolean;
       deletedAt?: boolean;
@@ -4412,6 +4456,7 @@ export namespace Prisma {
     id?: boolean;
     name?: boolean;
     currency?: boolean;
+    balance?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
     deletedAt?: boolean;
@@ -4424,6 +4469,7 @@ export namespace Prisma {
     | 'id'
     | 'name'
     | 'currency'
+    | 'balance'
     | 'createdAt'
     | 'updatedAt'
     | 'deletedAt'
@@ -4455,6 +4501,7 @@ export namespace Prisma {
         id: string;
         name: string;
         currency: $Enums.Currency;
+        balance: Prisma.Decimal;
         createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
@@ -5063,6 +5110,7 @@ export namespace Prisma {
     readonly id: FieldRef<'VirtualAccount', 'String'>;
     readonly name: FieldRef<'VirtualAccount', 'String'>;
     readonly currency: FieldRef<'VirtualAccount', 'Currency'>;
+    readonly balance: FieldRef<'VirtualAccount', 'Decimal'>;
     readonly createdAt: FieldRef<'VirtualAccount', 'DateTime'>;
     readonly updatedAt: FieldRef<'VirtualAccount', 'DateTime'>;
     readonly deletedAt: FieldRef<'VirtualAccount', 'DateTime'>;
@@ -8496,6 +8544,7 @@ export namespace Prisma {
     id: 'id';
     name: 'name';
     currency: 'currency';
+    balance: 'balance';
     createdAt: 'createdAt';
     updatedAt: 'updatedAt';
     deletedAt: 'deletedAt';
@@ -8653,6 +8702,22 @@ export namespace Prisma {
   >;
 
   /**
+   * Reference to a field of type 'Decimal'
+   */
+  export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<
+    $PrismaModel,
+    'Decimal'
+  >;
+
+  /**
+   * Reference to a field of type 'Decimal[]'
+   */
+  export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<
+    $PrismaModel,
+    'Decimal[]'
+  >;
+
+  /**
    * Reference to a field of type 'TransactionType'
    */
   export type EnumTransactionTypeFieldRefInput<$PrismaModel> =
@@ -8704,22 +8769,6 @@ export namespace Prisma {
   export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<
     $PrismaModel,
     'QueryMode'
-  >;
-
-  /**
-   * Reference to a field of type 'Decimal'
-   */
-  export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<
-    $PrismaModel,
-    'Decimal'
-  >;
-
-  /**
-   * Reference to a field of type 'Decimal[]'
-   */
-  export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<
-    $PrismaModel,
-    'Decimal[]'
   >;
 
   /**
@@ -8894,6 +8943,12 @@ export namespace Prisma {
     id?: StringFilter<'VirtualAccount'> | string;
     name?: StringFilter<'VirtualAccount'> | string;
     currency?: EnumCurrencyFilter<'VirtualAccount'> | $Enums.Currency;
+    balance?:
+      | DecimalFilter<'VirtualAccount'>
+      | Decimal
+      | DecimalJsLike
+      | number
+      | string;
     createdAt?: DateTimeFilter<'VirtualAccount'> | Date | string;
     updatedAt?: DateTimeFilter<'VirtualAccount'> | Date | string;
     deletedAt?: DateTimeNullableFilter<'VirtualAccount'> | Date | string | null;
@@ -8905,6 +8960,7 @@ export namespace Prisma {
     id?: SortOrder;
     name?: SortOrder;
     currency?: SortOrder;
+    balance?: SortOrder;
     createdAt?: SortOrder;
     updatedAt?: SortOrder;
     deletedAt?: SortOrderInput | SortOrder;
@@ -8921,6 +8977,12 @@ export namespace Prisma {
       NOT?: VirtualAccountWhereInput | VirtualAccountWhereInput[];
       name?: StringFilter<'VirtualAccount'> | string;
       currency?: EnumCurrencyFilter<'VirtualAccount'> | $Enums.Currency;
+      balance?:
+        | DecimalFilter<'VirtualAccount'>
+        | Decimal
+        | DecimalJsLike
+        | number
+        | string;
       createdAt?: DateTimeFilter<'VirtualAccount'> | Date | string;
       updatedAt?: DateTimeFilter<'VirtualAccount'> | Date | string;
       deletedAt?:
@@ -8937,13 +8999,16 @@ export namespace Prisma {
     id?: SortOrder;
     name?: SortOrder;
     currency?: SortOrder;
+    balance?: SortOrder;
     createdAt?: SortOrder;
     updatedAt?: SortOrder;
     deletedAt?: SortOrderInput | SortOrder;
     idempotencyKey?: SortOrder;
     _count?: VirtualAccountCountOrderByAggregateInput;
+    _avg?: VirtualAccountAvgOrderByAggregateInput;
     _max?: VirtualAccountMaxOrderByAggregateInput;
     _min?: VirtualAccountMinOrderByAggregateInput;
+    _sum?: VirtualAccountSumOrderByAggregateInput;
   };
 
   export type VirtualAccountScalarWhereWithAggregatesInput = {
@@ -8959,6 +9024,12 @@ export namespace Prisma {
     currency?:
       | EnumCurrencyWithAggregatesFilter<'VirtualAccount'>
       | $Enums.Currency;
+    balance?:
+      | DecimalWithAggregatesFilter<'VirtualAccount'>
+      | Decimal
+      | DecimalJsLike
+      | number
+      | string;
     createdAt?: DateTimeWithAggregatesFilter<'VirtualAccount'> | Date | string;
     updatedAt?: DateTimeWithAggregatesFilter<'VirtualAccount'> | Date | string;
     deletedAt?:
@@ -9359,6 +9430,7 @@ export namespace Prisma {
     id?: string;
     name: string;
     currency: $Enums.Currency;
+    balance?: Decimal | DecimalJsLike | number | string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
@@ -9370,6 +9442,7 @@ export namespace Prisma {
     id?: string;
     name: string;
     currency: $Enums.Currency;
+    balance?: Decimal | DecimalJsLike | number | string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
@@ -9381,6 +9454,12 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string;
     name?: StringFieldUpdateOperationsInput | string;
     currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency;
+    balance?:
+      | DecimalFieldUpdateOperationsInput
+      | Decimal
+      | DecimalJsLike
+      | number
+      | string;
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
     deletedAt?:
@@ -9396,6 +9475,12 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string;
     name?: StringFieldUpdateOperationsInput | string;
     currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency;
+    balance?:
+      | DecimalFieldUpdateOperationsInput
+      | Decimal
+      | DecimalJsLike
+      | number
+      | string;
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
     deletedAt?:
@@ -9411,6 +9496,7 @@ export namespace Prisma {
     id?: string;
     name: string;
     currency: $Enums.Currency;
+    balance?: Decimal | DecimalJsLike | number | string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
@@ -9421,6 +9507,12 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string;
     name?: StringFieldUpdateOperationsInput | string;
     currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency;
+    balance?:
+      | DecimalFieldUpdateOperationsInput
+      | Decimal
+      | DecimalJsLike
+      | number
+      | string;
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
     deletedAt?:
@@ -9435,6 +9527,12 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string;
     name?: StringFieldUpdateOperationsInput | string;
     currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency;
+    balance?:
+      | DecimalFieldUpdateOperationsInput
+      | Decimal
+      | DecimalJsLike
+      | number
+      | string;
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
     deletedAt?:
@@ -9973,6 +10071,57 @@ export namespace Prisma {
     not?: NestedEnumCurrencyFilter<$PrismaModel> | $Enums.Currency;
   };
 
+  export type DecimalFilter<$PrismaModel = never> = {
+    equals?:
+      | Decimal
+      | DecimalJsLike
+      | number
+      | string
+      | DecimalFieldRefInput<$PrismaModel>;
+    in?:
+      | Decimal[]
+      | DecimalJsLike[]
+      | number[]
+      | string[]
+      | ListDecimalFieldRefInput<$PrismaModel>;
+    notIn?:
+      | Decimal[]
+      | DecimalJsLike[]
+      | number[]
+      | string[]
+      | ListDecimalFieldRefInput<$PrismaModel>;
+    lt?:
+      | Decimal
+      | DecimalJsLike
+      | number
+      | string
+      | DecimalFieldRefInput<$PrismaModel>;
+    lte?:
+      | Decimal
+      | DecimalJsLike
+      | number
+      | string
+      | DecimalFieldRefInput<$PrismaModel>;
+    gt?:
+      | Decimal
+      | DecimalJsLike
+      | number
+      | string
+      | DecimalFieldRefInput<$PrismaModel>;
+    gte?:
+      | Decimal
+      | DecimalJsLike
+      | number
+      | string
+      | DecimalFieldRefInput<$PrismaModel>;
+    not?:
+      | NestedDecimalFilter<$PrismaModel>
+      | Decimal
+      | DecimalJsLike
+      | number
+      | string;
+  };
+
   export type DateTimeNullableFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null;
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null;
@@ -9998,16 +10147,22 @@ export namespace Prisma {
     id?: SortOrder;
     name?: SortOrder;
     currency?: SortOrder;
+    balance?: SortOrder;
     createdAt?: SortOrder;
     updatedAt?: SortOrder;
     deletedAt?: SortOrder;
     idempotencyKey?: SortOrder;
   };
 
+  export type VirtualAccountAvgOrderByAggregateInput = {
+    balance?: SortOrder;
+  };
+
   export type VirtualAccountMaxOrderByAggregateInput = {
     id?: SortOrder;
     name?: SortOrder;
     currency?: SortOrder;
+    balance?: SortOrder;
     createdAt?: SortOrder;
     updatedAt?: SortOrder;
     deletedAt?: SortOrder;
@@ -10018,10 +10173,15 @@ export namespace Prisma {
     id?: SortOrder;
     name?: SortOrder;
     currency?: SortOrder;
+    balance?: SortOrder;
     createdAt?: SortOrder;
     updatedAt?: SortOrder;
     deletedAt?: SortOrder;
     idempotencyKey?: SortOrder;
+  };
+
+  export type VirtualAccountSumOrderByAggregateInput = {
+    balance?: SortOrder;
   };
 
   export type EnumCurrencyWithAggregatesFilter<$PrismaModel = never> = {
@@ -10034,6 +10194,62 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>;
     _min?: NestedEnumCurrencyFilter<$PrismaModel>;
     _max?: NestedEnumCurrencyFilter<$PrismaModel>;
+  };
+
+  export type DecimalWithAggregatesFilter<$PrismaModel = never> = {
+    equals?:
+      | Decimal
+      | DecimalJsLike
+      | number
+      | string
+      | DecimalFieldRefInput<$PrismaModel>;
+    in?:
+      | Decimal[]
+      | DecimalJsLike[]
+      | number[]
+      | string[]
+      | ListDecimalFieldRefInput<$PrismaModel>;
+    notIn?:
+      | Decimal[]
+      | DecimalJsLike[]
+      | number[]
+      | string[]
+      | ListDecimalFieldRefInput<$PrismaModel>;
+    lt?:
+      | Decimal
+      | DecimalJsLike
+      | number
+      | string
+      | DecimalFieldRefInput<$PrismaModel>;
+    lte?:
+      | Decimal
+      | DecimalJsLike
+      | number
+      | string
+      | DecimalFieldRefInput<$PrismaModel>;
+    gt?:
+      | Decimal
+      | DecimalJsLike
+      | number
+      | string
+      | DecimalFieldRefInput<$PrismaModel>;
+    gte?:
+      | Decimal
+      | DecimalJsLike
+      | number
+      | string
+      | DecimalFieldRefInput<$PrismaModel>;
+    not?:
+      | NestedDecimalWithAggregatesFilter<$PrismaModel>
+      | Decimal
+      | DecimalJsLike
+      | number
+      | string;
+    _count?: NestedIntFilter<$PrismaModel>;
+    _avg?: NestedDecimalFilter<$PrismaModel>;
+    _sum?: NestedDecimalFilter<$PrismaModel>;
+    _min?: NestedDecimalFilter<$PrismaModel>;
+    _max?: NestedDecimalFilter<$PrismaModel>;
   };
 
   export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -10281,57 +10497,6 @@ export namespace Prisma {
     _max?: NestedJsonFilter<$PrismaModel>;
   };
 
-  export type DecimalFilter<$PrismaModel = never> = {
-    equals?:
-      | Decimal
-      | DecimalJsLike
-      | number
-      | string
-      | DecimalFieldRefInput<$PrismaModel>;
-    in?:
-      | Decimal[]
-      | DecimalJsLike[]
-      | number[]
-      | string[]
-      | ListDecimalFieldRefInput<$PrismaModel>;
-    notIn?:
-      | Decimal[]
-      | DecimalJsLike[]
-      | number[]
-      | string[]
-      | ListDecimalFieldRefInput<$PrismaModel>;
-    lt?:
-      | Decimal
-      | DecimalJsLike
-      | number
-      | string
-      | DecimalFieldRefInput<$PrismaModel>;
-    lte?:
-      | Decimal
-      | DecimalJsLike
-      | number
-      | string
-      | DecimalFieldRefInput<$PrismaModel>;
-    gt?:
-      | Decimal
-      | DecimalJsLike
-      | number
-      | string
-      | DecimalFieldRefInput<$PrismaModel>;
-    gte?:
-      | Decimal
-      | DecimalJsLike
-      | number
-      | string
-      | DecimalFieldRefInput<$PrismaModel>;
-    not?:
-      | NestedDecimalFilter<$PrismaModel>
-      | Decimal
-      | DecimalJsLike
-      | number
-      | string;
-  };
-
   export type EnumEntryTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.EntryType | EnumEntryTypeFieldRefInput<$PrismaModel>;
     in?: $Enums.EntryType[] | ListEnumEntryTypeFieldRefInput<$PrismaModel>;
@@ -10452,62 +10617,6 @@ export namespace Prisma {
   export type LedgerEntrySumOrderByAggregateInput = {
     amount?: SortOrder;
     fxRate?: SortOrder;
-  };
-
-  export type DecimalWithAggregatesFilter<$PrismaModel = never> = {
-    equals?:
-      | Decimal
-      | DecimalJsLike
-      | number
-      | string
-      | DecimalFieldRefInput<$PrismaModel>;
-    in?:
-      | Decimal[]
-      | DecimalJsLike[]
-      | number[]
-      | string[]
-      | ListDecimalFieldRefInput<$PrismaModel>;
-    notIn?:
-      | Decimal[]
-      | DecimalJsLike[]
-      | number[]
-      | string[]
-      | ListDecimalFieldRefInput<$PrismaModel>;
-    lt?:
-      | Decimal
-      | DecimalJsLike
-      | number
-      | string
-      | DecimalFieldRefInput<$PrismaModel>;
-    lte?:
-      | Decimal
-      | DecimalJsLike
-      | number
-      | string
-      | DecimalFieldRefInput<$PrismaModel>;
-    gt?:
-      | Decimal
-      | DecimalJsLike
-      | number
-      | string
-      | DecimalFieldRefInput<$PrismaModel>;
-    gte?:
-      | Decimal
-      | DecimalJsLike
-      | number
-      | string
-      | DecimalFieldRefInput<$PrismaModel>;
-    not?:
-      | NestedDecimalWithAggregatesFilter<$PrismaModel>
-      | Decimal
-      | DecimalJsLike
-      | number
-      | string;
-    _count?: NestedIntFilter<$PrismaModel>;
-    _avg?: NestedDecimalFilter<$PrismaModel>;
-    _sum?: NestedDecimalFilter<$PrismaModel>;
-    _min?: NestedDecimalFilter<$PrismaModel>;
-    _max?: NestedDecimalFilter<$PrismaModel>;
   };
 
   export type EnumEntryTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -10834,6 +10943,14 @@ export namespace Prisma {
     set?: $Enums.Currency;
   };
 
+  export type DecimalFieldUpdateOperationsInput = {
+    set?: Decimal | DecimalJsLike | number | string;
+    increment?: Decimal | DecimalJsLike | number | string;
+    decrement?: Decimal | DecimalJsLike | number | string;
+    multiply?: Decimal | DecimalJsLike | number | string;
+    divide?: Decimal | DecimalJsLike | number | string;
+  };
+
   export type NullableDateTimeFieldUpdateOperationsInput = {
     set?: Date | string | null;
   };
@@ -11038,14 +11155,6 @@ export namespace Prisma {
     connect?: VirtualAccountWhereUniqueInput;
   };
 
-  export type DecimalFieldUpdateOperationsInput = {
-    set?: Decimal | DecimalJsLike | number | string;
-    increment?: Decimal | DecimalJsLike | number | string;
-    decrement?: Decimal | DecimalJsLike | number | string;
-    multiply?: Decimal | DecimalJsLike | number | string;
-    divide?: Decimal | DecimalJsLike | number | string;
-  };
-
   export type EnumEntryTypeFieldUpdateOperationsInput = {
     set?: $Enums.EntryType;
   };
@@ -11243,6 +11352,57 @@ export namespace Prisma {
     not?: NestedEnumCurrencyFilter<$PrismaModel> | $Enums.Currency;
   };
 
+  export type NestedDecimalFilter<$PrismaModel = never> = {
+    equals?:
+      | Decimal
+      | DecimalJsLike
+      | number
+      | string
+      | DecimalFieldRefInput<$PrismaModel>;
+    in?:
+      | Decimal[]
+      | DecimalJsLike[]
+      | number[]
+      | string[]
+      | ListDecimalFieldRefInput<$PrismaModel>;
+    notIn?:
+      | Decimal[]
+      | DecimalJsLike[]
+      | number[]
+      | string[]
+      | ListDecimalFieldRefInput<$PrismaModel>;
+    lt?:
+      | Decimal
+      | DecimalJsLike
+      | number
+      | string
+      | DecimalFieldRefInput<$PrismaModel>;
+    lte?:
+      | Decimal
+      | DecimalJsLike
+      | number
+      | string
+      | DecimalFieldRefInput<$PrismaModel>;
+    gt?:
+      | Decimal
+      | DecimalJsLike
+      | number
+      | string
+      | DecimalFieldRefInput<$PrismaModel>;
+    gte?:
+      | Decimal
+      | DecimalJsLike
+      | number
+      | string
+      | DecimalFieldRefInput<$PrismaModel>;
+    not?:
+      | NestedDecimalFilter<$PrismaModel>
+      | Decimal
+      | DecimalJsLike
+      | number
+      | string;
+  };
+
   export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null;
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null;
@@ -11264,6 +11424,62 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>;
     _min?: NestedEnumCurrencyFilter<$PrismaModel>;
     _max?: NestedEnumCurrencyFilter<$PrismaModel>;
+  };
+
+  export type NestedDecimalWithAggregatesFilter<$PrismaModel = never> = {
+    equals?:
+      | Decimal
+      | DecimalJsLike
+      | number
+      | string
+      | DecimalFieldRefInput<$PrismaModel>;
+    in?:
+      | Decimal[]
+      | DecimalJsLike[]
+      | number[]
+      | string[]
+      | ListDecimalFieldRefInput<$PrismaModel>;
+    notIn?:
+      | Decimal[]
+      | DecimalJsLike[]
+      | number[]
+      | string[]
+      | ListDecimalFieldRefInput<$PrismaModel>;
+    lt?:
+      | Decimal
+      | DecimalJsLike
+      | number
+      | string
+      | DecimalFieldRefInput<$PrismaModel>;
+    lte?:
+      | Decimal
+      | DecimalJsLike
+      | number
+      | string
+      | DecimalFieldRefInput<$PrismaModel>;
+    gt?:
+      | Decimal
+      | DecimalJsLike
+      | number
+      | string
+      | DecimalFieldRefInput<$PrismaModel>;
+    gte?:
+      | Decimal
+      | DecimalJsLike
+      | number
+      | string
+      | DecimalFieldRefInput<$PrismaModel>;
+    not?:
+      | NestedDecimalWithAggregatesFilter<$PrismaModel>
+      | Decimal
+      | DecimalJsLike
+      | number
+      | string;
+    _count?: NestedIntFilter<$PrismaModel>;
+    _avg?: NestedDecimalFilter<$PrismaModel>;
+    _sum?: NestedDecimalFilter<$PrismaModel>;
+    _min?: NestedDecimalFilter<$PrismaModel>;
+    _max?: NestedDecimalFilter<$PrismaModel>;
   };
 
   export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> =
@@ -11434,57 +11650,6 @@ export namespace Prisma {
       | JsonNullValueFilter;
   };
 
-  export type NestedDecimalFilter<$PrismaModel = never> = {
-    equals?:
-      | Decimal
-      | DecimalJsLike
-      | number
-      | string
-      | DecimalFieldRefInput<$PrismaModel>;
-    in?:
-      | Decimal[]
-      | DecimalJsLike[]
-      | number[]
-      | string[]
-      | ListDecimalFieldRefInput<$PrismaModel>;
-    notIn?:
-      | Decimal[]
-      | DecimalJsLike[]
-      | number[]
-      | string[]
-      | ListDecimalFieldRefInput<$PrismaModel>;
-    lt?:
-      | Decimal
-      | DecimalJsLike
-      | number
-      | string
-      | DecimalFieldRefInput<$PrismaModel>;
-    lte?:
-      | Decimal
-      | DecimalJsLike
-      | number
-      | string
-      | DecimalFieldRefInput<$PrismaModel>;
-    gt?:
-      | Decimal
-      | DecimalJsLike
-      | number
-      | string
-      | DecimalFieldRefInput<$PrismaModel>;
-    gte?:
-      | Decimal
-      | DecimalJsLike
-      | number
-      | string
-      | DecimalFieldRefInput<$PrismaModel>;
-    not?:
-      | NestedDecimalFilter<$PrismaModel>
-      | Decimal
-      | DecimalJsLike
-      | number
-      | string;
-  };
-
   export type NestedEnumEntryTypeFilter<$PrismaModel = never> = {
     equals?: $Enums.EntryType | EnumEntryTypeFieldRefInput<$PrismaModel>;
     in?: $Enums.EntryType[] | ListEnumEntryTypeFieldRefInput<$PrismaModel>;
@@ -11545,62 +11710,6 @@ export namespace Prisma {
       | number
       | string
       | null;
-  };
-
-  export type NestedDecimalWithAggregatesFilter<$PrismaModel = never> = {
-    equals?:
-      | Decimal
-      | DecimalJsLike
-      | number
-      | string
-      | DecimalFieldRefInput<$PrismaModel>;
-    in?:
-      | Decimal[]
-      | DecimalJsLike[]
-      | number[]
-      | string[]
-      | ListDecimalFieldRefInput<$PrismaModel>;
-    notIn?:
-      | Decimal[]
-      | DecimalJsLike[]
-      | number[]
-      | string[]
-      | ListDecimalFieldRefInput<$PrismaModel>;
-    lt?:
-      | Decimal
-      | DecimalJsLike
-      | number
-      | string
-      | DecimalFieldRefInput<$PrismaModel>;
-    lte?:
-      | Decimal
-      | DecimalJsLike
-      | number
-      | string
-      | DecimalFieldRefInput<$PrismaModel>;
-    gt?:
-      | Decimal
-      | DecimalJsLike
-      | number
-      | string
-      | DecimalFieldRefInput<$PrismaModel>;
-    gte?:
-      | Decimal
-      | DecimalJsLike
-      | number
-      | string
-      | DecimalFieldRefInput<$PrismaModel>;
-    not?:
-      | NestedDecimalWithAggregatesFilter<$PrismaModel>
-      | Decimal
-      | DecimalJsLike
-      | number
-      | string;
-    _count?: NestedIntFilter<$PrismaModel>;
-    _avg?: NestedDecimalFilter<$PrismaModel>;
-    _sum?: NestedDecimalFilter<$PrismaModel>;
-    _min?: NestedDecimalFilter<$PrismaModel>;
-    _max?: NestedDecimalFilter<$PrismaModel>;
   };
 
   export type NestedEnumEntryTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -12164,6 +12273,7 @@ export namespace Prisma {
     id?: string;
     name: string;
     currency: $Enums.Currency;
+    balance?: Decimal | DecimalJsLike | number | string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
@@ -12174,6 +12284,7 @@ export namespace Prisma {
     id?: string;
     name: string;
     currency: $Enums.Currency;
+    balance?: Decimal | DecimalJsLike | number | string;
     createdAt?: Date | string;
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
@@ -12290,6 +12401,12 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string;
     name?: StringFieldUpdateOperationsInput | string;
     currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency;
+    balance?:
+      | DecimalFieldUpdateOperationsInput
+      | Decimal
+      | DecimalJsLike
+      | number
+      | string;
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
     deletedAt?:
@@ -12304,6 +12421,12 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string;
     name?: StringFieldUpdateOperationsInput | string;
     currency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency;
+    balance?:
+      | DecimalFieldUpdateOperationsInput
+      | Decimal
+      | DecimalJsLike
+      | number
+      | string;
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
     deletedAt?:

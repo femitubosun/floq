@@ -3,6 +3,7 @@ import { FastifyRequest } from 'fastify';
 import { z } from 'zod';
 import { createZodDto } from 'nestjs-zod';
 import { SessionUserSchema } from 'src/identity/auth/__defs__';
+import Decimal from 'decimal.js';
 
 export type AuthedRequest = FastifyRequest & { user: SessionUserSchema };
 
@@ -22,3 +23,5 @@ export const MessageResponseSchema = z.object({
 });
 export type MessageResponseSchema = z.infer<typeof MessageResponseSchema>;
 export class MessageResponseDto extends createZodDto(MessageResponseSchema) {}
+
+export class FloqDecimal extends Decimal {}

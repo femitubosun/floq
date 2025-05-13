@@ -4,6 +4,7 @@ export const VirtualAccountScalarFieldEnumSchema = z.enum([
   'id',
   'name',
   'currency',
+  'balance',
   'createdAt',
   'updatedAt',
   'deletedAt',

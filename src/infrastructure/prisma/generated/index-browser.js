@@ -137,6 +137,7 @@ exports.Prisma.VirtualAccountScalarFieldEnum = {
   id: 'id',
   name: 'name',
   currency: 'currency',
+  balance: 'balance',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt',
