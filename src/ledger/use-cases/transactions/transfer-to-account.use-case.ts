@@ -6,6 +6,7 @@ import { VirtualAccountService } from '@/ledger/services/virtual-account.service
 import {
   BadRequestException,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
 import { CreateLedgerEntriesForTransactionsUseCase } from './create-ledger-entries.use-case';
@@ -65,6 +66,8 @@ export class TransferToAccountUseCase {
       throw new BadRequestException('Insufficient balance');
     }
 
+    let transactionId: string = '';
+
     await this.prismaService.runInTransaction(async (tx) => {
       const transaction = await this.txnService.createTransaction(
         {
@@ -76,32 +79,35 @@ export class TransferToAccountUseCase {
         },
         tx,
       );
+      transactionId = transaction.id;
 
-      await this.crLedgerEntriesUsc.execute(
-        {
-          transactionId: transaction.id,
-          fromAccountId: fromAccount.id,
-          toAccountId: toAccount.id,
-          amount: amountToTransfer,
-        },
-        tx,
-      );
+      const { creditAmount, debitAmount } =
+        await this.crLedgerEntriesUsc.execute(
+          {
+            toAccountId,
+            fromAccountId,
+            transactionId: transaction.id,
+            amount: amountToTransfer,
+          },
+          tx,
+        );
 
-      await this.vaService.updateBalance(
-        {
-          id: fromAccount.id,
-          amount: amountToTransfer.negated(),
-        },
-        tx,
-      );
-
-      await this.vaService.updateBalance(
-        {
-          id: toAccount.id,
-          amount: amountToTransfer,
-        },
-        tx,
-      );
+      await Promise.all([
+        this.vaService.updateBalance(
+          {
+            id: fromAccount.id,
+            amount: debitAmount.negated(),
+          },
+          tx,
+        ),
+        this.vaService.updateBalance(
+          {
+            id: toAccount.id,
+            amount: creditAmount,
+          },
+          tx,
+        ),
+      ]);
     });
 
     await this.cacheService.invalidateByTag([
@@ -110,6 +116,10 @@ export class TransferToAccountUseCase {
       VirtualAccountsCacheKeys.getDomainPrefix(toAccountId),
     ]);
 
-    return this.txnService.findByIdempotencyKey(idempotencyKey);
+    if (!transactionId) {
+      throw new InternalServerErrorException('Failed to create transaction');
+    }
+
+    return this.txnService.findById(transactionId);
   }
 }

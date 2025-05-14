@@ -47,6 +47,8 @@ describe('TransferToAccountUseCase', () => {
     initiatorType: 'USER' as const,
     createdAt: new Date(),
     updatedAt: new Date(),
+    deletedAt: new Date(),
+    executedAt: new Date(),
   };
 
   const mockTransferInput = {
@@ -75,6 +77,7 @@ describe('TransferToAccountUseCase', () => {
           useValue: {
             findByIdempotencyKey: jest.fn(),
             createTransaction: jest.fn(),
+            findById: jest.fn(),
           },
         },
         {
@@ -168,16 +171,24 @@ describe('TransferToAccountUseCase', () => {
   });
 
   it('should successfully transfer funds between accounts', async () => {
-    txnService.findByIdempotencyKey
-      .mockResolvedValueOnce(null)
-      .mockResolvedValueOnce(mockTransaction);
+    txnService.findByIdempotencyKey.mockResolvedValueOnce(null);
+    txnService.findById.mockResolvedValueOnce(mockTransaction);
     vaService.getById.mockImplementation(async (id) => {
       if (id === mockFromAccount.id) return Promise.resolve(mockFromAccount);
       if (id === mockToAccount.id) return Promise.resolve(mockToAccount);
       return null;
     });
     txnService.createTransaction.mockResolvedValue(mockTransaction);
-    crLedgerEntriesUsc.execute.mockResolvedValue(undefined);
+    crLedgerEntriesUsc.execute.mockResolvedValue({
+      debitAmount: new Money(
+        new FloqDecimal(mockTransferInput.amount),
+        mockTransferInput.currency,
+      ),
+      creditAmount: new Money(
+        new FloqDecimal(mockTransferInput.amount),
+        mockTransferInput.currency,
+      ),
+    });
     vaService.updateBalance.mockResolvedValue({
       id: mockFromAccount.id,
       balance: new FloqDecimal(900),
@@ -187,6 +198,7 @@ describe('TransferToAccountUseCase', () => {
     const result = await useCase.execute(mockTransferInput);
 
     expect(result).toEqual(mockTransaction);
+
     expect(prismaService.runInTransaction).toHaveBeenCalled();
     expect(txnService.createTransaction).toHaveBeenCalledWith(
       {

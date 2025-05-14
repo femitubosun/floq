@@ -71,7 +71,7 @@ describe('LedgerEntryService', () => {
         },
         undefined, // Explicitly checking for undefined tx client
       );
-      expect(result.entryType).toBe('DEBIT');
+      expect(result).toBeInstanceOf(Money);
     });
 
     it('should call repository.create with entryType DEBIT and a transaction client', async () => {
@@ -89,7 +89,7 @@ describe('LedgerEntryService', () => {
         },
         mockTxClient,
       );
-      expect(result.entryType).toBe('DEBIT');
+      expect(result).toBeInstanceOf(Money);
     });
   });
 
@@ -109,7 +109,7 @@ describe('LedgerEntryService', () => {
         },
         undefined, // Explicitly checking for undefined tx client
       );
-      expect(result.entryType).toBe('CREDIT');
+      expect(result).toBeInstanceOf(Money);
     });
 
     it('should call repository.create with entryType CREDIT and a transaction client', async () => {
@@ -127,7 +127,7 @@ describe('LedgerEntryService', () => {
         },
         mockTxClient,
       );
-      expect(result.entryType).toBe('CREDIT');
+      expect(result).toBeInstanceOf(Money);
     });
   });
 });

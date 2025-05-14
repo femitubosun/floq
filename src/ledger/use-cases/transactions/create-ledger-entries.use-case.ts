@@ -13,24 +13,30 @@ export class CreateLedgerEntriesForTransactionsUseCase {
   ) {
     const { toAccountId, fromAccountId, transactionId, amount } = input;
 
-    await this.lEService.createDebit(
-      {
-        amount: amount.amount,
-        currency: amount.currency,
-        accountId: fromAccountId,
-        transactionId,
-      },
-      tx,
-    );
+    const [debitAmount, creditAmount] = await Promise.all([
+      this.lEService.createDebit(
+        {
+          amount: amount.amount,
+          currency: amount.currency,
+          accountId: fromAccountId,
+          transactionId,
+        },
+        tx,
+      ),
+      this.lEService.createCredit(
+        {
+          amount: amount.amount,
+          currency: amount.currency,
+          accountId: toAccountId,
+          transactionId,
+        },
+        tx,
+      ),
+    ]);
 
-    await this.lEService.createCredit(
-      {
-        amount: amount.amount,
-        currency: amount.currency,
-        accountId: toAccountId,
-        transactionId,
-      },
-      tx,
-    );
+    return {
+      debitAmount,
+      creditAmount,
+    };
   }
 }

@@ -12,6 +12,7 @@ export class TransactionRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
   #Transaction = this.prismaService.transaction;
+  #detailSelect = zodToPrismaSelect(TransactionDtoSchema);
 
   async createTransaction(
     input: CreateTransactionInputDto,
@@ -30,7 +31,14 @@ export class TransactionRepository {
       where: {
         idempotencyKey,
       },
-      select: zodToPrismaSelect(TransactionDtoSchema),
+      select: this.#detailSelect,
+    });
+  }
+
+  findById(id: string) {
+    return this.#Transaction.findUnique({
+      where: { id },
+      select: this.#detailSelect,
     });
   }
 }

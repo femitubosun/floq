@@ -17,4 +17,8 @@ export class TransactionService {
   async findByIdempotencyKey(idempotencyKey: string) {
     return this.repo.findIdByIdempotencyKey(idempotencyKey);
   }
+
+  async findById(id: string) {
+    return this.repo.findById(id);
+  }
 }
