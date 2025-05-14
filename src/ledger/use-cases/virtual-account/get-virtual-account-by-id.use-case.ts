@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CacheService } from '@/infrastructure/cache/services/cache.service';
-import { VirtualAccountService } from '@/accounts/services/virtual-account.service';
-import { VirtualAccountDetailOutputDto } from '@/accounts/__defs__/accounts.dto';
-import { VirtualAccountsCacheKeys } from '@/accounts/utils';
+import { VirtualAccountService } from '@/ledger/services/virtual-account.service';
+import { VirtualAccountDetailOutputDto } from '@/ledger/__defs__/accounts.dto';
+import { VirtualAccountsCacheKeys } from '@/ledger/utils';
 
 @Injectable()
 export class GetVirtualAccountByIdUseCase {

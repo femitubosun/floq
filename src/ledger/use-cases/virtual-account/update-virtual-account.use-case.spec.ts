@@ -5,10 +5,12 @@ import { Mocked } from 'jest-mock';
 import {
   UpdateVirtualAccountDto,
   VirtualAccountDetailOutputDto,
-} from '../__defs__/accounts.dto';
-import { VirtualAccountService } from '../services/virtual-account.service';
-import { VirtualAccountsCacheKeys } from '../utils';
+} from '../../__defs__/accounts.dto';
+import { VirtualAccountService } from '../../services/virtual-account.service';
+import { VirtualAccountsCacheKeys } from '../../utils';
 import { UpdateVirtualAccountUseCase } from './update-virtual-account.use-case';
+import { Money } from '@/common/objects/money';
+import { FloqDecimal } from '@/common/__defs__';
 
 describe('UpdateVirtualAccountUseCase', () => {
   let useCase: UpdateVirtualAccountUseCase;
@@ -18,6 +20,7 @@ describe('UpdateVirtualAccountUseCase', () => {
   const mockVirtualAccount: VirtualAccountDetailOutputDto = {
     id: 'va-123',
     name: 'Test Account',
+    balance: new Money(new FloqDecimal(0), 'USD').amount,
     currency: 'USD',
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -26,7 +29,6 @@ describe('UpdateVirtualAccountUseCase', () => {
 
   const updateDto: UpdateVirtualAccountDto = {
     name: 'Updated Account',
-    currency: 'EUR' as const,
   };
 
   beforeEach(async () => {

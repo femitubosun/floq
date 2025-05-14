@@ -9,10 +9,12 @@ import {
   VirtualAccountDto,
   VirtualAccountDetailOutputDto,
   VirtualAccountListingOutputDto,
-} from '@/accounts/__defs__/accounts.dto';
+} from '@/ledger/__defs__/accounts.dto';
 import { Prisma } from '@/infrastructure/prisma/generated';
 import { zodToPrismaSelect } from '@/infrastructure/prisma/utils/prisma';
 import { toPrismaSkipTake } from '@/infrastructure/prisma/utils';
+import { Money } from '@/common/objects/money';
+import { FloqDecimal } from '@/common/__defs__';
 
 describe('VirtualAccountRepository', () => {
   let repository: VirtualAccountRepository;
@@ -28,6 +30,7 @@ describe('VirtualAccountRepository', () => {
   const mockVirtualAccount: VirtualAccountDto = {
     id: 'va-123',
     name: 'Test Account',
+    balance: new Money(new FloqDecimal(0), 'NGN').amount,
     currency: 'NGN',
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -76,6 +79,7 @@ describe('VirtualAccountRepository', () => {
       const createInput: CreateVirtualAccountDto = {
         name: 'New Account',
         currency: 'USD',
+        balance: new FloqDecimal(0),
         idempotencyKey: 'idempotency-key-create',
       };
       mockPrismaService.virtualAccount.create.mockResolvedValue(

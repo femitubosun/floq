@@ -15,7 +15,8 @@ import {
   VirtualAccountDtoSchema,
   VirtualAccountListingInput,
   VirtualAccountListingOutputDto,
-} from '@/accounts/__defs__/accounts.dto';
+} from '@/ledger/__defs__/accounts.dto';
+import Decimal from 'decimal.js';
 
 @Injectable()
 export class VirtualAccountRepository {
@@ -75,13 +76,35 @@ export class VirtualAccountRepository {
   async update(
     id: string,
     data: UpdateVirtualAccountDto,
+    tx?: Prisma.TransactionClient,
   ): Promise<VirtualAccountDetailSchema> {
-    return this.#Account.update({
+    return (tx ? tx.virtualAccount : this.#Account).update({
       where: {
         id,
       },
       data,
       select: zodToPrismaSelect(VirtualAccountDetailSchema),
+    });
+  }
+
+  async incrementBalance(
+    id: string,
+    balance: Decimal,
+    tx?: Prisma.TransactionClient,
+  ) {
+    return (tx ? tx : this.prismaService).virtualAccount.update({
+      where: {
+        id,
+      },
+      data: {
+        balance: {
+          increment: balance,
+        },
+      },
+      select: {
+        id: true,
+        balance: true,
+      },
     });
   }
 

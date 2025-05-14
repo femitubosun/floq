@@ -5,12 +5,14 @@ import { CacheService } from '@/infrastructure/cache/services/cache.service';
 import {
   CreateVirtualAccountDto,
   VirtualAccountDto,
-} from '@/accounts/__defs__/accounts.dto';
-import { VirtualAccountsCacheKeys } from '@/accounts/utils';
-import { VirtualAccountService } from '@/accounts/services/virtual-account.service';
+} from '@/ledger/__defs__/accounts.dto';
+import { VirtualAccountsCacheKeys } from '@/ledger/utils';
+import { VirtualAccountService } from '@/ledger/services/virtual-account.service';
+import { Money } from '@/common/objects/money';
+import { FloqDecimal } from '@/common/__defs__';
 
 jest.mock('@/infrastructure/cache/services/cache.service');
-jest.mock('@/accounts/services/virtual-account.service');
+jest.mock('@/ledger/services/virtual-account.service');
 
 describe('CreateVirtualAccountUseCase', () => {
   let useCase: CreateVirtualAccountUseCase;
@@ -21,11 +23,13 @@ describe('CreateVirtualAccountUseCase', () => {
     name: 'Account 1',
     currency: 'NGN',
     idempotencyKey: '1111',
+    balance: new FloqDecimal(0),
   };
 
   const mockVirtualAccount: VirtualAccountDto = {
     id: 'va-id-123',
     name: 'Account 1',
+    balance: new Money(new FloqDecimal(0), 'USD').amount,
     currency: 'USD',
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -34,6 +38,7 @@ describe('CreateVirtualAccountUseCase', () => {
   const mockExistingVirtualAccount: VirtualAccountDto = {
     id: 'va-id-existing-789',
     name: 'Account 1',
+    balance: new Money(new FloqDecimal(0), 'NGN').amount,
     currency: 'NGN',
     createdAt: new Date(Date.now() - 100000),
     updatedAt: new Date(Date.now() - 50000),

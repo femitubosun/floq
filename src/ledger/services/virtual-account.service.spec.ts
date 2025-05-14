@@ -1,11 +1,13 @@
-import { VirtualAccountService } from '@/accounts/services/virtual-account.service';
-import { VirtualAccountRepository } from '@/accounts/repositories/virtual-account.repository';
+import { VirtualAccountService } from '@/ledger/services/virtual-account.service';
+import { VirtualAccountRepository } from '@/ledger/repositories/virtual-account.repository';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Mocked } from 'jest-mock';
 import {
   VirtualAccountDetailOutputDto,
   VirtualAccountDto,
-} from '@/accounts/__defs__/accounts.dto';
+} from '@/ledger/__defs__/accounts.dto';
+import { Money } from '@/common/objects/money';
+import { FloqDecimal } from '@/common/__defs__';
 
 describe('VirtualAccountService', () => {
   let service: VirtualAccountService;
@@ -15,6 +17,7 @@ describe('VirtualAccountService', () => {
     id: 'account-123',
     name: 'Test Account',
     currency: 'USD',
+    balance: new Money(new FloqDecimal(0), 'USD').amount,
     createdAt: new Date(),
     updatedAt: new Date(),
   };
@@ -22,6 +25,7 @@ describe('VirtualAccountService', () => {
   const mockVirtualAccountDetail: VirtualAccountDetailOutputDto = {
     id: 'detail-account-456',
     name: 'Detailed Test Account',
+    balance: new Money(new FloqDecimal(0), 'NGN').amount,
     currency: 'NGN',
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -62,6 +66,7 @@ describe('VirtualAccountService', () => {
       name: 'Test Account',
       currency: 'USD' as const,
       idempotencyKey: 'unique-key-123',
+      balance: new FloqDecimal(0),
     };
 
     const result = await service.create(input);
@@ -80,6 +85,7 @@ describe('VirtualAccountService', () => {
       name: 'Test Account',
       currency: 'USD' as const,
       idempotencyKey: 'unique-key-123',
+      balance: new FloqDecimal(0),
     };
 
     const result = await service.create(input);

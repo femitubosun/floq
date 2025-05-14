@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { Prisma } from '../../generated/client';
 import { CurrencySchema } from '../inputTypeSchemas/CurrencySchema';
 
 /////////////////////////////////////////
@@ -9,6 +10,10 @@ export const VirtualAccountSchema = z.object({
   currency: CurrencySchema,
   id: z.string(),
   name: z.string(),
+  balance: z.instanceof(Prisma.Decimal, {
+    message:
+      "Field 'balance' must be a Decimal. Location: ['Models', 'VirtualAccount']",
+  }),
   createdAt: z.coerce.date(),
   updatedAt: z.coerce.date(),
   deletedAt: z.coerce.date().nullish(),

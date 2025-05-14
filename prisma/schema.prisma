@@ -65,6 +65,7 @@ model VirtualAccount {
 
   name     String
   currency Currency
+  balance  Decimal @default(0.0) @db.Decimal(20, 8)
 
   ledgerEntries LedgerEntry[]
 
