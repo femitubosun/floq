@@ -115,6 +115,9 @@ model Transaction {
   executedAt DateTime?
 
   ledgerEntries LedgerEntry[]
+
+  fxSnapshotId String?     @unique
+  fxSnapshot   FxSnapshot? @relation()
 }
 
 enum EntryType {
@@ -144,4 +147,23 @@ model LedgerEntry {
 
   @@index([accountId])
   @@index([transactionId])
+}
+
+enum FxProvider {
+  CBN
+  OPENEXCHANGERATES
+}
+
+model FxSnapshot {
+  id            String     @id @default(uuid())
+  baseCurrency  Currency
+  quoteCurrency Currency
+  rate          Decimal
+  timestamp     DateTime   @default(now())
+  provider      FxProvider
+
+  transactionId String      @unique
+  transaction   Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+
+  @@index([baseCurrency, quoteCurrency, timestamp])
 }

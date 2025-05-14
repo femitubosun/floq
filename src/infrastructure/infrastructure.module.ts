@@ -5,6 +5,7 @@ import { CacheModule } from '@/infrastructure/cache/cache.module';
 import { CryptoModule } from './crypto/crypto.module';
 import { QueueModule } from './queue/queue.module';
 import { MailModule } from './mail/mail.module';
+import { HttpModule } from './http/http.module';
 
 @Global()
 @Module({
@@ -19,7 +20,15 @@ import { MailModule } from './mail/mail.module';
     CryptoModule,
     QueueModule,
     MailModule,
+    HttpModule,
   ],
-  exports: [PrismaModule, CacheModule, CryptoModule, QueueModule, MailModule],
+  exports: [
+    PrismaModule,
+    CacheModule,
+    CryptoModule,
+    QueueModule,
+    MailModule,
+    HttpModule,
+  ],
 })
 export class InfrastructureModule {}

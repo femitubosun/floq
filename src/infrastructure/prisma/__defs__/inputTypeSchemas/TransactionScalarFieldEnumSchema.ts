@@ -12,6 +12,7 @@ export const TransactionScalarFieldEnumSchema = z.enum([
   'updatedAt',
   'deletedAt',
   'executedAt',
+  'fxSnapshotId',
 ]);
 
 export default TransactionScalarFieldEnumSchema;

@@ -155,7 +155,8 @@ exports.Prisma.TransactionScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt',
-  executedAt: 'executedAt'
+  executedAt: 'executedAt',
+  fxSnapshotId: 'fxSnapshotId'
 };
 
 exports.Prisma.LedgerEntryScalarFieldEnum = {
@@ -170,6 +171,16 @@ exports.Prisma.LedgerEntryScalarFieldEnum = {
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt'
+};
+
+exports.Prisma.FxSnapshotScalarFieldEnum = {
+  id: 'id',
+  baseCurrency: 'baseCurrency',
+  quoteCurrency: 'quoteCurrency',
+  rate: 'rate',
+  timestamp: 'timestamp',
+  provider: 'provider',
+  transactionId: 'transactionId'
 };
 
 exports.Prisma.SortOrder = {
@@ -235,12 +246,18 @@ exports.EntryType = exports.$Enums.EntryType = {
   CREDIT: 'CREDIT'
 };
 
+exports.FxProvider = exports.$Enums.FxProvider = {
+  CBN: 'CBN',
+  OPENEXCHANGERATES: 'OPENEXCHANGERATES'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   OtpToken: 'OtpToken',
   VirtualAccount: 'VirtualAccount',
   Transaction: 'Transaction',
-  LedgerEntry: 'LedgerEntry'
+  LedgerEntry: 'LedgerEntry',
+  FxSnapshot: 'FxSnapshot'
 };
 
 /**

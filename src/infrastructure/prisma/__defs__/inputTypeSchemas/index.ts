@@ -12,6 +12,8 @@ export * from './OtpTokenScalarFieldEnumSchema';
 export * from './NullsOrderSchema';
 export * from './LedgerEntryScalarFieldEnumSchema';
 export * from './InitiatorTypeSchema';
+export * from './FxSnapshotScalarFieldEnumSchema';
+export * from './FxProviderSchema';
 export * from './EntryTypeSchema';
 export * from './DecimalJsLikeSchema';
 export * from './CurrencySchema';
