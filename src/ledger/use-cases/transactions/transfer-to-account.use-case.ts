@@ -8,10 +8,10 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateLedgerEntriesForTransactionsUseCase } from './create-ledge-entries.use-case';
+import { CreateLedgerEntriesForTransactionsUseCase } from './create-ledger-entries.use-case';
 import { PrismaService } from '@/infrastructure/prisma/prisma.service';
 import { VirtualAccountsCacheKeys } from '@/ledger/utils';
-import Decimal from 'decimal.js';
+import { FloqDecimal } from '@/common/__defs__';
 
 @Injectable()
 export class TransferToAccountUseCase {
@@ -54,10 +54,10 @@ export class TransferToAccountUseCase {
       throw new NotFoundException('To Account not found');
     }
 
-    const amountToTransfer = new Money(new Decimal(amount), currency);
+    const amountToTransfer = new Money(new FloqDecimal(amount), currency);
 
     const fromAccountBalance = new Money(
-      fromAccount.balance,
+      fromAccount.balance as FloqDecimal,
       fromAccount.currency,
     );
 
@@ -72,6 +72,7 @@ export class TransferToAccountUseCase {
           idempotencyKey,
           initiatorId,
           initiatorType,
+          status: 'COMMITTED',
         },
         tx,
       );
@@ -108,5 +109,7 @@ export class TransferToAccountUseCase {
       VirtualAccountsCacheKeys.getDomainPrefix(fromAccountId),
       VirtualAccountsCacheKeys.getDomainPrefix(toAccountId),
     ]);
+
+    return this.txnService.findByIdempotencyKey(idempotencyKey);
   }
 }

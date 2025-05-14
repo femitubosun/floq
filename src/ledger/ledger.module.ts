@@ -10,8 +10,9 @@ import { LedgerEntryRepository } from '@/ledger/repositories/ledger-entry.reposi
 import { TransactionRepository } from '@/ledger/repositories/transcation.repository';
 import { LedgerEntryService } from '@/ledger/services/ledger-entry.service';
 import { TransactionService } from '@/ledger/services/transaction.service';
-import { CreateLedgerEntriesForTransactionsUseCase } from '@/ledger/use-cases/transactions/create-ledge-entries.use-case';
+import { CreateLedgerEntriesForTransactionsUseCase } from '@/ledger/use-cases/transactions/create-ledger-entries.use-case';
 import { TransferToAccountUseCase } from '@/ledger/use-cases/transactions/transfer-to-account.use-case';
+import { TransfersController } from './controller/transfers.controller';
 
 const REPOSITORIES = [
   VirtualAccountRepository,
@@ -34,6 +35,6 @@ const USE_CASES = [
 
 @Module({
   providers: [...REPOSITORIES, ...MODEL_SERVICES, ...USE_CASES],
-  controllers: [AccountsController],
+  controllers: [AccountsController, TransfersController],
 })
 export class LedgerModule {}

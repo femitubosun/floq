@@ -2,6 +2,12 @@ import { LedgerEntrySchema } from '@/infrastructure/prisma/__defs__';
 import { z } from 'zod';
 import { Money } from '@/common/objects/money';
 
+export const LedgerEntryDtoSchema = LedgerEntrySchema.omit({
+  accountId: true,
+});
+
+export type LedgerEntryDtoSchema = z.infer<typeof LedgerEntryDtoSchema>;
+
 export const CreateLedgerEntryInputSchema = LedgerEntrySchema.pick({
   transactionId: true,
   accountId: true,

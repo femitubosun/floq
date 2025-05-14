@@ -2,9 +2,16 @@ import {
   CurrencySchema,
   InitiatorTypeSchema,
   TransactionSchema,
+  TransactionStatusSchema,
 } from '@/infrastructure/prisma/__defs__';
 import { createZodDto } from 'nestjs-zod';
 import { z } from 'zod';
+
+export const TransactionDtoSchema = TransactionSchema.omit({
+  idempotencyKey: true,
+});
+
+export type TransactionDtoSchema = z.infer<typeof TransactionDtoSchema>;
 
 // Create Transaction
 export const CreateTransactionInputSchema = TransactionSchema.pick({
@@ -12,6 +19,8 @@ export const CreateTransactionInputSchema = TransactionSchema.pick({
   initiatorId: true,
   initiatorType: true,
   idempotencyKey: true,
+}).extend({
+  status: TransactionStatusSchema.optional(),
 });
 
 export type CreateTransactionInputSchema = z.infer<
@@ -38,4 +47,11 @@ export type TransferToAccountInputSchema = z.infer<
 >;
 export class TransferToAccountInputDto extends createZodDto(
   TransferToAccountInputSchema,
+) {}
+
+export class TransferToAccountRequestDto extends createZodDto(
+  TransferToAccountInputSchema.omit({
+    initiatorId: true,
+    initiatorType: true,
+  }),
 ) {}
