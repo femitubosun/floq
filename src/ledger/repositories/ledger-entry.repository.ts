@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import {
   CreateLedgerEntryInputSchema,
   LedgerEntryDtoSchema,
+  LedgerEntryDtoSchemaWithAccount,
 } from '../__defs__/ledger-entry.dto';
 import { Prisma } from '@/infrastructure/prisma/generated';
 import { PrismaService } from '@/infrastructure/prisma/prisma.service';
@@ -18,6 +19,13 @@ export class LedgerEntryRepository {
     return (tx ? tx.ledgerEntry : this.#LedgerEntry).create({
       data,
       select: zodToPrismaSelect(LedgerEntryDtoSchema),
+    });
+  }
+
+  async getByTransactionId(transactionId: string) {
+    return this.#LedgerEntry.findMany({
+      where: { transactionId },
+      select: zodToPrismaSelect(LedgerEntryDtoSchemaWithAccount),
     });
   }
 

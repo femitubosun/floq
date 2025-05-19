@@ -4,20 +4,26 @@ import { LedgerEntryService } from '@/ledger/services/ledger-entry.service';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class CreateLedgerEntriesForTransactionsUseCase {
+export class CreateLedgerEntriesForTransactionUseCase {
   constructor(private readonly lEService: LedgerEntryService) {}
 
   async execute(
     input: CreateLedgerEntriesForTransactionInputSchema,
     tx?: Prisma.TransactionClient,
   ) {
-    const { toAccountId, fromAccountId, transactionId, amount } = input;
+    const {
+      toAccountId,
+      fromAccountId,
+      transactionId,
+      amountToReceive,
+      amountToTransfer,
+    } = input;
 
-    const [debitAmount, creditAmount] = await Promise.all([
+    const [creditAmount, debitAmount] = await Promise.all([
       this.lEService.createDebit(
         {
-          amount: amount.amount,
-          currency: amount.currency,
+          amount: amountToTransfer.amount,
+          currency: amountToTransfer.currency,
           accountId: fromAccountId,
           transactionId,
         },
@@ -25,8 +31,8 @@ export class CreateLedgerEntriesForTransactionsUseCase {
       ),
       this.lEService.createCredit(
         {
-          amount: amount.amount,
-          currency: amount.currency,
+          amount: amountToReceive.amount,
+          currency: amountToReceive.currency,
           accountId: toAccountId,
           transactionId,
         },

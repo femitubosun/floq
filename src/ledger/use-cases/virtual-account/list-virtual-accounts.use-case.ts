@@ -14,7 +14,7 @@ export class ListVirtualAccountsUseCase {
     private readonly cacheService: CacheService,
   ) {}
 
-  execute(input: VirtualAccountListingInput) {
+  async execute(input: VirtualAccountListingInput) {
     return this.cacheService.fetch<
       [VirtualAccountListingInput],
       VirtualAccountListingOutputDto

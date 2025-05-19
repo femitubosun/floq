@@ -1,11 +1,11 @@
 import {
-  CurrencySchema,
   InitiatorTypeSchema,
   TransactionSchema,
   TransactionStatusSchema,
 } from '@/infrastructure/prisma/__defs__';
 import { createZodDto } from 'nestjs-zod';
 import { z } from 'zod';
+import { FloqClientAmount } from '@/common/__defs__';
 
 export const TransactionDtoSchema = TransactionSchema.omit({
   idempotencyKey: true,
@@ -19,6 +19,7 @@ export const CreateTransactionInputSchema = TransactionSchema.pick({
   initiatorId: true,
   initiatorType: true,
   idempotencyKey: true,
+  relatedTransactionId: true,
 }).extend({
   status: TransactionStatusSchema.optional(),
 });
@@ -35,8 +36,7 @@ export class CreateTransactionInputDto extends createZodDto(
 export const TransferToAccountInputSchema = z.object({
   fromAccountId: z.string().cuid(),
   toAccountId: z.string().cuid(),
-  amount: z.number().positive(),
-  currency: CurrencySchema,
+  amount: FloqClientAmount,
   idempotencyKey: z.string().uuid(),
   initiatorId: z.string().cuid().optional(),
   initiatorType: InitiatorTypeSchema,
@@ -55,3 +55,23 @@ export class TransferToAccountRequestDto extends createZodDto(
     initiatorType: true,
   }),
 ) {}
+
+export const ReverseTransactionInputDtoSchema = z.object({
+  idempotencyKey: z.string(),
+});
+
+export class ReverseTransactionInputDto extends createZodDto(
+  ReverseTransactionInputDtoSchema,
+) {}
+
+export const ReverseTransactionInput = TransferToAccountInputSchema.pick({
+  idempotencyKey: true,
+  initiatorType: true,
+  initiatorId: true,
+}).extend({
+  originalTransaction: z.object({
+    id: z.string(),
+  }),
+});
+
+export type ReverseTransactionInput = z.infer<typeof ReverseTransactionInput>;

@@ -18,6 +18,8 @@ export const TransactionSchema = z.object({
   updatedAt: z.coerce.date(),
   deletedAt: z.coerce.date().nullish(),
   executedAt: z.coerce.date().nullish(),
+  fxSnapshotId: z.string().nullish(),
+  relatedTransactionId: z.string().nullish(),
 });
 
 export type Transaction = z.infer<typeof TransactionSchema>;

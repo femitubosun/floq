@@ -1,5 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { CreateTransactionInputDto } from '../__defs__/transaction.dto';
+import {
+  CreateTransactionInputDto,
+  TransactionDtoSchema,
+} from '../__defs__/transaction.dto';
 import { TransactionRepository } from '../repositories/transcation.repository';
 import { Prisma } from '@/infrastructure/prisma/generated';
 
@@ -20,5 +23,13 @@ export class TransactionService {
 
   async findById(id: string) {
     return this.repo.findById(id);
+  }
+
+  async update(
+    id: string,
+    update: Partial<TransactionDtoSchema>,
+    tx?: Prisma.TransactionClient,
+  ) {
+    return this.repo.update(id, update, tx);
   }
 }

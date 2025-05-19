@@ -41,7 +41,6 @@ export class AccountsController {
   }
 
   @Post('list')
-  @ZodSerializerDto(VirtualAccountListingOutputDto)
   @ApiOkResponse({
     description: 'A list of virtual accounts.',
     type: VirtualAccountListingOutputDto,

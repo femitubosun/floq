@@ -9,6 +9,7 @@ import { ZodSerializerInterceptor, ZodValidationPipe } from 'nestjs-zod';
 import { ConfigModule } from './config/config.module';
 import { CommonModule } from './common/common.module';
 import { LedgerModule } from './ledger/ledger.module';
+import { FxModule } from './fx/fx.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { LedgerModule } from './ledger/ledger.module';
     ConfigModule,
     CommonModule,
     LedgerModule,
+    FxModule,
   ],
   controllers: [AppController],
   providers: [

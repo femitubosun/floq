@@ -88,6 +88,7 @@ describe('TransactionRepository', () => {
 
     it('should create a transaction using the provided transaction client', async () => {
       mockTxClient.transaction.create.mockResolvedValue(
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         mockCreatedTransaction as any, // Using 'as any' for mock simplicity
       );
 

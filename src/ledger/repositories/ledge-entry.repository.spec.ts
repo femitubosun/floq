@@ -86,6 +86,7 @@ describe('LedgerEntryRepository', () => {
 
     it('should create a ledger entry using the provided transaction client', async () => {
       mockTxClient.ledgerEntry.create.mockResolvedValue(
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         mockCreatedLedgerEntry as any,
       );
 

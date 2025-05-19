@@ -37,6 +37,11 @@ export type Transaction = $Result.DefaultSelection<Prisma.$TransactionPayload>;
  *
  */
 export type LedgerEntry = $Result.DefaultSelection<Prisma.$LedgerEntryPayload>;
+/**
+ * Model FxSnapshot
+ *
+ */
+export type FxSnapshot = $Result.DefaultSelection<Prisma.$FxSnapshotPayload>;
 
 /**
  * Enums
@@ -95,6 +100,13 @@ export namespace $Enums {
   };
 
   export type EntryType = (typeof EntryType)[keyof typeof EntryType];
+
+  export const FxProvider: {
+    CBN: 'CBN';
+    OPENEXCHANGERATES: 'OPENEXCHANGERATES';
+  };
+
+  export type FxProvider = (typeof FxProvider)[keyof typeof FxProvider];
 }
 
 export type TokenType = $Enums.TokenType;
@@ -120,6 +132,10 @@ export const InitiatorType: typeof $Enums.InitiatorType;
 export type EntryType = $Enums.EntryType;
 
 export const EntryType: typeof $Enums.EntryType;
+
+export type FxProvider = $Enums.FxProvider;
+
+export const FxProvider: typeof $Enums.FxProvider;
 
 /**
  * ##  Prisma Client ʲˢ
@@ -336,6 +352,16 @@ export class PrismaClient<
    * ```
    */
   get ledgerEntry(): Prisma.LedgerEntryDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.fxSnapshot`: Exposes CRUD operations for the **FxSnapshot** model.
+   * Example usage:
+   * ```ts
+   * // Fetch zero or more FxSnapshots
+   * const fxSnapshots = await prisma.fxSnapshot.findMany()
+   * ```
+   */
+  get fxSnapshot(): Prisma.FxSnapshotDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -799,6 +825,7 @@ export namespace Prisma {
     VirtualAccount: 'VirtualAccount';
     Transaction: 'Transaction';
     LedgerEntry: 'LedgerEntry';
+    FxSnapshot: 'FxSnapshot';
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName];
@@ -831,7 +858,8 @@ export namespace Prisma {
         | 'otpToken'
         | 'virtualAccount'
         | 'transaction'
-        | 'ledgerEntry';
+        | 'ledgerEntry'
+        | 'fxSnapshot';
       txIsolationLevel: Prisma.TransactionIsolationLevel;
     };
     model: {
@@ -1211,6 +1239,82 @@ export namespace Prisma {
           };
         };
       };
+      FxSnapshot: {
+        payload: Prisma.$FxSnapshotPayload<ExtArgs>;
+        fields: Prisma.FxSnapshotFieldRefs;
+        operations: {
+          findUnique: {
+            args: Prisma.FxSnapshotFindUniqueArgs<ExtArgs>;
+            result: $Utils.PayloadToResult<Prisma.$FxSnapshotPayload> | null;
+          };
+          findUniqueOrThrow: {
+            args: Prisma.FxSnapshotFindUniqueOrThrowArgs<ExtArgs>;
+            result: $Utils.PayloadToResult<Prisma.$FxSnapshotPayload>;
+          };
+          findFirst: {
+            args: Prisma.FxSnapshotFindFirstArgs<ExtArgs>;
+            result: $Utils.PayloadToResult<Prisma.$FxSnapshotPayload> | null;
+          };
+          findFirstOrThrow: {
+            args: Prisma.FxSnapshotFindFirstOrThrowArgs<ExtArgs>;
+            result: $Utils.PayloadToResult<Prisma.$FxSnapshotPayload>;
+          };
+          findMany: {
+            args: Prisma.FxSnapshotFindManyArgs<ExtArgs>;
+            result: $Utils.PayloadToResult<Prisma.$FxSnapshotPayload>[];
+          };
+          create: {
+            args: Prisma.FxSnapshotCreateArgs<ExtArgs>;
+            result: $Utils.PayloadToResult<Prisma.$FxSnapshotPayload>;
+          };
+          createMany: {
+            args: Prisma.FxSnapshotCreateManyArgs<ExtArgs>;
+            result: BatchPayload;
+          };
+          createManyAndReturn: {
+            args: Prisma.FxSnapshotCreateManyAndReturnArgs<ExtArgs>;
+            result: $Utils.PayloadToResult<Prisma.$FxSnapshotPayload>[];
+          };
+          delete: {
+            args: Prisma.FxSnapshotDeleteArgs<ExtArgs>;
+            result: $Utils.PayloadToResult<Prisma.$FxSnapshotPayload>;
+          };
+          update: {
+            args: Prisma.FxSnapshotUpdateArgs<ExtArgs>;
+            result: $Utils.PayloadToResult<Prisma.$FxSnapshotPayload>;
+          };
+          deleteMany: {
+            args: Prisma.FxSnapshotDeleteManyArgs<ExtArgs>;
+            result: BatchPayload;
+          };
+          updateMany: {
+            args: Prisma.FxSnapshotUpdateManyArgs<ExtArgs>;
+            result: BatchPayload;
+          };
+          updateManyAndReturn: {
+            args: Prisma.FxSnapshotUpdateManyAndReturnArgs<ExtArgs>;
+            result: $Utils.PayloadToResult<Prisma.$FxSnapshotPayload>[];
+          };
+          upsert: {
+            args: Prisma.FxSnapshotUpsertArgs<ExtArgs>;
+            result: $Utils.PayloadToResult<Prisma.$FxSnapshotPayload>;
+          };
+          aggregate: {
+            args: Prisma.FxSnapshotAggregateArgs<ExtArgs>;
+            result: $Utils.Optional<AggregateFxSnapshot>;
+          };
+          groupBy: {
+            args: Prisma.FxSnapshotGroupByArgs<ExtArgs>;
+            result: $Utils.Optional<FxSnapshotGroupByOutputType>[];
+          };
+          count: {
+            args: Prisma.FxSnapshotCountArgs<ExtArgs>;
+            result:
+              | $Utils.Optional<FxSnapshotCountAggregateOutputType>
+              | number;
+          };
+        };
+      };
     };
   } & {
     other: {
@@ -1304,6 +1408,7 @@ export namespace Prisma {
     virtualAccount?: VirtualAccountOmit;
     transaction?: TransactionOmit;
     ledgerEntry?: LedgerEntryOmit;
+    fxSnapshot?: FxSnapshotOmit;
   };
 
   /* Types for Logging */
@@ -5610,6 +5715,8 @@ export namespace Prisma {
     updatedAt: Date | null;
     deletedAt: Date | null;
     executedAt: Date | null;
+    fxSnapshotId: string | null;
+    relatedTransactionId: string | null;
   };
 
   export type TransactionMaxAggregateOutputType = {
@@ -5623,6 +5730,8 @@ export namespace Prisma {
     updatedAt: Date | null;
     deletedAt: Date | null;
     executedAt: Date | null;
+    fxSnapshotId: string | null;
+    relatedTransactionId: string | null;
   };
 
   export type TransactionCountAggregateOutputType = {
@@ -5637,6 +5746,8 @@ export namespace Prisma {
     updatedAt: number;
     deletedAt: number;
     executedAt: number;
+    fxSnapshotId: number;
+    relatedTransactionId: number;
     _all: number;
   };
 
@@ -5651,6 +5762,8 @@ export namespace Prisma {
     updatedAt?: true;
     deletedAt?: true;
     executedAt?: true;
+    fxSnapshotId?: true;
+    relatedTransactionId?: true;
   };
 
   export type TransactionMaxAggregateInputType = {
@@ -5664,6 +5777,8 @@ export namespace Prisma {
     updatedAt?: true;
     deletedAt?: true;
     executedAt?: true;
+    fxSnapshotId?: true;
+    relatedTransactionId?: true;
   };
 
   export type TransactionCountAggregateInputType = {
@@ -5678,6 +5793,8 @@ export namespace Prisma {
     updatedAt?: true;
     deletedAt?: true;
     executedAt?: true;
+    fxSnapshotId?: true;
+    relatedTransactionId?: true;
     _all?: true;
   };
 
@@ -5771,6 +5888,8 @@ export namespace Prisma {
     updatedAt: Date;
     deletedAt: Date | null;
     executedAt: Date | null;
+    fxSnapshotId: string | null;
+    relatedTransactionId: string | null;
     _count: TransactionCountAggregateOutputType | null;
     _min: TransactionMinAggregateOutputType | null;
     _max: TransactionMaxAggregateOutputType | null;
@@ -5805,8 +5924,15 @@ export namespace Prisma {
       updatedAt?: boolean;
       deletedAt?: boolean;
       executedAt?: boolean;
+      fxSnapshotId?: boolean;
+      relatedTransactionId?: boolean;
       initiator?: boolean | Transaction$initiatorArgs<ExtArgs>;
       ledgerEntries?: boolean | Transaction$ledgerEntriesArgs<ExtArgs>;
+      fxSnapshot?: boolean | Transaction$fxSnapshotArgs<ExtArgs>;
+      relatedTransaction?:
+        | boolean
+        | Transaction$relatedTransactionArgs<ExtArgs>;
+      original?: boolean | Transaction$originalArgs<ExtArgs>;
       _count?: boolean | TransactionCountOutputTypeDefaultArgs<ExtArgs>;
     },
     ExtArgs['result']['transaction']
@@ -5827,7 +5953,12 @@ export namespace Prisma {
       updatedAt?: boolean;
       deletedAt?: boolean;
       executedAt?: boolean;
+      fxSnapshotId?: boolean;
+      relatedTransactionId?: boolean;
       initiator?: boolean | Transaction$initiatorArgs<ExtArgs>;
+      relatedTransaction?:
+        | boolean
+        | Transaction$relatedTransactionArgs<ExtArgs>;
     },
     ExtArgs['result']['transaction']
   >;
@@ -5847,7 +5978,12 @@ export namespace Prisma {
       updatedAt?: boolean;
       deletedAt?: boolean;
       executedAt?: boolean;
+      fxSnapshotId?: boolean;
+      relatedTransactionId?: boolean;
       initiator?: boolean | Transaction$initiatorArgs<ExtArgs>;
+      relatedTransaction?:
+        | boolean
+        | Transaction$relatedTransactionArgs<ExtArgs>;
     },
     ExtArgs['result']['transaction']
   >;
@@ -5864,6 +6000,8 @@ export namespace Prisma {
     updatedAt?: boolean;
     deletedAt?: boolean;
     executedAt?: boolean;
+    fxSnapshotId?: boolean;
+    relatedTransactionId?: boolean;
   };
 
   export type TransactionOmit<
@@ -5879,7 +6017,9 @@ export namespace Prisma {
     | 'createdAt'
     | 'updatedAt'
     | 'deletedAt'
-    | 'executedAt',
+    | 'executedAt'
+    | 'fxSnapshotId'
+    | 'relatedTransactionId',
     ExtArgs['result']['transaction']
   >;
   export type TransactionInclude<
@@ -5887,17 +6027,22 @@ export namespace Prisma {
   > = {
     initiator?: boolean | Transaction$initiatorArgs<ExtArgs>;
     ledgerEntries?: boolean | Transaction$ledgerEntriesArgs<ExtArgs>;
+    fxSnapshot?: boolean | Transaction$fxSnapshotArgs<ExtArgs>;
+    relatedTransaction?: boolean | Transaction$relatedTransactionArgs<ExtArgs>;
+    original?: boolean | Transaction$originalArgs<ExtArgs>;
     _count?: boolean | TransactionCountOutputTypeDefaultArgs<ExtArgs>;
   };
   export type TransactionIncludeCreateManyAndReturn<
     ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
   > = {
     initiator?: boolean | Transaction$initiatorArgs<ExtArgs>;
+    relatedTransaction?: boolean | Transaction$relatedTransactionArgs<ExtArgs>;
   };
   export type TransactionIncludeUpdateManyAndReturn<
     ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
   > = {
     initiator?: boolean | Transaction$initiatorArgs<ExtArgs>;
+    relatedTransaction?: boolean | Transaction$relatedTransactionArgs<ExtArgs>;
   };
 
   export type $TransactionPayload<
@@ -5907,6 +6052,9 @@ export namespace Prisma {
     objects: {
       initiator: Prisma.$UserPayload<ExtArgs> | null;
       ledgerEntries: Prisma.$LedgerEntryPayload<ExtArgs>[];
+      fxSnapshot: Prisma.$FxSnapshotPayload<ExtArgs> | null;
+      relatedTransaction: Prisma.$TransactionPayload<ExtArgs> | null;
+      original: Prisma.$TransactionPayload<ExtArgs> | null;
     };
     scalars: $Extensions.GetPayloadResult<
       {
@@ -5921,6 +6069,8 @@ export namespace Prisma {
         updatedAt: Date;
         deletedAt: Date | null;
         executedAt: Date | null;
+        fxSnapshotId: string | null;
+        relatedTransactionId: string | null;
       },
       ExtArgs['result']['transaction']
     >;
@@ -6495,6 +6645,47 @@ export namespace Prisma {
         >
       | Null
     >;
+    fxSnapshot<T extends Transaction$fxSnapshotArgs<ExtArgs> = {}>(
+      args?: Subset<T, Transaction$fxSnapshotArgs<ExtArgs>>,
+    ): Prisma__FxSnapshotClient<
+      $Result.GetResult<
+        Prisma.$FxSnapshotPayload<ExtArgs>,
+        T,
+        'findUniqueOrThrow',
+        GlobalOmitOptions
+      > | null,
+      null,
+      ExtArgs,
+      GlobalOmitOptions
+    >;
+    relatedTransaction<
+      T extends Transaction$relatedTransactionArgs<ExtArgs> = {},
+    >(
+      args?: Subset<T, Transaction$relatedTransactionArgs<ExtArgs>>,
+    ): Prisma__TransactionClient<
+      $Result.GetResult<
+        Prisma.$TransactionPayload<ExtArgs>,
+        T,
+        'findUniqueOrThrow',
+        GlobalOmitOptions
+      > | null,
+      null,
+      ExtArgs,
+      GlobalOmitOptions
+    >;
+    original<T extends Transaction$originalArgs<ExtArgs> = {}>(
+      args?: Subset<T, Transaction$originalArgs<ExtArgs>>,
+    ): Prisma__TransactionClient<
+      $Result.GetResult<
+        Prisma.$TransactionPayload<ExtArgs>,
+        T,
+        'findUniqueOrThrow',
+        GlobalOmitOptions
+      > | null,
+      null,
+      ExtArgs,
+      GlobalOmitOptions
+    >;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6546,6 +6737,8 @@ export namespace Prisma {
     readonly updatedAt: FieldRef<'Transaction', 'DateTime'>;
     readonly deletedAt: FieldRef<'Transaction', 'DateTime'>;
     readonly executedAt: FieldRef<'Transaction', 'DateTime'>;
+    readonly fxSnapshotId: FieldRef<'Transaction', 'String'>;
+    readonly relatedTransactionId: FieldRef<'Transaction', 'String'>;
   }
 
   // Custom InputTypes
@@ -7027,6 +7220,69 @@ export namespace Prisma {
     take?: number;
     skip?: number;
     distinct?: LedgerEntryScalarFieldEnum | LedgerEntryScalarFieldEnum[];
+  };
+
+  /**
+   * Transaction.fxSnapshot
+   */
+  export type Transaction$fxSnapshotArgs<
+    ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+  > = {
+    /**
+     * Select specific fields to fetch from the FxSnapshot
+     */
+    select?: FxSnapshotSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the FxSnapshot
+     */
+    omit?: FxSnapshotOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FxSnapshotInclude<ExtArgs> | null;
+    where?: FxSnapshotWhereInput;
+  };
+
+  /**
+   * Transaction.relatedTransaction
+   */
+  export type Transaction$relatedTransactionArgs<
+    ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+  > = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: TransactionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: TransactionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionInclude<ExtArgs> | null;
+    where?: TransactionWhereInput;
+  };
+
+  /**
+   * Transaction.original
+   */
+  export type Transaction$originalArgs<
+    ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+  > = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: TransactionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: TransactionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionInclude<ExtArgs> | null;
+    where?: TransactionWhereInput;
   };
 
   /**
@@ -8505,6 +8761,1382 @@ export namespace Prisma {
   };
 
   /**
+   * Model FxSnapshot
+   */
+
+  export type AggregateFxSnapshot = {
+    _count: FxSnapshotCountAggregateOutputType | null;
+    _avg: FxSnapshotAvgAggregateOutputType | null;
+    _sum: FxSnapshotSumAggregateOutputType | null;
+    _min: FxSnapshotMinAggregateOutputType | null;
+    _max: FxSnapshotMaxAggregateOutputType | null;
+  };
+
+  export type FxSnapshotAvgAggregateOutputType = {
+    rate: Decimal | null;
+  };
+
+  export type FxSnapshotSumAggregateOutputType = {
+    rate: Decimal | null;
+  };
+
+  export type FxSnapshotMinAggregateOutputType = {
+    id: string | null;
+    baseCurrency: $Enums.Currency | null;
+    quoteCurrency: $Enums.Currency | null;
+    rate: Decimal | null;
+    timestamp: Date | null;
+    provider: $Enums.FxProvider | null;
+    transactionId: string | null;
+  };
+
+  export type FxSnapshotMaxAggregateOutputType = {
+    id: string | null;
+    baseCurrency: $Enums.Currency | null;
+    quoteCurrency: $Enums.Currency | null;
+    rate: Decimal | null;
+    timestamp: Date | null;
+    provider: $Enums.FxProvider | null;
+    transactionId: string | null;
+  };
+
+  export type FxSnapshotCountAggregateOutputType = {
+    id: number;
+    baseCurrency: number;
+    quoteCurrency: number;
+    rate: number;
+    timestamp: number;
+    provider: number;
+    transactionId: number;
+    _all: number;
+  };
+
+  export type FxSnapshotAvgAggregateInputType = {
+    rate?: true;
+  };
+
+  export type FxSnapshotSumAggregateInputType = {
+    rate?: true;
+  };
+
+  export type FxSnapshotMinAggregateInputType = {
+    id?: true;
+    baseCurrency?: true;
+    quoteCurrency?: true;
+    rate?: true;
+    timestamp?: true;
+    provider?: true;
+    transactionId?: true;
+  };
+
+  export type FxSnapshotMaxAggregateInputType = {
+    id?: true;
+    baseCurrency?: true;
+    quoteCurrency?: true;
+    rate?: true;
+    timestamp?: true;
+    provider?: true;
+    transactionId?: true;
+  };
+
+  export type FxSnapshotCountAggregateInputType = {
+    id?: true;
+    baseCurrency?: true;
+    quoteCurrency?: true;
+    rate?: true;
+    timestamp?: true;
+    provider?: true;
+    transactionId?: true;
+    _all?: true;
+  };
+
+  export type FxSnapshotAggregateArgs<
+    ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+  > = {
+    /**
+     * Filter which FxSnapshot to aggregate.
+     */
+    where?: FxSnapshotWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of FxSnapshots to fetch.
+     */
+    orderBy?:
+      | FxSnapshotOrderByWithRelationInput
+      | FxSnapshotOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the start position
+     */
+    cursor?: FxSnapshotWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` FxSnapshots from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` FxSnapshots.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Count returned FxSnapshots
+     **/
+    _count?: true | FxSnapshotCountAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to average
+     **/
+    _avg?: FxSnapshotAvgAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to sum
+     **/
+    _sum?: FxSnapshotSumAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the minimum value
+     **/
+    _min?: FxSnapshotMinAggregateInputType;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     *
+     * Select which fields to find the maximum value
+     **/
+    _max?: FxSnapshotMaxAggregateInputType;
+  };
+
+  export type GetFxSnapshotAggregateType<T extends FxSnapshotAggregateArgs> = {
+    [P in keyof T & keyof AggregateFxSnapshot]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFxSnapshot[P]>
+      : GetScalarType<T[P], AggregateFxSnapshot[P]>;
+  };
+
+  export type FxSnapshotGroupByArgs<
+    ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+  > = {
+    where?: FxSnapshotWhereInput;
+    orderBy?:
+      | FxSnapshotOrderByWithAggregationInput
+      | FxSnapshotOrderByWithAggregationInput[];
+    by: FxSnapshotScalarFieldEnum[] | FxSnapshotScalarFieldEnum;
+    having?: FxSnapshotScalarWhereWithAggregatesInput;
+    take?: number;
+    skip?: number;
+    _count?: FxSnapshotCountAggregateInputType | true;
+    _avg?: FxSnapshotAvgAggregateInputType;
+    _sum?: FxSnapshotSumAggregateInputType;
+    _min?: FxSnapshotMinAggregateInputType;
+    _max?: FxSnapshotMaxAggregateInputType;
+  };
+
+  export type FxSnapshotGroupByOutputType = {
+    id: string;
+    baseCurrency: $Enums.Currency;
+    quoteCurrency: $Enums.Currency;
+    rate: Decimal;
+    timestamp: Date;
+    provider: $Enums.FxProvider;
+    transactionId: string;
+    _count: FxSnapshotCountAggregateOutputType | null;
+    _avg: FxSnapshotAvgAggregateOutputType | null;
+    _sum: FxSnapshotSumAggregateOutputType | null;
+    _min: FxSnapshotMinAggregateOutputType | null;
+    _max: FxSnapshotMaxAggregateOutputType | null;
+  };
+
+  type GetFxSnapshotGroupByPayload<T extends FxSnapshotGroupByArgs> =
+    Prisma.PrismaPromise<
+      Array<
+        PickEnumerable<FxSnapshotGroupByOutputType, T['by']> & {
+          [P in keyof T & keyof FxSnapshotGroupByOutputType]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FxSnapshotGroupByOutputType[P]>
+            : GetScalarType<T[P], FxSnapshotGroupByOutputType[P]>;
+        }
+      >
+    >;
+
+  export type FxSnapshotSelect<
+    ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+  > = $Extensions.GetSelect<
+    {
+      id?: boolean;
+      baseCurrency?: boolean;
+      quoteCurrency?: boolean;
+      rate?: boolean;
+      timestamp?: boolean;
+      provider?: boolean;
+      transactionId?: boolean;
+      transaction?: boolean | TransactionDefaultArgs<ExtArgs>;
+    },
+    ExtArgs['result']['fxSnapshot']
+  >;
+
+  export type FxSnapshotSelectCreateManyAndReturn<
+    ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+  > = $Extensions.GetSelect<
+    {
+      id?: boolean;
+      baseCurrency?: boolean;
+      quoteCurrency?: boolean;
+      rate?: boolean;
+      timestamp?: boolean;
+      provider?: boolean;
+      transactionId?: boolean;
+      transaction?: boolean | TransactionDefaultArgs<ExtArgs>;
+    },
+    ExtArgs['result']['fxSnapshot']
+  >;
+
+  export type FxSnapshotSelectUpdateManyAndReturn<
+    ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+  > = $Extensions.GetSelect<
+    {
+      id?: boolean;
+      baseCurrency?: boolean;
+      quoteCurrency?: boolean;
+      rate?: boolean;
+      timestamp?: boolean;
+      provider?: boolean;
+      transactionId?: boolean;
+      transaction?: boolean | TransactionDefaultArgs<ExtArgs>;
+    },
+    ExtArgs['result']['fxSnapshot']
+  >;
+
+  export type FxSnapshotSelectScalar = {
+    id?: boolean;
+    baseCurrency?: boolean;
+    quoteCurrency?: boolean;
+    rate?: boolean;
+    timestamp?: boolean;
+    provider?: boolean;
+    transactionId?: boolean;
+  };
+
+  export type FxSnapshotOmit<
+    ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+  > = $Extensions.GetOmit<
+    | 'id'
+    | 'baseCurrency'
+    | 'quoteCurrency'
+    | 'rate'
+    | 'timestamp'
+    | 'provider'
+    | 'transactionId',
+    ExtArgs['result']['fxSnapshot']
+  >;
+  export type FxSnapshotInclude<
+    ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+  > = {
+    transaction?: boolean | TransactionDefaultArgs<ExtArgs>;
+  };
+  export type FxSnapshotIncludeCreateManyAndReturn<
+    ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+  > = {
+    transaction?: boolean | TransactionDefaultArgs<ExtArgs>;
+  };
+  export type FxSnapshotIncludeUpdateManyAndReturn<
+    ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+  > = {
+    transaction?: boolean | TransactionDefaultArgs<ExtArgs>;
+  };
+
+  export type $FxSnapshotPayload<
+    ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+  > = {
+    name: 'FxSnapshot';
+    objects: {
+      transaction: Prisma.$TransactionPayload<ExtArgs>;
+    };
+    scalars: $Extensions.GetPayloadResult<
+      {
+        id: string;
+        baseCurrency: $Enums.Currency;
+        quoteCurrency: $Enums.Currency;
+        rate: Prisma.Decimal;
+        timestamp: Date;
+        provider: $Enums.FxProvider;
+        transactionId: string;
+      },
+      ExtArgs['result']['fxSnapshot']
+    >;
+    composites: {};
+  };
+
+  type FxSnapshotGetPayload<
+    S extends boolean | null | undefined | FxSnapshotDefaultArgs,
+  > = $Result.GetResult<Prisma.$FxSnapshotPayload, S>;
+
+  type FxSnapshotCountArgs<
+    ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+  > = Omit<
+    FxSnapshotFindManyArgs,
+    'select' | 'include' | 'distinct' | 'omit'
+  > & {
+    select?: FxSnapshotCountAggregateInputType | true;
+  };
+
+  export interface FxSnapshotDelegate<
+    ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+    GlobalOmitOptions = {},
+  > {
+    [K: symbol]: {
+      types: Prisma.TypeMap<ExtArgs>['model']['FxSnapshot'];
+      meta: { name: 'FxSnapshot' };
+    };
+    /**
+     * Find zero or one FxSnapshot that matches the filter.
+     * @param {FxSnapshotFindUniqueArgs} args - Arguments to find a FxSnapshot
+     * @example
+     * // Get one FxSnapshot
+     * const fxSnapshot = await prisma.fxSnapshot.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends FxSnapshotFindUniqueArgs>(
+      args: SelectSubset<T, FxSnapshotFindUniqueArgs<ExtArgs>>,
+    ): Prisma__FxSnapshotClient<
+      $Result.GetResult<
+        Prisma.$FxSnapshotPayload<ExtArgs>,
+        T,
+        'findUnique',
+        GlobalOmitOptions
+      > | null,
+      null,
+      ExtArgs,
+      GlobalOmitOptions
+    >;
+
+    /**
+     * Find one FxSnapshot that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {FxSnapshotFindUniqueOrThrowArgs} args - Arguments to find a FxSnapshot
+     * @example
+     * // Get one FxSnapshot
+     * const fxSnapshot = await prisma.fxSnapshot.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends FxSnapshotFindUniqueOrThrowArgs>(
+      args: SelectSubset<T, FxSnapshotFindUniqueOrThrowArgs<ExtArgs>>,
+    ): Prisma__FxSnapshotClient<
+      $Result.GetResult<
+        Prisma.$FxSnapshotPayload<ExtArgs>,
+        T,
+        'findUniqueOrThrow',
+        GlobalOmitOptions
+      >,
+      never,
+      ExtArgs,
+      GlobalOmitOptions
+    >;
+
+    /**
+     * Find the first FxSnapshot that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FxSnapshotFindFirstArgs} args - Arguments to find a FxSnapshot
+     * @example
+     * // Get one FxSnapshot
+     * const fxSnapshot = await prisma.fxSnapshot.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends FxSnapshotFindFirstArgs>(
+      args?: SelectSubset<T, FxSnapshotFindFirstArgs<ExtArgs>>,
+    ): Prisma__FxSnapshotClient<
+      $Result.GetResult<
+        Prisma.$FxSnapshotPayload<ExtArgs>,
+        T,
+        'findFirst',
+        GlobalOmitOptions
+      > | null,
+      null,
+      ExtArgs,
+      GlobalOmitOptions
+    >;
+
+    /**
+     * Find the first FxSnapshot that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FxSnapshotFindFirstOrThrowArgs} args - Arguments to find a FxSnapshot
+     * @example
+     * // Get one FxSnapshot
+     * const fxSnapshot = await prisma.fxSnapshot.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends FxSnapshotFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, FxSnapshotFindFirstOrThrowArgs<ExtArgs>>,
+    ): Prisma__FxSnapshotClient<
+      $Result.GetResult<
+        Prisma.$FxSnapshotPayload<ExtArgs>,
+        T,
+        'findFirstOrThrow',
+        GlobalOmitOptions
+      >,
+      never,
+      ExtArgs,
+      GlobalOmitOptions
+    >;
+
+    /**
+     * Find zero or more FxSnapshots that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FxSnapshotFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all FxSnapshots
+     * const fxSnapshots = await prisma.fxSnapshot.findMany()
+     *
+     * // Get first 10 FxSnapshots
+     * const fxSnapshots = await prisma.fxSnapshot.findMany({ take: 10 })
+     *
+     * // Only select the `id`
+     * const fxSnapshotWithIdOnly = await prisma.fxSnapshot.findMany({ select: { id: true } })
+     *
+     */
+    findMany<T extends FxSnapshotFindManyArgs>(
+      args?: SelectSubset<T, FxSnapshotFindManyArgs<ExtArgs>>,
+    ): Prisma.PrismaPromise<
+      $Result.GetResult<
+        Prisma.$FxSnapshotPayload<ExtArgs>,
+        T,
+        'findMany',
+        GlobalOmitOptions
+      >
+    >;
+
+    /**
+     * Create a FxSnapshot.
+     * @param {FxSnapshotCreateArgs} args - Arguments to create a FxSnapshot.
+     * @example
+     * // Create one FxSnapshot
+     * const FxSnapshot = await prisma.fxSnapshot.create({
+     *   data: {
+     *     // ... data to create a FxSnapshot
+     *   }
+     * })
+     *
+     */
+    create<T extends FxSnapshotCreateArgs>(
+      args: SelectSubset<T, FxSnapshotCreateArgs<ExtArgs>>,
+    ): Prisma__FxSnapshotClient<
+      $Result.GetResult<
+        Prisma.$FxSnapshotPayload<ExtArgs>,
+        T,
+        'create',
+        GlobalOmitOptions
+      >,
+      never,
+      ExtArgs,
+      GlobalOmitOptions
+    >;
+
+    /**
+     * Create many FxSnapshots.
+     * @param {FxSnapshotCreateManyArgs} args - Arguments to create many FxSnapshots.
+     * @example
+     * // Create many FxSnapshots
+     * const fxSnapshot = await prisma.fxSnapshot.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     */
+    createMany<T extends FxSnapshotCreateManyArgs>(
+      args?: SelectSubset<T, FxSnapshotCreateManyArgs<ExtArgs>>,
+    ): Prisma.PrismaPromise<BatchPayload>;
+
+    /**
+     * Create many FxSnapshots and returns the data saved in the database.
+     * @param {FxSnapshotCreateManyAndReturnArgs} args - Arguments to create many FxSnapshots.
+     * @example
+     * // Create many FxSnapshots
+     * const fxSnapshot = await prisma.fxSnapshot.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Create many FxSnapshots and only return the `id`
+     * const fxSnapshotWithIdOnly = await prisma.fxSnapshot.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    createManyAndReturn<T extends FxSnapshotCreateManyAndReturnArgs>(
+      args?: SelectSubset<T, FxSnapshotCreateManyAndReturnArgs<ExtArgs>>,
+    ): Prisma.PrismaPromise<
+      $Result.GetResult<
+        Prisma.$FxSnapshotPayload<ExtArgs>,
+        T,
+        'createManyAndReturn',
+        GlobalOmitOptions
+      >
+    >;
+
+    /**
+     * Delete a FxSnapshot.
+     * @param {FxSnapshotDeleteArgs} args - Arguments to delete one FxSnapshot.
+     * @example
+     * // Delete one FxSnapshot
+     * const FxSnapshot = await prisma.fxSnapshot.delete({
+     *   where: {
+     *     // ... filter to delete one FxSnapshot
+     *   }
+     * })
+     *
+     */
+    delete<T extends FxSnapshotDeleteArgs>(
+      args: SelectSubset<T, FxSnapshotDeleteArgs<ExtArgs>>,
+    ): Prisma__FxSnapshotClient<
+      $Result.GetResult<
+        Prisma.$FxSnapshotPayload<ExtArgs>,
+        T,
+        'delete',
+        GlobalOmitOptions
+      >,
+      never,
+      ExtArgs,
+      GlobalOmitOptions
+    >;
+
+    /**
+     * Update one FxSnapshot.
+     * @param {FxSnapshotUpdateArgs} args - Arguments to update one FxSnapshot.
+     * @example
+     * // Update one FxSnapshot
+     * const fxSnapshot = await prisma.fxSnapshot.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    update<T extends FxSnapshotUpdateArgs>(
+      args: SelectSubset<T, FxSnapshotUpdateArgs<ExtArgs>>,
+    ): Prisma__FxSnapshotClient<
+      $Result.GetResult<
+        Prisma.$FxSnapshotPayload<ExtArgs>,
+        T,
+        'update',
+        GlobalOmitOptions
+      >,
+      never,
+      ExtArgs,
+      GlobalOmitOptions
+    >;
+
+    /**
+     * Delete zero or more FxSnapshots.
+     * @param {FxSnapshotDeleteManyArgs} args - Arguments to filter FxSnapshots to delete.
+     * @example
+     * // Delete a few FxSnapshots
+     * const { count } = await prisma.fxSnapshot.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     *
+     */
+    deleteMany<T extends FxSnapshotDeleteManyArgs>(
+      args?: SelectSubset<T, FxSnapshotDeleteManyArgs<ExtArgs>>,
+    ): Prisma.PrismaPromise<BatchPayload>;
+
+    /**
+     * Update zero or more FxSnapshots.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FxSnapshotUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many FxSnapshots
+     * const fxSnapshot = await prisma.fxSnapshot.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     *
+     */
+    updateMany<T extends FxSnapshotUpdateManyArgs>(
+      args: SelectSubset<T, FxSnapshotUpdateManyArgs<ExtArgs>>,
+    ): Prisma.PrismaPromise<BatchPayload>;
+
+    /**
+     * Update zero or more FxSnapshots and returns the data updated in the database.
+     * @param {FxSnapshotUpdateManyAndReturnArgs} args - Arguments to update many FxSnapshots.
+     * @example
+     * // Update many FxSnapshots
+     * const fxSnapshot = await prisma.fxSnapshot.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *
+     * // Update zero or more FxSnapshots and only return the `id`
+     * const fxSnapshotWithIdOnly = await prisma.fxSnapshot.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     *
+     */
+    updateManyAndReturn<T extends FxSnapshotUpdateManyAndReturnArgs>(
+      args: SelectSubset<T, FxSnapshotUpdateManyAndReturnArgs<ExtArgs>>,
+    ): Prisma.PrismaPromise<
+      $Result.GetResult<
+        Prisma.$FxSnapshotPayload<ExtArgs>,
+        T,
+        'updateManyAndReturn',
+        GlobalOmitOptions
+      >
+    >;
+
+    /**
+     * Create or update one FxSnapshot.
+     * @param {FxSnapshotUpsertArgs} args - Arguments to update or create a FxSnapshot.
+     * @example
+     * // Update or create a FxSnapshot
+     * const fxSnapshot = await prisma.fxSnapshot.upsert({
+     *   create: {
+     *     // ... data to create a FxSnapshot
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the FxSnapshot we want to update
+     *   }
+     * })
+     */
+    upsert<T extends FxSnapshotUpsertArgs>(
+      args: SelectSubset<T, FxSnapshotUpsertArgs<ExtArgs>>,
+    ): Prisma__FxSnapshotClient<
+      $Result.GetResult<
+        Prisma.$FxSnapshotPayload<ExtArgs>,
+        T,
+        'upsert',
+        GlobalOmitOptions
+      >,
+      never,
+      ExtArgs,
+      GlobalOmitOptions
+    >;
+
+    /**
+     * Count the number of FxSnapshots.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FxSnapshotCountArgs} args - Arguments to filter FxSnapshots to count.
+     * @example
+     * // Count the number of FxSnapshots
+     * const count = await prisma.fxSnapshot.count({
+     *   where: {
+     *     // ... the filter for the FxSnapshots we want to count
+     *   }
+     * })
+     **/
+    count<T extends FxSnapshotCountArgs>(
+      args?: Subset<T, FxSnapshotCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FxSnapshotCountAggregateOutputType>
+        : number
+    >;
+
+    /**
+     * Allows you to perform aggregations operations on a FxSnapshot.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FxSnapshotAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+     **/
+    aggregate<T extends FxSnapshotAggregateArgs>(
+      args: Subset<T, FxSnapshotAggregateArgs>,
+    ): Prisma.PrismaPromise<GetFxSnapshotAggregateType<T>>;
+
+    /**
+     * Group by FxSnapshot.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FxSnapshotGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     *
+     **/
+    groupBy<
+      T extends FxSnapshotGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FxSnapshotGroupByArgs['orderBy'] }
+        : { orderBy?: FxSnapshotGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<
+        Keys<MaybeTupleToUnion<T['orderBy']>>
+      >,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+        ? `Error: "by" must not be empty.`
+        : HavingValid extends False
+          ? {
+              [P in HavingFields]: P extends ByFields
+                ? never
+                : P extends string
+                  ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+                  : [
+                      Error,
+                      'Field ',
+                      P,
+                      ` in "having" needs to be provided in "by"`,
+                    ];
+            }[HavingFields]
+          : 'take' extends Keys<T>
+            ? 'orderBy' extends Keys<T>
+              ? ByValid extends True
+                ? {}
+                : {
+                    [P in OrderFields]: P extends ByFields
+                      ? never
+                      : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+                  }[OrderFields]
+              : 'Error: If you provide "take", you also need to provide "orderBy"'
+            : 'skip' extends Keys<T>
+              ? 'orderBy' extends Keys<T>
+                ? ByValid extends True
+                  ? {}
+                  : {
+                      [P in OrderFields]: P extends ByFields
+                        ? never
+                        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+                    }[OrderFields]
+                : 'Error: If you provide "skip", you also need to provide "orderBy"'
+              : ByValid extends True
+                ? {}
+                : {
+                    [P in OrderFields]: P extends ByFields
+                      ? never
+                      : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`;
+                  }[OrderFields],
+    >(
+      args: SubsetIntersection<T, FxSnapshotGroupByArgs, OrderByArg> &
+        InputErrors,
+    ): {} extends InputErrors
+      ? GetFxSnapshotGroupByPayload<T>
+      : Prisma.PrismaPromise<InputErrors>;
+    /**
+     * Fields of the FxSnapshot model
+     */
+    readonly fields: FxSnapshotFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for FxSnapshot.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__FxSnapshotClient<
+    T,
+    Null = never,
+    ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+    GlobalOmitOptions = {},
+  > extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: 'PrismaPromise';
+    transaction<T extends TransactionDefaultArgs<ExtArgs> = {}>(
+      args?: Subset<T, TransactionDefaultArgs<ExtArgs>>,
+    ): Prisma__TransactionClient<
+      | $Result.GetResult<
+          Prisma.$TransactionPayload<ExtArgs>,
+          T,
+          'findUniqueOrThrow',
+          GlobalOmitOptions
+        >
+      | Null,
+      Null,
+      ExtArgs,
+      GlobalOmitOptions
+    >;
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(
+      onfulfilled?:
+        | ((value: T) => TResult1 | PromiseLike<TResult1>)
+        | undefined
+        | null,
+      onrejected?:
+        | ((reason: any) => TResult2 | PromiseLike<TResult2>)
+        | undefined
+        | null,
+    ): $Utils.JsPromise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(
+      onrejected?:
+        | ((reason: any) => TResult | PromiseLike<TResult>)
+        | undefined
+        | null,
+    ): $Utils.JsPromise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>;
+  }
+
+  /**
+   * Fields of the FxSnapshot model
+   */
+  interface FxSnapshotFieldRefs {
+    readonly id: FieldRef<'FxSnapshot', 'String'>;
+    readonly baseCurrency: FieldRef<'FxSnapshot', 'Currency'>;
+    readonly quoteCurrency: FieldRef<'FxSnapshot', 'Currency'>;
+    readonly rate: FieldRef<'FxSnapshot', 'Decimal'>;
+    readonly timestamp: FieldRef<'FxSnapshot', 'DateTime'>;
+    readonly provider: FieldRef<'FxSnapshot', 'FxProvider'>;
+    readonly transactionId: FieldRef<'FxSnapshot', 'String'>;
+  }
+
+  // Custom InputTypes
+  /**
+   * FxSnapshot findUnique
+   */
+  export type FxSnapshotFindUniqueArgs<
+    ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+  > = {
+    /**
+     * Select specific fields to fetch from the FxSnapshot
+     */
+    select?: FxSnapshotSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the FxSnapshot
+     */
+    omit?: FxSnapshotOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FxSnapshotInclude<ExtArgs> | null;
+    /**
+     * Filter, which FxSnapshot to fetch.
+     */
+    where: FxSnapshotWhereUniqueInput;
+  };
+
+  /**
+   * FxSnapshot findUniqueOrThrow
+   */
+  export type FxSnapshotFindUniqueOrThrowArgs<
+    ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+  > = {
+    /**
+     * Select specific fields to fetch from the FxSnapshot
+     */
+    select?: FxSnapshotSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the FxSnapshot
+     */
+    omit?: FxSnapshotOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FxSnapshotInclude<ExtArgs> | null;
+    /**
+     * Filter, which FxSnapshot to fetch.
+     */
+    where: FxSnapshotWhereUniqueInput;
+  };
+
+  /**
+   * FxSnapshot findFirst
+   */
+  export type FxSnapshotFindFirstArgs<
+    ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+  > = {
+    /**
+     * Select specific fields to fetch from the FxSnapshot
+     */
+    select?: FxSnapshotSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the FxSnapshot
+     */
+    omit?: FxSnapshotOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FxSnapshotInclude<ExtArgs> | null;
+    /**
+     * Filter, which FxSnapshot to fetch.
+     */
+    where?: FxSnapshotWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of FxSnapshots to fetch.
+     */
+    orderBy?:
+      | FxSnapshotOrderByWithRelationInput
+      | FxSnapshotOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for FxSnapshots.
+     */
+    cursor?: FxSnapshotWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` FxSnapshots from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` FxSnapshots.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of FxSnapshots.
+     */
+    distinct?: FxSnapshotScalarFieldEnum | FxSnapshotScalarFieldEnum[];
+  };
+
+  /**
+   * FxSnapshot findFirstOrThrow
+   */
+  export type FxSnapshotFindFirstOrThrowArgs<
+    ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+  > = {
+    /**
+     * Select specific fields to fetch from the FxSnapshot
+     */
+    select?: FxSnapshotSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the FxSnapshot
+     */
+    omit?: FxSnapshotOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FxSnapshotInclude<ExtArgs> | null;
+    /**
+     * Filter, which FxSnapshot to fetch.
+     */
+    where?: FxSnapshotWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of FxSnapshots to fetch.
+     */
+    orderBy?:
+      | FxSnapshotOrderByWithRelationInput
+      | FxSnapshotOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for searching for FxSnapshots.
+     */
+    cursor?: FxSnapshotWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` FxSnapshots from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` FxSnapshots.
+     */
+    skip?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     *
+     * Filter by unique combinations of FxSnapshots.
+     */
+    distinct?: FxSnapshotScalarFieldEnum | FxSnapshotScalarFieldEnum[];
+  };
+
+  /**
+   * FxSnapshot findMany
+   */
+  export type FxSnapshotFindManyArgs<
+    ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+  > = {
+    /**
+     * Select specific fields to fetch from the FxSnapshot
+     */
+    select?: FxSnapshotSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the FxSnapshot
+     */
+    omit?: FxSnapshotOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FxSnapshotInclude<ExtArgs> | null;
+    /**
+     * Filter, which FxSnapshots to fetch.
+     */
+    where?: FxSnapshotWhereInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     *
+     * Determine the order of FxSnapshots to fetch.
+     */
+    orderBy?:
+      | FxSnapshotOrderByWithRelationInput
+      | FxSnapshotOrderByWithRelationInput[];
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     *
+     * Sets the position for listing FxSnapshots.
+     */
+    cursor?: FxSnapshotWhereUniqueInput;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Take `±n` FxSnapshots from the position of the cursor.
+     */
+    take?: number;
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     *
+     * Skip the first `n` FxSnapshots.
+     */
+    skip?: number;
+    distinct?: FxSnapshotScalarFieldEnum | FxSnapshotScalarFieldEnum[];
+  };
+
+  /**
+   * FxSnapshot create
+   */
+  export type FxSnapshotCreateArgs<
+    ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+  > = {
+    /**
+     * Select specific fields to fetch from the FxSnapshot
+     */
+    select?: FxSnapshotSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the FxSnapshot
+     */
+    omit?: FxSnapshotOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FxSnapshotInclude<ExtArgs> | null;
+    /**
+     * The data needed to create a FxSnapshot.
+     */
+    data: XOR<FxSnapshotCreateInput, FxSnapshotUncheckedCreateInput>;
+  };
+
+  /**
+   * FxSnapshot createMany
+   */
+  export type FxSnapshotCreateManyArgs<
+    ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+  > = {
+    /**
+     * The data used to create many FxSnapshots.
+     */
+    data: FxSnapshotCreateManyInput | FxSnapshotCreateManyInput[];
+    skipDuplicates?: boolean;
+  };
+
+  /**
+   * FxSnapshot createManyAndReturn
+   */
+  export type FxSnapshotCreateManyAndReturnArgs<
+    ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+  > = {
+    /**
+     * Select specific fields to fetch from the FxSnapshot
+     */
+    select?: FxSnapshotSelectCreateManyAndReturn<ExtArgs> | null;
+    /**
+     * Omit specific fields from the FxSnapshot
+     */
+    omit?: FxSnapshotOmit<ExtArgs> | null;
+    /**
+     * The data used to create many FxSnapshots.
+     */
+    data: FxSnapshotCreateManyInput | FxSnapshotCreateManyInput[];
+    skipDuplicates?: boolean;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FxSnapshotIncludeCreateManyAndReturn<ExtArgs> | null;
+  };
+
+  /**
+   * FxSnapshot update
+   */
+  export type FxSnapshotUpdateArgs<
+    ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+  > = {
+    /**
+     * Select specific fields to fetch from the FxSnapshot
+     */
+    select?: FxSnapshotSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the FxSnapshot
+     */
+    omit?: FxSnapshotOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FxSnapshotInclude<ExtArgs> | null;
+    /**
+     * The data needed to update a FxSnapshot.
+     */
+    data: XOR<FxSnapshotUpdateInput, FxSnapshotUncheckedUpdateInput>;
+    /**
+     * Choose, which FxSnapshot to update.
+     */
+    where: FxSnapshotWhereUniqueInput;
+  };
+
+  /**
+   * FxSnapshot updateMany
+   */
+  export type FxSnapshotUpdateManyArgs<
+    ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+  > = {
+    /**
+     * The data used to update FxSnapshots.
+     */
+    data: XOR<
+      FxSnapshotUpdateManyMutationInput,
+      FxSnapshotUncheckedUpdateManyInput
+    >;
+    /**
+     * Filter which FxSnapshots to update
+     */
+    where?: FxSnapshotWhereInput;
+    /**
+     * Limit how many FxSnapshots to update.
+     */
+    limit?: number;
+  };
+
+  /**
+   * FxSnapshot updateManyAndReturn
+   */
+  export type FxSnapshotUpdateManyAndReturnArgs<
+    ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+  > = {
+    /**
+     * Select specific fields to fetch from the FxSnapshot
+     */
+    select?: FxSnapshotSelectUpdateManyAndReturn<ExtArgs> | null;
+    /**
+     * Omit specific fields from the FxSnapshot
+     */
+    omit?: FxSnapshotOmit<ExtArgs> | null;
+    /**
+     * The data used to update FxSnapshots.
+     */
+    data: XOR<
+      FxSnapshotUpdateManyMutationInput,
+      FxSnapshotUncheckedUpdateManyInput
+    >;
+    /**
+     * Filter which FxSnapshots to update
+     */
+    where?: FxSnapshotWhereInput;
+    /**
+     * Limit how many FxSnapshots to update.
+     */
+    limit?: number;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FxSnapshotIncludeUpdateManyAndReturn<ExtArgs> | null;
+  };
+
+  /**
+   * FxSnapshot upsert
+   */
+  export type FxSnapshotUpsertArgs<
+    ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+  > = {
+    /**
+     * Select specific fields to fetch from the FxSnapshot
+     */
+    select?: FxSnapshotSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the FxSnapshot
+     */
+    omit?: FxSnapshotOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FxSnapshotInclude<ExtArgs> | null;
+    /**
+     * The filter to search for the FxSnapshot to update in case it exists.
+     */
+    where: FxSnapshotWhereUniqueInput;
+    /**
+     * In case the FxSnapshot found by the `where` argument doesn't exist, create a new FxSnapshot with this data.
+     */
+    create: XOR<FxSnapshotCreateInput, FxSnapshotUncheckedCreateInput>;
+    /**
+     * In case the FxSnapshot was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FxSnapshotUpdateInput, FxSnapshotUncheckedUpdateInput>;
+  };
+
+  /**
+   * FxSnapshot delete
+   */
+  export type FxSnapshotDeleteArgs<
+    ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+  > = {
+    /**
+     * Select specific fields to fetch from the FxSnapshot
+     */
+    select?: FxSnapshotSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the FxSnapshot
+     */
+    omit?: FxSnapshotOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FxSnapshotInclude<ExtArgs> | null;
+    /**
+     * Filter which FxSnapshot to delete.
+     */
+    where: FxSnapshotWhereUniqueInput;
+  };
+
+  /**
+   * FxSnapshot deleteMany
+   */
+  export type FxSnapshotDeleteManyArgs<
+    ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+  > = {
+    /**
+     * Filter which FxSnapshots to delete
+     */
+    where?: FxSnapshotWhereInput;
+    /**
+     * Limit how many FxSnapshots to delete.
+     */
+    limit?: number;
+  };
+
+  /**
+   * FxSnapshot without action
+   */
+  export type FxSnapshotDefaultArgs<
+    ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+  > = {
+    /**
+     * Select specific fields to fetch from the FxSnapshot
+     */
+    select?: FxSnapshotSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the FxSnapshot
+     */
+    omit?: FxSnapshotOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FxSnapshotInclude<ExtArgs> | null;
+  };
+
+  /**
    * Enums
    */
 
@@ -8566,6 +10198,8 @@ export namespace Prisma {
     updatedAt: 'updatedAt';
     deletedAt: 'deletedAt';
     executedAt: 'executedAt';
+    fxSnapshotId: 'fxSnapshotId';
+    relatedTransactionId: 'relatedTransactionId';
   };
 
   export type TransactionScalarFieldEnum =
@@ -8587,6 +10221,19 @@ export namespace Prisma {
 
   export type LedgerEntryScalarFieldEnum =
     (typeof LedgerEntryScalarFieldEnum)[keyof typeof LedgerEntryScalarFieldEnum];
+
+  export const FxSnapshotScalarFieldEnum: {
+    id: 'id';
+    baseCurrency: 'baseCurrency';
+    quoteCurrency: 'quoteCurrency';
+    rate: 'rate';
+    timestamp: 'timestamp';
+    provider: 'provider';
+    transactionId: 'transactionId';
+  };
+
+  export type FxSnapshotScalarFieldEnum =
+    (typeof FxSnapshotScalarFieldEnum)[keyof typeof FxSnapshotScalarFieldEnum];
 
   export const SortOrder: {
     asc: 'asc';
@@ -8785,6 +10432,22 @@ export namespace Prisma {
   export type ListEnumEntryTypeFieldRefInput<$PrismaModel> = FieldRefInputType<
     $PrismaModel,
     'EntryType[]'
+  >;
+
+  /**
+   * Reference to a field of type 'FxProvider'
+   */
+  export type EnumFxProviderFieldRefInput<$PrismaModel> = FieldRefInputType<
+    $PrismaModel,
+    'FxProvider'
+  >;
+
+  /**
+   * Reference to a field of type 'FxProvider[]'
+   */
+  export type ListEnumFxProviderFieldRefInput<$PrismaModel> = FieldRefInputType<
+    $PrismaModel,
+    'FxProvider[]'
   >;
 
   /**
@@ -9060,8 +10723,22 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<'Transaction'> | Date | string;
     deletedAt?: DateTimeNullableFilter<'Transaction'> | Date | string | null;
     executedAt?: DateTimeNullableFilter<'Transaction'> | Date | string | null;
+    fxSnapshotId?: StringNullableFilter<'Transaction'> | string | null;
+    relatedTransactionId?: StringNullableFilter<'Transaction'> | string | null;
     initiator?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null;
     ledgerEntries?: LedgerEntryListRelationFilter;
+    fxSnapshot?: XOR<
+      FxSnapshotNullableScalarRelationFilter,
+      FxSnapshotWhereInput
+    > | null;
+    relatedTransaction?: XOR<
+      TransactionNullableScalarRelationFilter,
+      TransactionWhereInput
+    > | null;
+    original?: XOR<
+      TransactionNullableScalarRelationFilter,
+      TransactionWhereInput
+    > | null;
   };
 
   export type TransactionOrderByWithRelationInput = {
@@ -9076,14 +10753,21 @@ export namespace Prisma {
     updatedAt?: SortOrder;
     deletedAt?: SortOrderInput | SortOrder;
     executedAt?: SortOrderInput | SortOrder;
+    fxSnapshotId?: SortOrderInput | SortOrder;
+    relatedTransactionId?: SortOrderInput | SortOrder;
     initiator?: UserOrderByWithRelationInput;
     ledgerEntries?: LedgerEntryOrderByRelationAggregateInput;
+    fxSnapshot?: FxSnapshotOrderByWithRelationInput;
+    relatedTransaction?: TransactionOrderByWithRelationInput;
+    original?: TransactionOrderByWithRelationInput;
   };
 
   export type TransactionWhereUniqueInput = Prisma.AtLeast<
     {
       id?: string;
       idempotencyKey?: string;
+      fxSnapshotId?: string;
+      relatedTransactionId?: string;
       AND?: TransactionWhereInput | TransactionWhereInput[];
       OR?: TransactionWhereInput[];
       NOT?: TransactionWhereInput | TransactionWhereInput[];
@@ -9103,8 +10787,20 @@ export namespace Prisma {
       executedAt?: DateTimeNullableFilter<'Transaction'> | Date | string | null;
       initiator?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null;
       ledgerEntries?: LedgerEntryListRelationFilter;
+      fxSnapshot?: XOR<
+        FxSnapshotNullableScalarRelationFilter,
+        FxSnapshotWhereInput
+      > | null;
+      relatedTransaction?: XOR<
+        TransactionNullableScalarRelationFilter,
+        TransactionWhereInput
+      > | null;
+      original?: XOR<
+        TransactionNullableScalarRelationFilter,
+        TransactionWhereInput
+      > | null;
     },
-    'id' | 'idempotencyKey'
+    'id' | 'idempotencyKey' | 'fxSnapshotId' | 'relatedTransactionId'
   >;
 
   export type TransactionOrderByWithAggregationInput = {
@@ -9119,6 +10815,8 @@ export namespace Prisma {
     updatedAt?: SortOrder;
     deletedAt?: SortOrderInput | SortOrder;
     executedAt?: SortOrderInput | SortOrder;
+    fxSnapshotId?: SortOrderInput | SortOrder;
+    relatedTransactionId?: SortOrderInput | SortOrder;
     _count?: TransactionCountOrderByAggregateInput;
     _max?: TransactionMaxOrderByAggregateInput;
     _min?: TransactionMinOrderByAggregateInput;
@@ -9162,6 +10860,14 @@ export namespace Prisma {
     executedAt?:
       | DateTimeNullableWithAggregatesFilter<'Transaction'>
       | Date
+      | string
+      | null;
+    fxSnapshotId?:
+      | StringNullableWithAggregatesFilter<'Transaction'>
+      | string
+      | null;
+    relatedTransactionId?:
+      | StringNullableWithAggregatesFilter<'Transaction'>
       | string
       | null;
   };
@@ -9305,6 +11011,101 @@ export namespace Prisma {
       | Date
       | string
       | null;
+  };
+
+  export type FxSnapshotWhereInput = {
+    AND?: FxSnapshotWhereInput | FxSnapshotWhereInput[];
+    OR?: FxSnapshotWhereInput[];
+    NOT?: FxSnapshotWhereInput | FxSnapshotWhereInput[];
+    id?: StringFilter<'FxSnapshot'> | string;
+    baseCurrency?: EnumCurrencyFilter<'FxSnapshot'> | $Enums.Currency;
+    quoteCurrency?: EnumCurrencyFilter<'FxSnapshot'> | $Enums.Currency;
+    rate?:
+      | DecimalFilter<'FxSnapshot'>
+      | Decimal
+      | DecimalJsLike
+      | number
+      | string;
+    timestamp?: DateTimeFilter<'FxSnapshot'> | Date | string;
+    provider?: EnumFxProviderFilter<'FxSnapshot'> | $Enums.FxProvider;
+    transactionId?: StringFilter<'FxSnapshot'> | string;
+    transaction?: XOR<TransactionScalarRelationFilter, TransactionWhereInput>;
+  };
+
+  export type FxSnapshotOrderByWithRelationInput = {
+    id?: SortOrder;
+    baseCurrency?: SortOrder;
+    quoteCurrency?: SortOrder;
+    rate?: SortOrder;
+    timestamp?: SortOrder;
+    provider?: SortOrder;
+    transactionId?: SortOrder;
+    transaction?: TransactionOrderByWithRelationInput;
+  };
+
+  export type FxSnapshotWhereUniqueInput = Prisma.AtLeast<
+    {
+      id?: string;
+      transactionId?: string;
+      AND?: FxSnapshotWhereInput | FxSnapshotWhereInput[];
+      OR?: FxSnapshotWhereInput[];
+      NOT?: FxSnapshotWhereInput | FxSnapshotWhereInput[];
+      baseCurrency?: EnumCurrencyFilter<'FxSnapshot'> | $Enums.Currency;
+      quoteCurrency?: EnumCurrencyFilter<'FxSnapshot'> | $Enums.Currency;
+      rate?:
+        | DecimalFilter<'FxSnapshot'>
+        | Decimal
+        | DecimalJsLike
+        | number
+        | string;
+      timestamp?: DateTimeFilter<'FxSnapshot'> | Date | string;
+      provider?: EnumFxProviderFilter<'FxSnapshot'> | $Enums.FxProvider;
+      transaction?: XOR<TransactionScalarRelationFilter, TransactionWhereInput>;
+    },
+    'id' | 'transactionId'
+  >;
+
+  export type FxSnapshotOrderByWithAggregationInput = {
+    id?: SortOrder;
+    baseCurrency?: SortOrder;
+    quoteCurrency?: SortOrder;
+    rate?: SortOrder;
+    timestamp?: SortOrder;
+    provider?: SortOrder;
+    transactionId?: SortOrder;
+    _count?: FxSnapshotCountOrderByAggregateInput;
+    _avg?: FxSnapshotAvgOrderByAggregateInput;
+    _max?: FxSnapshotMaxOrderByAggregateInput;
+    _min?: FxSnapshotMinOrderByAggregateInput;
+    _sum?: FxSnapshotSumOrderByAggregateInput;
+  };
+
+  export type FxSnapshotScalarWhereWithAggregatesInput = {
+    AND?:
+      | FxSnapshotScalarWhereWithAggregatesInput
+      | FxSnapshotScalarWhereWithAggregatesInput[];
+    OR?: FxSnapshotScalarWhereWithAggregatesInput[];
+    NOT?:
+      | FxSnapshotScalarWhereWithAggregatesInput
+      | FxSnapshotScalarWhereWithAggregatesInput[];
+    id?: StringWithAggregatesFilter<'FxSnapshot'> | string;
+    baseCurrency?:
+      | EnumCurrencyWithAggregatesFilter<'FxSnapshot'>
+      | $Enums.Currency;
+    quoteCurrency?:
+      | EnumCurrencyWithAggregatesFilter<'FxSnapshot'>
+      | $Enums.Currency;
+    rate?:
+      | DecimalWithAggregatesFilter<'FxSnapshot'>
+      | Decimal
+      | DecimalJsLike
+      | number
+      | string;
+    timestamp?: DateTimeWithAggregatesFilter<'FxSnapshot'> | Date | string;
+    provider?:
+      | EnumFxProviderWithAggregatesFilter<'FxSnapshot'>
+      | $Enums.FxProvider;
+    transactionId?: StringWithAggregatesFilter<'FxSnapshot'> | string;
   };
 
   export type UserCreateInput = {
@@ -9554,8 +11355,12 @@ export namespace Prisma {
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
     executedAt?: Date | string | null;
+    fxSnapshotId?: string | null;
     initiator?: UserCreateNestedOneWithoutTransactionsInput;
     ledgerEntries?: LedgerEntryCreateNestedManyWithoutTransactionInput;
+    fxSnapshot?: FxSnapshotCreateNestedOneWithoutTransactionInput;
+    relatedTransaction?: TransactionCreateNestedOneWithoutOriginalInput;
+    original?: TransactionCreateNestedOneWithoutRelatedTransactionInput;
   };
 
   export type TransactionUncheckedCreateInput = {
@@ -9570,7 +11375,11 @@ export namespace Prisma {
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
     executedAt?: Date | string | null;
+    fxSnapshotId?: string | null;
+    relatedTransactionId?: string | null;
     ledgerEntries?: LedgerEntryUncheckedCreateNestedManyWithoutTransactionInput;
+    fxSnapshot?: FxSnapshotUncheckedCreateNestedOneWithoutTransactionInput;
+    original?: TransactionUncheckedCreateNestedOneWithoutRelatedTransactionInput;
   };
 
   export type TransactionUpdateInput = {
@@ -9599,8 +11408,12 @@ export namespace Prisma {
       | Date
       | string
       | null;
+    fxSnapshotId?: NullableStringFieldUpdateOperationsInput | string | null;
     initiator?: UserUpdateOneWithoutTransactionsNestedInput;
     ledgerEntries?: LedgerEntryUpdateManyWithoutTransactionNestedInput;
+    fxSnapshot?: FxSnapshotUpdateOneWithoutTransactionNestedInput;
+    relatedTransaction?: TransactionUpdateOneWithoutOriginalNestedInput;
+    original?: TransactionUpdateOneWithoutRelatedTransactionNestedInput;
   };
 
   export type TransactionUncheckedUpdateInput = {
@@ -9630,7 +11443,14 @@ export namespace Prisma {
       | Date
       | string
       | null;
+    fxSnapshotId?: NullableStringFieldUpdateOperationsInput | string | null;
+    relatedTransactionId?:
+      | NullableStringFieldUpdateOperationsInput
+      | string
+      | null;
     ledgerEntries?: LedgerEntryUncheckedUpdateManyWithoutTransactionNestedInput;
+    fxSnapshot?: FxSnapshotUncheckedUpdateOneWithoutTransactionNestedInput;
+    original?: TransactionUncheckedUpdateOneWithoutRelatedTransactionNestedInput;
   };
 
   export type TransactionCreateManyInput = {
@@ -9645,6 +11465,8 @@ export namespace Prisma {
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
     executedAt?: Date | string | null;
+    fxSnapshotId?: string | null;
+    relatedTransactionId?: string | null;
   };
 
   export type TransactionUpdateManyMutationInput = {
@@ -9673,6 +11495,7 @@ export namespace Prisma {
       | Date
       | string
       | null;
+    fxSnapshotId?: NullableStringFieldUpdateOperationsInput | string | null;
   };
 
   export type TransactionUncheckedUpdateManyInput = {
@@ -9700,6 +11523,11 @@ export namespace Prisma {
     executedAt?:
       | NullableDateTimeFieldUpdateOperationsInput
       | Date
+      | string
+      | null;
+    fxSnapshotId?: NullableStringFieldUpdateOperationsInput | string | null;
+    relatedTransactionId?:
+      | NullableStringFieldUpdateOperationsInput
       | string
       | null;
   };
@@ -9858,6 +11686,95 @@ export namespace Prisma {
       | Date
       | string
       | null;
+  };
+
+  export type FxSnapshotCreateInput = {
+    id?: string;
+    baseCurrency: $Enums.Currency;
+    quoteCurrency: $Enums.Currency;
+    rate: Decimal | DecimalJsLike | number | string;
+    timestamp?: Date | string;
+    provider: $Enums.FxProvider;
+    transaction: TransactionCreateNestedOneWithoutFxSnapshotInput;
+  };
+
+  export type FxSnapshotUncheckedCreateInput = {
+    id?: string;
+    baseCurrency: $Enums.Currency;
+    quoteCurrency: $Enums.Currency;
+    rate: Decimal | DecimalJsLike | number | string;
+    timestamp?: Date | string;
+    provider: $Enums.FxProvider;
+    transactionId: string;
+  };
+
+  export type FxSnapshotUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string;
+    baseCurrency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency;
+    quoteCurrency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency;
+    rate?:
+      | DecimalFieldUpdateOperationsInput
+      | Decimal
+      | DecimalJsLike
+      | number
+      | string;
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string;
+    provider?: EnumFxProviderFieldUpdateOperationsInput | $Enums.FxProvider;
+    transaction?: TransactionUpdateOneRequiredWithoutFxSnapshotNestedInput;
+  };
+
+  export type FxSnapshotUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string;
+    baseCurrency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency;
+    quoteCurrency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency;
+    rate?:
+      | DecimalFieldUpdateOperationsInput
+      | Decimal
+      | DecimalJsLike
+      | number
+      | string;
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string;
+    provider?: EnumFxProviderFieldUpdateOperationsInput | $Enums.FxProvider;
+    transactionId?: StringFieldUpdateOperationsInput | string;
+  };
+
+  export type FxSnapshotCreateManyInput = {
+    id?: string;
+    baseCurrency: $Enums.Currency;
+    quoteCurrency: $Enums.Currency;
+    rate: Decimal | DecimalJsLike | number | string;
+    timestamp?: Date | string;
+    provider: $Enums.FxProvider;
+    transactionId: string;
+  };
+
+  export type FxSnapshotUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string;
+    baseCurrency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency;
+    quoteCurrency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency;
+    rate?:
+      | DecimalFieldUpdateOperationsInput
+      | Decimal
+      | DecimalJsLike
+      | number
+      | string;
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string;
+    provider?: EnumFxProviderFieldUpdateOperationsInput | $Enums.FxProvider;
+  };
+
+  export type FxSnapshotUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string;
+    baseCurrency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency;
+    quoteCurrency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency;
+    rate?:
+      | DecimalFieldUpdateOperationsInput
+      | Decimal
+      | DecimalJsLike
+      | number
+      | string;
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string;
+    provider?: EnumFxProviderFieldUpdateOperationsInput | $Enums.FxProvider;
+    transactionId?: StringFieldUpdateOperationsInput | string;
   };
 
   export type StringFilter<$PrismaModel = never> = {
@@ -10356,6 +12273,16 @@ export namespace Prisma {
     isNot?: UserWhereInput | null;
   };
 
+  export type FxSnapshotNullableScalarRelationFilter = {
+    is?: FxSnapshotWhereInput | null;
+    isNot?: FxSnapshotWhereInput | null;
+  };
+
+  export type TransactionNullableScalarRelationFilter = {
+    is?: TransactionWhereInput | null;
+    isNot?: TransactionWhereInput | null;
+  };
+
   export type TransactionCountOrderByAggregateInput = {
     id?: SortOrder;
     type?: SortOrder;
@@ -10368,6 +12295,8 @@ export namespace Prisma {
     updatedAt?: SortOrder;
     deletedAt?: SortOrder;
     executedAt?: SortOrder;
+    fxSnapshotId?: SortOrder;
+    relatedTransactionId?: SortOrder;
   };
 
   export type TransactionMaxOrderByAggregateInput = {
@@ -10381,6 +12310,8 @@ export namespace Prisma {
     updatedAt?: SortOrder;
     deletedAt?: SortOrder;
     executedAt?: SortOrder;
+    fxSnapshotId?: SortOrder;
+    relatedTransactionId?: SortOrder;
   };
 
   export type TransactionMinOrderByAggregateInput = {
@@ -10394,6 +12325,8 @@ export namespace Prisma {
     updatedAt?: SortOrder;
     deletedAt?: SortOrder;
     executedAt?: SortOrder;
+    fxSnapshotId?: SortOrder;
+    relatedTransactionId?: SortOrder;
   };
 
   export type EnumTransactionTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -10689,6 +12622,63 @@ export namespace Prisma {
     _sum?: NestedDecimalNullableFilter<$PrismaModel>;
     _min?: NestedDecimalNullableFilter<$PrismaModel>;
     _max?: NestedDecimalNullableFilter<$PrismaModel>;
+  };
+
+  export type EnumFxProviderFilter<$PrismaModel = never> = {
+    equals?: $Enums.FxProvider | EnumFxProviderFieldRefInput<$PrismaModel>;
+    in?: $Enums.FxProvider[] | ListEnumFxProviderFieldRefInput<$PrismaModel>;
+    notIn?: $Enums.FxProvider[] | ListEnumFxProviderFieldRefInput<$PrismaModel>;
+    not?: NestedEnumFxProviderFilter<$PrismaModel> | $Enums.FxProvider;
+  };
+
+  export type FxSnapshotCountOrderByAggregateInput = {
+    id?: SortOrder;
+    baseCurrency?: SortOrder;
+    quoteCurrency?: SortOrder;
+    rate?: SortOrder;
+    timestamp?: SortOrder;
+    provider?: SortOrder;
+    transactionId?: SortOrder;
+  };
+
+  export type FxSnapshotAvgOrderByAggregateInput = {
+    rate?: SortOrder;
+  };
+
+  export type FxSnapshotMaxOrderByAggregateInput = {
+    id?: SortOrder;
+    baseCurrency?: SortOrder;
+    quoteCurrency?: SortOrder;
+    rate?: SortOrder;
+    timestamp?: SortOrder;
+    provider?: SortOrder;
+    transactionId?: SortOrder;
+  };
+
+  export type FxSnapshotMinOrderByAggregateInput = {
+    id?: SortOrder;
+    baseCurrency?: SortOrder;
+    quoteCurrency?: SortOrder;
+    rate?: SortOrder;
+    timestamp?: SortOrder;
+    provider?: SortOrder;
+    transactionId?: SortOrder;
+  };
+
+  export type FxSnapshotSumOrderByAggregateInput = {
+    rate?: SortOrder;
+  };
+
+  export type EnumFxProviderWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.FxProvider | EnumFxProviderFieldRefInput<$PrismaModel>;
+    in?: $Enums.FxProvider[] | ListEnumFxProviderFieldRefInput<$PrismaModel>;
+    notIn?: $Enums.FxProvider[] | ListEnumFxProviderFieldRefInput<$PrismaModel>;
+    not?:
+      | NestedEnumFxProviderWithAggregatesFilter<$PrismaModel>
+      | $Enums.FxProvider;
+    _count?: NestedIntFilter<$PrismaModel>;
+    _min?: NestedEnumFxProviderFilter<$PrismaModel>;
+    _max?: NestedEnumFxProviderFilter<$PrismaModel>;
   };
 
   export type OtpTokenCreateNestedManyWithoutUserInput = {
@@ -11035,6 +13025,33 @@ export namespace Prisma {
     connect?: LedgerEntryWhereUniqueInput | LedgerEntryWhereUniqueInput[];
   };
 
+  export type FxSnapshotCreateNestedOneWithoutTransactionInput = {
+    create?: XOR<
+      FxSnapshotCreateWithoutTransactionInput,
+      FxSnapshotUncheckedCreateWithoutTransactionInput
+    >;
+    connectOrCreate?: FxSnapshotCreateOrConnectWithoutTransactionInput;
+    connect?: FxSnapshotWhereUniqueInput;
+  };
+
+  export type TransactionCreateNestedOneWithoutOriginalInput = {
+    create?: XOR<
+      TransactionCreateWithoutOriginalInput,
+      TransactionUncheckedCreateWithoutOriginalInput
+    >;
+    connectOrCreate?: TransactionCreateOrConnectWithoutOriginalInput;
+    connect?: TransactionWhereUniqueInput;
+  };
+
+  export type TransactionCreateNestedOneWithoutRelatedTransactionInput = {
+    create?: XOR<
+      TransactionCreateWithoutRelatedTransactionInput,
+      TransactionUncheckedCreateWithoutRelatedTransactionInput
+    >;
+    connectOrCreate?: TransactionCreateOrConnectWithoutRelatedTransactionInput;
+    connect?: TransactionWhereUniqueInput;
+  };
+
   export type LedgerEntryUncheckedCreateNestedManyWithoutTransactionInput = {
     create?:
       | XOR<
@@ -11049,6 +13066,25 @@ export namespace Prisma {
     createMany?: LedgerEntryCreateManyTransactionInputEnvelope;
     connect?: LedgerEntryWhereUniqueInput | LedgerEntryWhereUniqueInput[];
   };
+
+  export type FxSnapshotUncheckedCreateNestedOneWithoutTransactionInput = {
+    create?: XOR<
+      FxSnapshotCreateWithoutTransactionInput,
+      FxSnapshotUncheckedCreateWithoutTransactionInput
+    >;
+    connectOrCreate?: FxSnapshotCreateOrConnectWithoutTransactionInput;
+    connect?: FxSnapshotWhereUniqueInput;
+  };
+
+  export type TransactionUncheckedCreateNestedOneWithoutRelatedTransactionInput =
+    {
+      create?: XOR<
+        TransactionCreateWithoutRelatedTransactionInput,
+        TransactionUncheckedCreateWithoutRelatedTransactionInput
+      >;
+      connectOrCreate?: TransactionCreateOrConnectWithoutRelatedTransactionInput;
+      connect?: TransactionWhereUniqueInput;
+    };
 
   export type EnumTransactionTypeFieldUpdateOperationsInput = {
     set?: $Enums.TransactionType;
@@ -11109,6 +13145,63 @@ export namespace Prisma {
     deleteMany?: LedgerEntryScalarWhereInput | LedgerEntryScalarWhereInput[];
   };
 
+  export type FxSnapshotUpdateOneWithoutTransactionNestedInput = {
+    create?: XOR<
+      FxSnapshotCreateWithoutTransactionInput,
+      FxSnapshotUncheckedCreateWithoutTransactionInput
+    >;
+    connectOrCreate?: FxSnapshotCreateOrConnectWithoutTransactionInput;
+    upsert?: FxSnapshotUpsertWithoutTransactionInput;
+    disconnect?: FxSnapshotWhereInput | boolean;
+    delete?: FxSnapshotWhereInput | boolean;
+    connect?: FxSnapshotWhereUniqueInput;
+    update?: XOR<
+      XOR<
+        FxSnapshotUpdateToOneWithWhereWithoutTransactionInput,
+        FxSnapshotUpdateWithoutTransactionInput
+      >,
+      FxSnapshotUncheckedUpdateWithoutTransactionInput
+    >;
+  };
+
+  export type TransactionUpdateOneWithoutOriginalNestedInput = {
+    create?: XOR<
+      TransactionCreateWithoutOriginalInput,
+      TransactionUncheckedCreateWithoutOriginalInput
+    >;
+    connectOrCreate?: TransactionCreateOrConnectWithoutOriginalInput;
+    upsert?: TransactionUpsertWithoutOriginalInput;
+    disconnect?: TransactionWhereInput | boolean;
+    delete?: TransactionWhereInput | boolean;
+    connect?: TransactionWhereUniqueInput;
+    update?: XOR<
+      XOR<
+        TransactionUpdateToOneWithWhereWithoutOriginalInput,
+        TransactionUpdateWithoutOriginalInput
+      >,
+      TransactionUncheckedUpdateWithoutOriginalInput
+    >;
+  };
+
+  export type TransactionUpdateOneWithoutRelatedTransactionNestedInput = {
+    create?: XOR<
+      TransactionCreateWithoutRelatedTransactionInput,
+      TransactionUncheckedCreateWithoutRelatedTransactionInput
+    >;
+    connectOrCreate?: TransactionCreateOrConnectWithoutRelatedTransactionInput;
+    upsert?: TransactionUpsertWithoutRelatedTransactionInput;
+    disconnect?: TransactionWhereInput | boolean;
+    delete?: TransactionWhereInput | boolean;
+    connect?: TransactionWhereUniqueInput;
+    update?: XOR<
+      XOR<
+        TransactionUpdateToOneWithWhereWithoutRelatedTransactionInput,
+        TransactionUpdateWithoutRelatedTransactionInput
+      >,
+      TransactionUncheckedUpdateWithoutRelatedTransactionInput
+    >;
+  };
+
   export type LedgerEntryUncheckedUpdateManyWithoutTransactionNestedInput = {
     create?:
       | XOR<
@@ -11136,6 +13229,45 @@ export namespace Prisma {
       | LedgerEntryUpdateManyWithWhereWithoutTransactionInput[];
     deleteMany?: LedgerEntryScalarWhereInput | LedgerEntryScalarWhereInput[];
   };
+
+  export type FxSnapshotUncheckedUpdateOneWithoutTransactionNestedInput = {
+    create?: XOR<
+      FxSnapshotCreateWithoutTransactionInput,
+      FxSnapshotUncheckedCreateWithoutTransactionInput
+    >;
+    connectOrCreate?: FxSnapshotCreateOrConnectWithoutTransactionInput;
+    upsert?: FxSnapshotUpsertWithoutTransactionInput;
+    disconnect?: FxSnapshotWhereInput | boolean;
+    delete?: FxSnapshotWhereInput | boolean;
+    connect?: FxSnapshotWhereUniqueInput;
+    update?: XOR<
+      XOR<
+        FxSnapshotUpdateToOneWithWhereWithoutTransactionInput,
+        FxSnapshotUpdateWithoutTransactionInput
+      >,
+      FxSnapshotUncheckedUpdateWithoutTransactionInput
+    >;
+  };
+
+  export type TransactionUncheckedUpdateOneWithoutRelatedTransactionNestedInput =
+    {
+      create?: XOR<
+        TransactionCreateWithoutRelatedTransactionInput,
+        TransactionUncheckedCreateWithoutRelatedTransactionInput
+      >;
+      connectOrCreate?: TransactionCreateOrConnectWithoutRelatedTransactionInput;
+      upsert?: TransactionUpsertWithoutRelatedTransactionInput;
+      disconnect?: TransactionWhereInput | boolean;
+      delete?: TransactionWhereInput | boolean;
+      connect?: TransactionWhereUniqueInput;
+      update?: XOR<
+        XOR<
+          TransactionUpdateToOneWithWhereWithoutRelatedTransactionInput,
+          TransactionUpdateWithoutRelatedTransactionInput
+        >,
+        TransactionUncheckedUpdateWithoutRelatedTransactionInput
+      >;
+    };
 
   export type TransactionCreateNestedOneWithoutLedgerEntriesInput = {
     create?: XOR<
@@ -11198,6 +13330,36 @@ export namespace Prisma {
         VirtualAccountUpdateWithoutLedgerEntriesInput
       >,
       VirtualAccountUncheckedUpdateWithoutLedgerEntriesInput
+    >;
+  };
+
+  export type TransactionCreateNestedOneWithoutFxSnapshotInput = {
+    create?: XOR<
+      TransactionCreateWithoutFxSnapshotInput,
+      TransactionUncheckedCreateWithoutFxSnapshotInput
+    >;
+    connectOrCreate?: TransactionCreateOrConnectWithoutFxSnapshotInput;
+    connect?: TransactionWhereUniqueInput;
+  };
+
+  export type EnumFxProviderFieldUpdateOperationsInput = {
+    set?: $Enums.FxProvider;
+  };
+
+  export type TransactionUpdateOneRequiredWithoutFxSnapshotNestedInput = {
+    create?: XOR<
+      TransactionCreateWithoutFxSnapshotInput,
+      TransactionUncheckedCreateWithoutFxSnapshotInput
+    >;
+    connectOrCreate?: TransactionCreateOrConnectWithoutFxSnapshotInput;
+    upsert?: TransactionUpsertWithoutFxSnapshotInput;
+    connect?: TransactionWhereUniqueInput;
+    update?: XOR<
+      XOR<
+        TransactionUpdateToOneWithWhereWithoutFxSnapshotInput,
+        TransactionUpdateWithoutFxSnapshotInput
+      >,
+      TransactionUncheckedUpdateWithoutFxSnapshotInput
     >;
   };
 
@@ -11785,6 +13947,25 @@ export namespace Prisma {
       _max?: NestedDecimalNullableFilter<$PrismaModel>;
     };
 
+  export type NestedEnumFxProviderFilter<$PrismaModel = never> = {
+    equals?: $Enums.FxProvider | EnumFxProviderFieldRefInput<$PrismaModel>;
+    in?: $Enums.FxProvider[] | ListEnumFxProviderFieldRefInput<$PrismaModel>;
+    notIn?: $Enums.FxProvider[] | ListEnumFxProviderFieldRefInput<$PrismaModel>;
+    not?: NestedEnumFxProviderFilter<$PrismaModel> | $Enums.FxProvider;
+  };
+
+  export type NestedEnumFxProviderWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.FxProvider | EnumFxProviderFieldRefInput<$PrismaModel>;
+    in?: $Enums.FxProvider[] | ListEnumFxProviderFieldRefInput<$PrismaModel>;
+    notIn?: $Enums.FxProvider[] | ListEnumFxProviderFieldRefInput<$PrismaModel>;
+    not?:
+      | NestedEnumFxProviderWithAggregatesFilter<$PrismaModel>
+      | $Enums.FxProvider;
+    _count?: NestedIntFilter<$PrismaModel>;
+    _min?: NestedEnumFxProviderFilter<$PrismaModel>;
+    _max?: NestedEnumFxProviderFilter<$PrismaModel>;
+  };
+
   export type OtpTokenCreateWithoutUserInput = {
     id?: string;
     tokenType: $Enums.TokenType;
@@ -11825,7 +14006,11 @@ export namespace Prisma {
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
     executedAt?: Date | string | null;
+    fxSnapshotId?: string | null;
     ledgerEntries?: LedgerEntryCreateNestedManyWithoutTransactionInput;
+    fxSnapshot?: FxSnapshotCreateNestedOneWithoutTransactionInput;
+    relatedTransaction?: TransactionCreateNestedOneWithoutOriginalInput;
+    original?: TransactionCreateNestedOneWithoutRelatedTransactionInput;
   };
 
   export type TransactionUncheckedCreateWithoutInitiatorInput = {
@@ -11839,7 +14024,11 @@ export namespace Prisma {
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
     executedAt?: Date | string | null;
+    fxSnapshotId?: string | null;
+    relatedTransactionId?: string | null;
     ledgerEntries?: LedgerEntryUncheckedCreateNestedManyWithoutTransactionInput;
+    fxSnapshot?: FxSnapshotUncheckedCreateNestedOneWithoutTransactionInput;
+    original?: TransactionUncheckedCreateNestedOneWithoutRelatedTransactionInput;
   };
 
   export type TransactionCreateOrConnectWithoutInitiatorInput = {
@@ -11945,6 +14134,8 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<'Transaction'> | Date | string;
     deletedAt?: DateTimeNullableFilter<'Transaction'> | Date | string | null;
     executedAt?: DateTimeNullableFilter<'Transaction'> | Date | string | null;
+    fxSnapshotId?: StringNullableFilter<'Transaction'> | string | null;
+    relatedTransactionId?: StringNullableFilter<'Transaction'> | string | null;
   };
 
   export type UserCreateWithoutTokensInput = {
@@ -12169,6 +14360,120 @@ export namespace Prisma {
     skipDuplicates?: boolean;
   };
 
+  export type FxSnapshotCreateWithoutTransactionInput = {
+    id?: string;
+    baseCurrency: $Enums.Currency;
+    quoteCurrency: $Enums.Currency;
+    rate: Decimal | DecimalJsLike | number | string;
+    timestamp?: Date | string;
+    provider: $Enums.FxProvider;
+  };
+
+  export type FxSnapshotUncheckedCreateWithoutTransactionInput = {
+    id?: string;
+    baseCurrency: $Enums.Currency;
+    quoteCurrency: $Enums.Currency;
+    rate: Decimal | DecimalJsLike | number | string;
+    timestamp?: Date | string;
+    provider: $Enums.FxProvider;
+  };
+
+  export type FxSnapshotCreateOrConnectWithoutTransactionInput = {
+    where: FxSnapshotWhereUniqueInput;
+    create: XOR<
+      FxSnapshotCreateWithoutTransactionInput,
+      FxSnapshotUncheckedCreateWithoutTransactionInput
+    >;
+  };
+
+  export type TransactionCreateWithoutOriginalInput = {
+    id?: string;
+    type: $Enums.TransactionType;
+    status?: $Enums.TransactionStatus;
+    initiatorType?: $Enums.InitiatorType | null;
+    idempotencyKey?: string | null;
+    metadata?: JsonNullValueInput | InputJsonValue;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    executedAt?: Date | string | null;
+    fxSnapshotId?: string | null;
+    initiator?: UserCreateNestedOneWithoutTransactionsInput;
+    ledgerEntries?: LedgerEntryCreateNestedManyWithoutTransactionInput;
+    fxSnapshot?: FxSnapshotCreateNestedOneWithoutTransactionInput;
+    relatedTransaction?: TransactionCreateNestedOneWithoutOriginalInput;
+  };
+
+  export type TransactionUncheckedCreateWithoutOriginalInput = {
+    id?: string;
+    type: $Enums.TransactionType;
+    status?: $Enums.TransactionStatus;
+    initiatorId?: string | null;
+    initiatorType?: $Enums.InitiatorType | null;
+    idempotencyKey?: string | null;
+    metadata?: JsonNullValueInput | InputJsonValue;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    executedAt?: Date | string | null;
+    fxSnapshotId?: string | null;
+    relatedTransactionId?: string | null;
+    ledgerEntries?: LedgerEntryUncheckedCreateNestedManyWithoutTransactionInput;
+    fxSnapshot?: FxSnapshotUncheckedCreateNestedOneWithoutTransactionInput;
+  };
+
+  export type TransactionCreateOrConnectWithoutOriginalInput = {
+    where: TransactionWhereUniqueInput;
+    create: XOR<
+      TransactionCreateWithoutOriginalInput,
+      TransactionUncheckedCreateWithoutOriginalInput
+    >;
+  };
+
+  export type TransactionCreateWithoutRelatedTransactionInput = {
+    id?: string;
+    type: $Enums.TransactionType;
+    status?: $Enums.TransactionStatus;
+    initiatorType?: $Enums.InitiatorType | null;
+    idempotencyKey?: string | null;
+    metadata?: JsonNullValueInput | InputJsonValue;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    executedAt?: Date | string | null;
+    fxSnapshotId?: string | null;
+    initiator?: UserCreateNestedOneWithoutTransactionsInput;
+    ledgerEntries?: LedgerEntryCreateNestedManyWithoutTransactionInput;
+    fxSnapshot?: FxSnapshotCreateNestedOneWithoutTransactionInput;
+    original?: TransactionCreateNestedOneWithoutRelatedTransactionInput;
+  };
+
+  export type TransactionUncheckedCreateWithoutRelatedTransactionInput = {
+    id?: string;
+    type: $Enums.TransactionType;
+    status?: $Enums.TransactionStatus;
+    initiatorId?: string | null;
+    initiatorType?: $Enums.InitiatorType | null;
+    idempotencyKey?: string | null;
+    metadata?: JsonNullValueInput | InputJsonValue;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    executedAt?: Date | string | null;
+    fxSnapshotId?: string | null;
+    ledgerEntries?: LedgerEntryUncheckedCreateNestedManyWithoutTransactionInput;
+    fxSnapshot?: FxSnapshotUncheckedCreateNestedOneWithoutTransactionInput;
+    original?: TransactionUncheckedCreateNestedOneWithoutRelatedTransactionInput;
+  };
+
+  export type TransactionCreateOrConnectWithoutRelatedTransactionInput = {
+    where: TransactionWhereUniqueInput;
+    create: XOR<
+      TransactionCreateWithoutRelatedTransactionInput,
+      TransactionUncheckedCreateWithoutRelatedTransactionInput
+    >;
+  };
+
   export type UserUpsertWithoutTransactionsInput = {
     update: XOR<
       UserUpdateWithoutTransactionsInput,
@@ -12233,6 +14538,229 @@ export namespace Prisma {
     >;
   };
 
+  export type FxSnapshotUpsertWithoutTransactionInput = {
+    update: XOR<
+      FxSnapshotUpdateWithoutTransactionInput,
+      FxSnapshotUncheckedUpdateWithoutTransactionInput
+    >;
+    create: XOR<
+      FxSnapshotCreateWithoutTransactionInput,
+      FxSnapshotUncheckedCreateWithoutTransactionInput
+    >;
+    where?: FxSnapshotWhereInput;
+  };
+
+  export type FxSnapshotUpdateToOneWithWhereWithoutTransactionInput = {
+    where?: FxSnapshotWhereInput;
+    data: XOR<
+      FxSnapshotUpdateWithoutTransactionInput,
+      FxSnapshotUncheckedUpdateWithoutTransactionInput
+    >;
+  };
+
+  export type FxSnapshotUpdateWithoutTransactionInput = {
+    id?: StringFieldUpdateOperationsInput | string;
+    baseCurrency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency;
+    quoteCurrency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency;
+    rate?:
+      | DecimalFieldUpdateOperationsInput
+      | Decimal
+      | DecimalJsLike
+      | number
+      | string;
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string;
+    provider?: EnumFxProviderFieldUpdateOperationsInput | $Enums.FxProvider;
+  };
+
+  export type FxSnapshotUncheckedUpdateWithoutTransactionInput = {
+    id?: StringFieldUpdateOperationsInput | string;
+    baseCurrency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency;
+    quoteCurrency?: EnumCurrencyFieldUpdateOperationsInput | $Enums.Currency;
+    rate?:
+      | DecimalFieldUpdateOperationsInput
+      | Decimal
+      | DecimalJsLike
+      | number
+      | string;
+    timestamp?: DateTimeFieldUpdateOperationsInput | Date | string;
+    provider?: EnumFxProviderFieldUpdateOperationsInput | $Enums.FxProvider;
+  };
+
+  export type TransactionUpsertWithoutOriginalInput = {
+    update: XOR<
+      TransactionUpdateWithoutOriginalInput,
+      TransactionUncheckedUpdateWithoutOriginalInput
+    >;
+    create: XOR<
+      TransactionCreateWithoutOriginalInput,
+      TransactionUncheckedCreateWithoutOriginalInput
+    >;
+    where?: TransactionWhereInput;
+  };
+
+  export type TransactionUpdateToOneWithWhereWithoutOriginalInput = {
+    where?: TransactionWhereInput;
+    data: XOR<
+      TransactionUpdateWithoutOriginalInput,
+      TransactionUncheckedUpdateWithoutOriginalInput
+    >;
+  };
+
+  export type TransactionUpdateWithoutOriginalInput = {
+    id?: StringFieldUpdateOperationsInput | string;
+    type?:
+      | EnumTransactionTypeFieldUpdateOperationsInput
+      | $Enums.TransactionType;
+    status?:
+      | EnumTransactionStatusFieldUpdateOperationsInput
+      | $Enums.TransactionStatus;
+    initiatorType?:
+      | NullableEnumInitiatorTypeFieldUpdateOperationsInput
+      | $Enums.InitiatorType
+      | null;
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null;
+    metadata?: JsonNullValueInput | InputJsonValue;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?:
+      | NullableDateTimeFieldUpdateOperationsInput
+      | Date
+      | string
+      | null;
+    executedAt?:
+      | NullableDateTimeFieldUpdateOperationsInput
+      | Date
+      | string
+      | null;
+    fxSnapshotId?: NullableStringFieldUpdateOperationsInput | string | null;
+    initiator?: UserUpdateOneWithoutTransactionsNestedInput;
+    ledgerEntries?: LedgerEntryUpdateManyWithoutTransactionNestedInput;
+    fxSnapshot?: FxSnapshotUpdateOneWithoutTransactionNestedInput;
+    relatedTransaction?: TransactionUpdateOneWithoutOriginalNestedInput;
+  };
+
+  export type TransactionUncheckedUpdateWithoutOriginalInput = {
+    id?: StringFieldUpdateOperationsInput | string;
+    type?:
+      | EnumTransactionTypeFieldUpdateOperationsInput
+      | $Enums.TransactionType;
+    status?:
+      | EnumTransactionStatusFieldUpdateOperationsInput
+      | $Enums.TransactionStatus;
+    initiatorId?: NullableStringFieldUpdateOperationsInput | string | null;
+    initiatorType?:
+      | NullableEnumInitiatorTypeFieldUpdateOperationsInput
+      | $Enums.InitiatorType
+      | null;
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null;
+    metadata?: JsonNullValueInput | InputJsonValue;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?:
+      | NullableDateTimeFieldUpdateOperationsInput
+      | Date
+      | string
+      | null;
+    executedAt?:
+      | NullableDateTimeFieldUpdateOperationsInput
+      | Date
+      | string
+      | null;
+    fxSnapshotId?: NullableStringFieldUpdateOperationsInput | string | null;
+    relatedTransactionId?:
+      | NullableStringFieldUpdateOperationsInput
+      | string
+      | null;
+    ledgerEntries?: LedgerEntryUncheckedUpdateManyWithoutTransactionNestedInput;
+    fxSnapshot?: FxSnapshotUncheckedUpdateOneWithoutTransactionNestedInput;
+  };
+
+  export type TransactionUpsertWithoutRelatedTransactionInput = {
+    update: XOR<
+      TransactionUpdateWithoutRelatedTransactionInput,
+      TransactionUncheckedUpdateWithoutRelatedTransactionInput
+    >;
+    create: XOR<
+      TransactionCreateWithoutRelatedTransactionInput,
+      TransactionUncheckedCreateWithoutRelatedTransactionInput
+    >;
+    where?: TransactionWhereInput;
+  };
+
+  export type TransactionUpdateToOneWithWhereWithoutRelatedTransactionInput = {
+    where?: TransactionWhereInput;
+    data: XOR<
+      TransactionUpdateWithoutRelatedTransactionInput,
+      TransactionUncheckedUpdateWithoutRelatedTransactionInput
+    >;
+  };
+
+  export type TransactionUpdateWithoutRelatedTransactionInput = {
+    id?: StringFieldUpdateOperationsInput | string;
+    type?:
+      | EnumTransactionTypeFieldUpdateOperationsInput
+      | $Enums.TransactionType;
+    status?:
+      | EnumTransactionStatusFieldUpdateOperationsInput
+      | $Enums.TransactionStatus;
+    initiatorType?:
+      | NullableEnumInitiatorTypeFieldUpdateOperationsInput
+      | $Enums.InitiatorType
+      | null;
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null;
+    metadata?: JsonNullValueInput | InputJsonValue;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?:
+      | NullableDateTimeFieldUpdateOperationsInput
+      | Date
+      | string
+      | null;
+    executedAt?:
+      | NullableDateTimeFieldUpdateOperationsInput
+      | Date
+      | string
+      | null;
+    fxSnapshotId?: NullableStringFieldUpdateOperationsInput | string | null;
+    initiator?: UserUpdateOneWithoutTransactionsNestedInput;
+    ledgerEntries?: LedgerEntryUpdateManyWithoutTransactionNestedInput;
+    fxSnapshot?: FxSnapshotUpdateOneWithoutTransactionNestedInput;
+    original?: TransactionUpdateOneWithoutRelatedTransactionNestedInput;
+  };
+
+  export type TransactionUncheckedUpdateWithoutRelatedTransactionInput = {
+    id?: StringFieldUpdateOperationsInput | string;
+    type?:
+      | EnumTransactionTypeFieldUpdateOperationsInput
+      | $Enums.TransactionType;
+    status?:
+      | EnumTransactionStatusFieldUpdateOperationsInput
+      | $Enums.TransactionStatus;
+    initiatorId?: NullableStringFieldUpdateOperationsInput | string | null;
+    initiatorType?:
+      | NullableEnumInitiatorTypeFieldUpdateOperationsInput
+      | $Enums.InitiatorType
+      | null;
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null;
+    metadata?: JsonNullValueInput | InputJsonValue;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?:
+      | NullableDateTimeFieldUpdateOperationsInput
+      | Date
+      | string
+      | null;
+    executedAt?:
+      | NullableDateTimeFieldUpdateOperationsInput
+      | Date
+      | string
+      | null;
+    fxSnapshotId?: NullableStringFieldUpdateOperationsInput | string | null;
+    ledgerEntries?: LedgerEntryUncheckedUpdateManyWithoutTransactionNestedInput;
+    fxSnapshot?: FxSnapshotUncheckedUpdateOneWithoutTransactionNestedInput;
+    original?: TransactionUncheckedUpdateOneWithoutRelatedTransactionNestedInput;
+  };
+
   export type TransactionCreateWithoutLedgerEntriesInput = {
     id?: string;
     type: $Enums.TransactionType;
@@ -12244,7 +14772,11 @@ export namespace Prisma {
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
     executedAt?: Date | string | null;
+    fxSnapshotId?: string | null;
     initiator?: UserCreateNestedOneWithoutTransactionsInput;
+    fxSnapshot?: FxSnapshotCreateNestedOneWithoutTransactionInput;
+    relatedTransaction?: TransactionCreateNestedOneWithoutOriginalInput;
+    original?: TransactionCreateNestedOneWithoutRelatedTransactionInput;
   };
 
   export type TransactionUncheckedCreateWithoutLedgerEntriesInput = {
@@ -12259,6 +14791,10 @@ export namespace Prisma {
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
     executedAt?: Date | string | null;
+    fxSnapshotId?: string | null;
+    relatedTransactionId?: string | null;
+    fxSnapshot?: FxSnapshotUncheckedCreateNestedOneWithoutTransactionInput;
+    original?: TransactionUncheckedCreateNestedOneWithoutRelatedTransactionInput;
   };
 
   export type TransactionCreateOrConnectWithoutLedgerEntriesInput = {
@@ -12345,7 +14881,11 @@ export namespace Prisma {
       | Date
       | string
       | null;
+    fxSnapshotId?: NullableStringFieldUpdateOperationsInput | string | null;
     initiator?: UserUpdateOneWithoutTransactionsNestedInput;
+    fxSnapshot?: FxSnapshotUpdateOneWithoutTransactionNestedInput;
+    relatedTransaction?: TransactionUpdateOneWithoutOriginalNestedInput;
+    original?: TransactionUpdateOneWithoutRelatedTransactionNestedInput;
   };
 
   export type TransactionUncheckedUpdateWithoutLedgerEntriesInput = {
@@ -12375,6 +14915,13 @@ export namespace Prisma {
       | Date
       | string
       | null;
+    fxSnapshotId?: NullableStringFieldUpdateOperationsInput | string | null;
+    relatedTransactionId?:
+      | NullableStringFieldUpdateOperationsInput
+      | string
+      | null;
+    fxSnapshot?: FxSnapshotUncheckedUpdateOneWithoutTransactionNestedInput;
+    original?: TransactionUncheckedUpdateOneWithoutRelatedTransactionNestedInput;
   };
 
   export type VirtualAccountUpsertWithoutLedgerEntriesInput = {
@@ -12437,6 +14984,139 @@ export namespace Prisma {
     idempotencyKey?: StringFieldUpdateOperationsInput | string;
   };
 
+  export type TransactionCreateWithoutFxSnapshotInput = {
+    id?: string;
+    type: $Enums.TransactionType;
+    status?: $Enums.TransactionStatus;
+    initiatorType?: $Enums.InitiatorType | null;
+    idempotencyKey?: string | null;
+    metadata?: JsonNullValueInput | InputJsonValue;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    executedAt?: Date | string | null;
+    fxSnapshotId?: string | null;
+    initiator?: UserCreateNestedOneWithoutTransactionsInput;
+    ledgerEntries?: LedgerEntryCreateNestedManyWithoutTransactionInput;
+    relatedTransaction?: TransactionCreateNestedOneWithoutOriginalInput;
+    original?: TransactionCreateNestedOneWithoutRelatedTransactionInput;
+  };
+
+  export type TransactionUncheckedCreateWithoutFxSnapshotInput = {
+    id?: string;
+    type: $Enums.TransactionType;
+    status?: $Enums.TransactionStatus;
+    initiatorId?: string | null;
+    initiatorType?: $Enums.InitiatorType | null;
+    idempotencyKey?: string | null;
+    metadata?: JsonNullValueInput | InputJsonValue;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    executedAt?: Date | string | null;
+    fxSnapshotId?: string | null;
+    relatedTransactionId?: string | null;
+    ledgerEntries?: LedgerEntryUncheckedCreateNestedManyWithoutTransactionInput;
+    original?: TransactionUncheckedCreateNestedOneWithoutRelatedTransactionInput;
+  };
+
+  export type TransactionCreateOrConnectWithoutFxSnapshotInput = {
+    where: TransactionWhereUniqueInput;
+    create: XOR<
+      TransactionCreateWithoutFxSnapshotInput,
+      TransactionUncheckedCreateWithoutFxSnapshotInput
+    >;
+  };
+
+  export type TransactionUpsertWithoutFxSnapshotInput = {
+    update: XOR<
+      TransactionUpdateWithoutFxSnapshotInput,
+      TransactionUncheckedUpdateWithoutFxSnapshotInput
+    >;
+    create: XOR<
+      TransactionCreateWithoutFxSnapshotInput,
+      TransactionUncheckedCreateWithoutFxSnapshotInput
+    >;
+    where?: TransactionWhereInput;
+  };
+
+  export type TransactionUpdateToOneWithWhereWithoutFxSnapshotInput = {
+    where?: TransactionWhereInput;
+    data: XOR<
+      TransactionUpdateWithoutFxSnapshotInput,
+      TransactionUncheckedUpdateWithoutFxSnapshotInput
+    >;
+  };
+
+  export type TransactionUpdateWithoutFxSnapshotInput = {
+    id?: StringFieldUpdateOperationsInput | string;
+    type?:
+      | EnumTransactionTypeFieldUpdateOperationsInput
+      | $Enums.TransactionType;
+    status?:
+      | EnumTransactionStatusFieldUpdateOperationsInput
+      | $Enums.TransactionStatus;
+    initiatorType?:
+      | NullableEnumInitiatorTypeFieldUpdateOperationsInput
+      | $Enums.InitiatorType
+      | null;
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null;
+    metadata?: JsonNullValueInput | InputJsonValue;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?:
+      | NullableDateTimeFieldUpdateOperationsInput
+      | Date
+      | string
+      | null;
+    executedAt?:
+      | NullableDateTimeFieldUpdateOperationsInput
+      | Date
+      | string
+      | null;
+    fxSnapshotId?: NullableStringFieldUpdateOperationsInput | string | null;
+    initiator?: UserUpdateOneWithoutTransactionsNestedInput;
+    ledgerEntries?: LedgerEntryUpdateManyWithoutTransactionNestedInput;
+    relatedTransaction?: TransactionUpdateOneWithoutOriginalNestedInput;
+    original?: TransactionUpdateOneWithoutRelatedTransactionNestedInput;
+  };
+
+  export type TransactionUncheckedUpdateWithoutFxSnapshotInput = {
+    id?: StringFieldUpdateOperationsInput | string;
+    type?:
+      | EnumTransactionTypeFieldUpdateOperationsInput
+      | $Enums.TransactionType;
+    status?:
+      | EnumTransactionStatusFieldUpdateOperationsInput
+      | $Enums.TransactionStatus;
+    initiatorId?: NullableStringFieldUpdateOperationsInput | string | null;
+    initiatorType?:
+      | NullableEnumInitiatorTypeFieldUpdateOperationsInput
+      | $Enums.InitiatorType
+      | null;
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null;
+    metadata?: JsonNullValueInput | InputJsonValue;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?:
+      | NullableDateTimeFieldUpdateOperationsInput
+      | Date
+      | string
+      | null;
+    executedAt?:
+      | NullableDateTimeFieldUpdateOperationsInput
+      | Date
+      | string
+      | null;
+    fxSnapshotId?: NullableStringFieldUpdateOperationsInput | string | null;
+    relatedTransactionId?:
+      | NullableStringFieldUpdateOperationsInput
+      | string
+      | null;
+    ledgerEntries?: LedgerEntryUncheckedUpdateManyWithoutTransactionNestedInput;
+    original?: TransactionUncheckedUpdateOneWithoutRelatedTransactionNestedInput;
+  };
+
   export type OtpTokenCreateManyUserInput = {
     id?: string;
     tokenType: $Enums.TokenType;
@@ -12456,6 +15136,8 @@ export namespace Prisma {
     updatedAt?: Date | string;
     deletedAt?: Date | string | null;
     executedAt?: Date | string | null;
+    fxSnapshotId?: string | null;
+    relatedTransactionId?: string | null;
   };
 
   export type OtpTokenUpdateWithoutUserInput = {
@@ -12508,7 +15190,11 @@ export namespace Prisma {
       | Date
       | string
       | null;
+    fxSnapshotId?: NullableStringFieldUpdateOperationsInput | string | null;
     ledgerEntries?: LedgerEntryUpdateManyWithoutTransactionNestedInput;
+    fxSnapshot?: FxSnapshotUpdateOneWithoutTransactionNestedInput;
+    relatedTransaction?: TransactionUpdateOneWithoutOriginalNestedInput;
+    original?: TransactionUpdateOneWithoutRelatedTransactionNestedInput;
   };
 
   export type TransactionUncheckedUpdateWithoutInitiatorInput = {
@@ -12537,7 +15223,14 @@ export namespace Prisma {
       | Date
       | string
       | null;
+    fxSnapshotId?: NullableStringFieldUpdateOperationsInput | string | null;
+    relatedTransactionId?:
+      | NullableStringFieldUpdateOperationsInput
+      | string
+      | null;
     ledgerEntries?: LedgerEntryUncheckedUpdateManyWithoutTransactionNestedInput;
+    fxSnapshot?: FxSnapshotUncheckedUpdateOneWithoutTransactionNestedInput;
+    original?: TransactionUncheckedUpdateOneWithoutRelatedTransactionNestedInput;
   };
 
   export type TransactionUncheckedUpdateManyWithoutInitiatorInput = {
@@ -12564,6 +15257,11 @@ export namespace Prisma {
     executedAt?:
       | NullableDateTimeFieldUpdateOperationsInput
       | Date
+      | string
+      | null;
+    fxSnapshotId?: NullableStringFieldUpdateOperationsInput | string | null;
+    relatedTransactionId?:
+      | NullableStringFieldUpdateOperationsInput
       | string
       | null;
   };
