@@ -12,8 +12,6 @@ import { zodToPrismaSelect } from '@/infrastructure/prisma/utils/prisma';
 export class LedgerEntryRepository {
   constructor(private readonly prismaService: PrismaService) {}
 
-  #selectDetails = zodToPrismaSelect(LedgerEntryDtoSchema);
-
   async create(
     data: CreateLedgerEntryInputSchema,
     tx?: Prisma.TransactionClient,
