@@ -41,4 +41,18 @@ export class TransactionRepository {
       select: this.#detailSelect,
     });
   }
+
+  update(
+    id: string,
+    data: Partial<Prisma.TransactionUpdateInput>,
+    tx?: Prisma.TransactionClient,
+  ) {
+    return (tx ? tx.transaction : this.#Transaction).update({
+      where: {
+        id,
+      },
+      data,
+      select: zodToPrismaSelect(TransactionDtoSchema),
+    });
+  }
 }

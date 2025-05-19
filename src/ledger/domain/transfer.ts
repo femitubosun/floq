@@ -89,6 +89,14 @@ export class Transfer {
         tx,
       );
 
+      await txService.update(
+        transaction.id,
+        {
+          fxSnapshotId: rateSnapShot.id,
+        },
+        tx,
+      );
+
       const { creditAmount, debitAmount } = await ledgerUseCase.execute(
         {
           fromAccountId: this.from.id,

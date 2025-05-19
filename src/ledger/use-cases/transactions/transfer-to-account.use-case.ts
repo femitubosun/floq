@@ -25,7 +25,6 @@ export class TransferToAccountUseCase {
   async execute(input: TransferToAccountInputDto) {
     const {
       amount,
-      currency,
       idempotencyKey,
       toAccountId,
       fromAccountId,
@@ -56,7 +55,7 @@ export class TransferToAccountUseCase {
     const transfer = Transfer.create({
       from: fromAccount,
       to: toAccount,
-      amount: new Money(new FloqDecimal(amount), currency),
+      amount: new Money(new FloqDecimal(amount), fromAccount.currency),
     });
 
     const { transaction: createdTransaction } = await transfer.commit({

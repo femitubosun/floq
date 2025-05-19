@@ -1,5 +1,4 @@
 import {
-  CurrencySchema,
   InitiatorTypeSchema,
   TransactionSchema,
   TransactionStatusSchema,
@@ -38,7 +37,6 @@ export const TransferToAccountInputSchema = z.object({
   fromAccountId: z.string().cuid(),
   toAccountId: z.string().cuid(),
   amount: FloqClientAmount,
-  currency: CurrencySchema,
   idempotencyKey: z.string().uuid(),
   initiatorId: z.string().cuid().optional(),
   initiatorType: InitiatorTypeSchema,
