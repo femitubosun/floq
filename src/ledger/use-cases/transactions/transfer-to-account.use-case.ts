@@ -3,25 +3,23 @@ import { CacheService } from '@/infrastructure/cache/services/cache.service';
 import { TransferToAccountInputDto } from '@/ledger/__defs__/transaction.dto';
 import { TransactionService } from '@/ledger/services/transaction.service';
 import { VirtualAccountService } from '@/ledger/services/virtual-account.service';
-import {
-  BadRequestException,
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
-} from '@nestjs/common';
-import { CreateLedgerEntriesForTransactionsUseCase } from './create-ledger-entries.use-case';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { CreateLedgerEntriesForTransactionUseCase } from './create-ledger-entries.use-case';
 import { PrismaService } from '@/infrastructure/prisma/prisma.service';
 import { VirtualAccountsCacheKeys } from '@/ledger/utils';
 import { FloqDecimal } from '@/common/__defs__';
+import { FxService } from '@/fx/services/fx.service';
+import { Transfer } from '@/ledger/domain/transfer';
 
 @Injectable()
 export class TransferToAccountUseCase {
   constructor(
     private readonly vaService: VirtualAccountService,
     private readonly txnService: TransactionService,
-    private readonly crLedgerEntriesUsc: CreateLedgerEntriesForTransactionsUseCase,
+    private readonly crLedgerEntriesUsc: CreateLedgerEntriesForTransactionUseCase,
     private readonly cacheService: CacheService,
     private readonly prismaService: PrismaService,
+    private readonly fxService: FxService,
   ) {}
 
   async execute(input: TransferToAccountInputDto) {
@@ -55,59 +53,23 @@ export class TransferToAccountUseCase {
       throw new NotFoundException('To Account not found');
     }
 
-    const amountToTransfer = new Money(new FloqDecimal(amount), currency);
+    const transfer = Transfer.create({
+      from: fromAccount,
+      to: toAccount,
+      amount: new Money(new FloqDecimal(amount), currency),
+    });
 
-    const fromAccountBalance = new Money(
-      fromAccount.balance as FloqDecimal,
-      fromAccount.currency,
-    );
-
-    if (fromAccountBalance.isLessThan(amountToTransfer)) {
-      throw new BadRequestException('Insufficient balance');
-    }
-
-    let transactionId: string = '';
-
-    await this.prismaService.runInTransaction(async (tx) => {
-      const transaction = await this.txnService.createTransaction(
-        {
-          type: 'TRANSFER',
-          idempotencyKey,
-          initiatorId,
-          initiatorType,
-          status: 'COMMITTED',
-        },
-        tx,
-      );
-      transactionId = transaction.id;
-
-      const { creditAmount, debitAmount } =
-        await this.crLedgerEntriesUsc.execute(
-          {
-            toAccountId,
-            fromAccountId,
-            transactionId: transaction.id,
-            amount: amountToTransfer,
-          },
-          tx,
-        );
-
-      await Promise.all([
-        this.vaService.updateBalance(
-          {
-            id: fromAccount.id,
-            amount: debitAmount.negated(),
-          },
-          tx,
-        ),
-        this.vaService.updateBalance(
-          {
-            id: toAccount.id,
-            amount: creditAmount,
-          },
-          tx,
-        ),
-      ]);
+    const { transaction: createdTransaction } = await transfer.commit({
+      idempotencyKey,
+      initiatorId,
+      initiatorType,
+      deps: {
+        ledgerUseCase: this.crLedgerEntriesUsc,
+        prisma: this.prismaService,
+        txService: this.txnService,
+        vaService: this.vaService,
+        fxService: this.fxService,
+      },
     });
 
     await this.cacheService.invalidateByTag([
@@ -116,10 +78,6 @@ export class TransferToAccountUseCase {
       VirtualAccountsCacheKeys.getDomainPrefix(toAccountId),
     ]);
 
-    if (!transactionId) {
-      throw new InternalServerErrorException('Failed to create transaction');
-    }
-
-    return this.txnService.findById(transactionId);
+    return this.txnService.findById(createdTransaction.id);
   }
 }

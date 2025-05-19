@@ -5,7 +5,6 @@ import {
   UpdateVirtualAccountDto,
   VirtualAccountDetailOutputDto,
   VirtualAccountListingInput,
-  VirtualAccountListingOutput,
 } from '../__defs__/accounts.dto';
 import { Prisma } from '@/infrastructure/prisma/generated';
 import { Money } from '@/common/objects/money';
@@ -26,9 +25,7 @@ export class VirtualAccountService {
     return this.repo.createAccount(input);
   }
 
-  async list(
-    input: VirtualAccountListingInput,
-  ): Promise<VirtualAccountListingOutput> {
+  async list(input: VirtualAccountListingInput) {
     return this.repo.list(input);
   }
 

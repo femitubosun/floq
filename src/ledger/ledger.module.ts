@@ -10,9 +10,10 @@ import { LedgerEntryRepository } from '@/ledger/repositories/ledger-entry.reposi
 import { TransactionRepository } from '@/ledger/repositories/transcation.repository';
 import { LedgerEntryService } from '@/ledger/services/ledger-entry.service';
 import { TransactionService } from '@/ledger/services/transaction.service';
-import { CreateLedgerEntriesForTransactionsUseCase } from '@/ledger/use-cases/transactions/create-ledger-entries.use-case';
+import { CreateLedgerEntriesForTransactionUseCase } from '@/ledger/use-cases/transactions/create-ledger-entries.use-case';
 import { TransferToAccountUseCase } from '@/ledger/use-cases/transactions/transfer-to-account.use-case';
 import { TransfersController } from './controller/transfers.controller';
+import { FxModule } from '@/fx/fx.module';
 
 const REPOSITORIES = [
   VirtualAccountRepository,
@@ -29,11 +30,12 @@ const USE_CASES = [
   ListVirtualAccountsUseCase,
   GetVirtualAccountByIdUseCase,
   UpdateVirtualAccountUseCase,
-  CreateLedgerEntriesForTransactionsUseCase,
+  CreateLedgerEntriesForTransactionUseCase,
   TransferToAccountUseCase,
 ];
 
 @Module({
+  imports: [FxModule],
   providers: [...REPOSITORIES, ...MODEL_SERVICES, ...USE_CASES],
   controllers: [AccountsController, TransfersController],
 })

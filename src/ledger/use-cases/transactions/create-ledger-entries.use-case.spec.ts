@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CreateLedgerEntriesForTransactionsUseCase } from './create-ledger-entries.use-case';
+import { CreateLedgerEntriesForTransactionUseCase } from './create-ledger-entries.use-case';
 import { LedgerEntryService } from '@/ledger/services/ledger-entry.service';
 import {
   CreateLedgerEntriesForTransactionInputSchema,
@@ -13,7 +13,7 @@ import { FloqDecimal } from '@/common/__defs__';
 jest.mock('@/ledger/services/ledger-entry.service');
 
 describe('CreateLedgerEntriesForTransactionsUseCase', () => {
-  let useCase: CreateLedgerEntriesForTransactionsUseCase;
+  let useCase: CreateLedgerEntriesForTransactionUseCase;
   let mockLedgerEntryService: Mocked<LedgerEntryService>;
 
   const mockTxClient = {} as unknown as Prisma.TransactionClient;
@@ -37,14 +37,11 @@ describe('CreateLedgerEntriesForTransactionsUseCase', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        CreateLedgerEntriesForTransactionsUseCase,
-        LedgerEntryService,
-      ],
+      providers: [CreateLedgerEntriesForTransactionUseCase, LedgerEntryService],
     }).compile();
 
-    useCase = module.get<CreateLedgerEntriesForTransactionsUseCase>(
-      CreateLedgerEntriesForTransactionsUseCase,
+    useCase = module.get<CreateLedgerEntriesForTransactionUseCase>(
+      CreateLedgerEntriesForTransactionUseCase,
     );
     mockLedgerEntryService =
       module.get<Mocked<LedgerEntryService>>(LedgerEntryService);

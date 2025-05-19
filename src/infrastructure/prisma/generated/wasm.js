@@ -156,7 +156,8 @@ exports.Prisma.TransactionScalarFieldEnum = {
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt',
   executedAt: 'executedAt',
-  fxSnapshotId: 'fxSnapshotId'
+  fxSnapshotId: 'fxSnapshotId',
+  relatedTransactionId: 'relatedTransactionId'
 };
 
 exports.Prisma.LedgerEntryScalarFieldEnum = {

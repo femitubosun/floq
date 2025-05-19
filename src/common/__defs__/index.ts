@@ -25,3 +25,8 @@ export type MessageResponseSchema = z.infer<typeof MessageResponseSchema>;
 export class MessageResponseDto extends createZodDto(MessageResponseSchema) {}
 
 export class FloqDecimal extends Decimal {}
+
+export const FloqClientAmount = z
+  .string()
+  .regex(/^\d+(\.\d+)?$/)
+  .transform((val) => new FloqDecimal(val));

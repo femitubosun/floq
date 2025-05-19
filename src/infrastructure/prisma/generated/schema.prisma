@@ -118,6 +118,11 @@ model Transaction {
 
   fxSnapshotId String?     @unique
   fxSnapshot   FxSnapshot? @relation()
+
+  relatedTransactionId String?      @unique
+  relatedTransaction   Transaction? @relation("RelatedTransaction", fields: [relatedTransactionId], references: [id], onDelete: Cascade)
+
+  original Transaction? @relation("RelatedTransaction")
 }
 
 enum EntryType {

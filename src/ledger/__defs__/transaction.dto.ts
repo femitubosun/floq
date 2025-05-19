@@ -6,6 +6,7 @@ import {
 } from '@/infrastructure/prisma/__defs__';
 import { createZodDto } from 'nestjs-zod';
 import { z } from 'zod';
+import { FloqClientAmount } from '@/common/__defs__';
 
 export const TransactionDtoSchema = TransactionSchema.omit({
   idempotencyKey: true,
@@ -19,6 +20,7 @@ export const CreateTransactionInputSchema = TransactionSchema.pick({
   initiatorId: true,
   initiatorType: true,
   idempotencyKey: true,
+  relatedTransactionId: true,
 }).extend({
   status: TransactionStatusSchema.optional(),
 });
@@ -35,7 +37,7 @@ export class CreateTransactionInputDto extends createZodDto(
 export const TransferToAccountInputSchema = z.object({
   fromAccountId: z.string().cuid(),
   toAccountId: z.string().cuid(),
-  amount: z.number().positive(),
+  amount: FloqClientAmount,
   currency: CurrencySchema,
   idempotencyKey: z.string().uuid(),
   initiatorId: z.string().cuid().optional(),

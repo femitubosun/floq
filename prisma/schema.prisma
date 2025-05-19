@@ -65,7 +65,7 @@ model VirtualAccount {
 
   name     String
   currency Currency
-  balance  Decimal @default(0.0) @db.Decimal(20, 8)
+  balance  Decimal  @default(0.0) @db.Decimal(20, 8)
 
   ledgerEntries LedgerEntry[]
 
@@ -116,9 +116,13 @@ model Transaction {
 
   ledgerEntries LedgerEntry[]
 
-  fxSnapshotId String? @unique
+  fxSnapshotId String?     @unique
   fxSnapshot   FxSnapshot? @relation()
 
+  relatedTransactionId String?      @unique
+  relatedTransaction   Transaction? @relation("RelatedTransaction", fields: [relatedTransactionId], references: [id], onDelete: Cascade)
+
+  original Transaction? @relation("RelatedTransaction")
 }
 
 enum EntryType {
@@ -156,14 +160,15 @@ enum FxProvider {
 }
 
 model FxSnapshot {
-  id             String   @id @default(uuid())
-  baseCurrency   Currency   
-  quoteCurrency  Currency   
-  rate           Decimal  
-  timestamp      DateTime @default(now())
-  provider         FxProvider 
+  id            String     @id @default(uuid())
+  baseCurrency  Currency
+  quoteCurrency Currency
+  rate          Decimal
+  timestamp     DateTime   @default(now())
+  provider      FxProvider
 
-  transactionId  String    @unique
-  transaction    Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+  transactionId String      @unique
+  transaction   Transaction @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+
   @@index([baseCurrency, quoteCurrency, timestamp])
 }

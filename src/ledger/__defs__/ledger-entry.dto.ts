@@ -25,7 +25,8 @@ export const CreateLedgerEntriesForTransactionInputSchema = z.object({
   transactionId: z.string(),
   fromAccountId: z.string(),
   toAccountId: z.string(),
-  amount: z.instanceof(Money),
+  amountToTransfer: z.instanceof(Money),
+  amountToReceive: z.instanceof(Money),
 });
 
 export type CreateLedgerEntriesForTransactionInputSchema = z.infer<

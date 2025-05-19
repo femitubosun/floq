@@ -5716,6 +5716,7 @@ export namespace Prisma {
     deletedAt: Date | null;
     executedAt: Date | null;
     fxSnapshotId: string | null;
+    relatedTransactionId: string | null;
   };
 
   export type TransactionMaxAggregateOutputType = {
@@ -5730,6 +5731,7 @@ export namespace Prisma {
     deletedAt: Date | null;
     executedAt: Date | null;
     fxSnapshotId: string | null;
+    relatedTransactionId: string | null;
   };
 
   export type TransactionCountAggregateOutputType = {
@@ -5745,6 +5747,7 @@ export namespace Prisma {
     deletedAt: number;
     executedAt: number;
     fxSnapshotId: number;
+    relatedTransactionId: number;
     _all: number;
   };
 
@@ -5760,6 +5763,7 @@ export namespace Prisma {
     deletedAt?: true;
     executedAt?: true;
     fxSnapshotId?: true;
+    relatedTransactionId?: true;
   };
 
   export type TransactionMaxAggregateInputType = {
@@ -5774,6 +5778,7 @@ export namespace Prisma {
     deletedAt?: true;
     executedAt?: true;
     fxSnapshotId?: true;
+    relatedTransactionId?: true;
   };
 
   export type TransactionCountAggregateInputType = {
@@ -5789,6 +5794,7 @@ export namespace Prisma {
     deletedAt?: true;
     executedAt?: true;
     fxSnapshotId?: true;
+    relatedTransactionId?: true;
     _all?: true;
   };
 
@@ -5883,6 +5889,7 @@ export namespace Prisma {
     deletedAt: Date | null;
     executedAt: Date | null;
     fxSnapshotId: string | null;
+    relatedTransactionId: string | null;
     _count: TransactionCountAggregateOutputType | null;
     _min: TransactionMinAggregateOutputType | null;
     _max: TransactionMaxAggregateOutputType | null;
@@ -5918,9 +5925,14 @@ export namespace Prisma {
       deletedAt?: boolean;
       executedAt?: boolean;
       fxSnapshotId?: boolean;
+      relatedTransactionId?: boolean;
       initiator?: boolean | Transaction$initiatorArgs<ExtArgs>;
       ledgerEntries?: boolean | Transaction$ledgerEntriesArgs<ExtArgs>;
       fxSnapshot?: boolean | Transaction$fxSnapshotArgs<ExtArgs>;
+      relatedTransaction?:
+        | boolean
+        | Transaction$relatedTransactionArgs<ExtArgs>;
+      original?: boolean | Transaction$originalArgs<ExtArgs>;
       _count?: boolean | TransactionCountOutputTypeDefaultArgs<ExtArgs>;
     },
     ExtArgs['result']['transaction']
@@ -5942,7 +5954,11 @@ export namespace Prisma {
       deletedAt?: boolean;
       executedAt?: boolean;
       fxSnapshotId?: boolean;
+      relatedTransactionId?: boolean;
       initiator?: boolean | Transaction$initiatorArgs<ExtArgs>;
+      relatedTransaction?:
+        | boolean
+        | Transaction$relatedTransactionArgs<ExtArgs>;
     },
     ExtArgs['result']['transaction']
   >;
@@ -5963,7 +5979,11 @@ export namespace Prisma {
       deletedAt?: boolean;
       executedAt?: boolean;
       fxSnapshotId?: boolean;
+      relatedTransactionId?: boolean;
       initiator?: boolean | Transaction$initiatorArgs<ExtArgs>;
+      relatedTransaction?:
+        | boolean
+        | Transaction$relatedTransactionArgs<ExtArgs>;
     },
     ExtArgs['result']['transaction']
   >;
@@ -5981,6 +6001,7 @@ export namespace Prisma {
     deletedAt?: boolean;
     executedAt?: boolean;
     fxSnapshotId?: boolean;
+    relatedTransactionId?: boolean;
   };
 
   export type TransactionOmit<
@@ -5997,7 +6018,8 @@ export namespace Prisma {
     | 'updatedAt'
     | 'deletedAt'
     | 'executedAt'
-    | 'fxSnapshotId',
+    | 'fxSnapshotId'
+    | 'relatedTransactionId',
     ExtArgs['result']['transaction']
   >;
   export type TransactionInclude<
@@ -6006,17 +6028,21 @@ export namespace Prisma {
     initiator?: boolean | Transaction$initiatorArgs<ExtArgs>;
     ledgerEntries?: boolean | Transaction$ledgerEntriesArgs<ExtArgs>;
     fxSnapshot?: boolean | Transaction$fxSnapshotArgs<ExtArgs>;
+    relatedTransaction?: boolean | Transaction$relatedTransactionArgs<ExtArgs>;
+    original?: boolean | Transaction$originalArgs<ExtArgs>;
     _count?: boolean | TransactionCountOutputTypeDefaultArgs<ExtArgs>;
   };
   export type TransactionIncludeCreateManyAndReturn<
     ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
   > = {
     initiator?: boolean | Transaction$initiatorArgs<ExtArgs>;
+    relatedTransaction?: boolean | Transaction$relatedTransactionArgs<ExtArgs>;
   };
   export type TransactionIncludeUpdateManyAndReturn<
     ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
   > = {
     initiator?: boolean | Transaction$initiatorArgs<ExtArgs>;
+    relatedTransaction?: boolean | Transaction$relatedTransactionArgs<ExtArgs>;
   };
 
   export type $TransactionPayload<
@@ -6027,6 +6053,8 @@ export namespace Prisma {
       initiator: Prisma.$UserPayload<ExtArgs> | null;
       ledgerEntries: Prisma.$LedgerEntryPayload<ExtArgs>[];
       fxSnapshot: Prisma.$FxSnapshotPayload<ExtArgs> | null;
+      relatedTransaction: Prisma.$TransactionPayload<ExtArgs> | null;
+      original: Prisma.$TransactionPayload<ExtArgs> | null;
     };
     scalars: $Extensions.GetPayloadResult<
       {
@@ -6042,6 +6070,7 @@ export namespace Prisma {
         deletedAt: Date | null;
         executedAt: Date | null;
         fxSnapshotId: string | null;
+        relatedTransactionId: string | null;
       },
       ExtArgs['result']['transaction']
     >;
@@ -6629,6 +6658,34 @@ export namespace Prisma {
       ExtArgs,
       GlobalOmitOptions
     >;
+    relatedTransaction<
+      T extends Transaction$relatedTransactionArgs<ExtArgs> = {},
+    >(
+      args?: Subset<T, Transaction$relatedTransactionArgs<ExtArgs>>,
+    ): Prisma__TransactionClient<
+      $Result.GetResult<
+        Prisma.$TransactionPayload<ExtArgs>,
+        T,
+        'findUniqueOrThrow',
+        GlobalOmitOptions
+      > | null,
+      null,
+      ExtArgs,
+      GlobalOmitOptions
+    >;
+    original<T extends Transaction$originalArgs<ExtArgs> = {}>(
+      args?: Subset<T, Transaction$originalArgs<ExtArgs>>,
+    ): Prisma__TransactionClient<
+      $Result.GetResult<
+        Prisma.$TransactionPayload<ExtArgs>,
+        T,
+        'findUniqueOrThrow',
+        GlobalOmitOptions
+      > | null,
+      null,
+      ExtArgs,
+      GlobalOmitOptions
+    >;
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6681,6 +6738,7 @@ export namespace Prisma {
     readonly deletedAt: FieldRef<'Transaction', 'DateTime'>;
     readonly executedAt: FieldRef<'Transaction', 'DateTime'>;
     readonly fxSnapshotId: FieldRef<'Transaction', 'String'>;
+    readonly relatedTransactionId: FieldRef<'Transaction', 'String'>;
   }
 
   // Custom InputTypes
@@ -7183,6 +7241,48 @@ export namespace Prisma {
      */
     include?: FxSnapshotInclude<ExtArgs> | null;
     where?: FxSnapshotWhereInput;
+  };
+
+  /**
+   * Transaction.relatedTransaction
+   */
+  export type Transaction$relatedTransactionArgs<
+    ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+  > = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: TransactionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: TransactionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionInclude<ExtArgs> | null;
+    where?: TransactionWhereInput;
+  };
+
+  /**
+   * Transaction.original
+   */
+  export type Transaction$originalArgs<
+    ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs,
+  > = {
+    /**
+     * Select specific fields to fetch from the Transaction
+     */
+    select?: TransactionSelect<ExtArgs> | null;
+    /**
+     * Omit specific fields from the Transaction
+     */
+    omit?: TransactionOmit<ExtArgs> | null;
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TransactionInclude<ExtArgs> | null;
+    where?: TransactionWhereInput;
   };
 
   /**
@@ -10099,6 +10199,7 @@ export namespace Prisma {
     deletedAt: 'deletedAt';
     executedAt: 'executedAt';
     fxSnapshotId: 'fxSnapshotId';
+    relatedTransactionId: 'relatedTransactionId';
   };
 
   export type TransactionScalarFieldEnum =
@@ -10623,11 +10724,20 @@ export namespace Prisma {
     deletedAt?: DateTimeNullableFilter<'Transaction'> | Date | string | null;
     executedAt?: DateTimeNullableFilter<'Transaction'> | Date | string | null;
     fxSnapshotId?: StringNullableFilter<'Transaction'> | string | null;
+    relatedTransactionId?: StringNullableFilter<'Transaction'> | string | null;
     initiator?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null;
     ledgerEntries?: LedgerEntryListRelationFilter;
     fxSnapshot?: XOR<
       FxSnapshotNullableScalarRelationFilter,
       FxSnapshotWhereInput
+    > | null;
+    relatedTransaction?: XOR<
+      TransactionNullableScalarRelationFilter,
+      TransactionWhereInput
+    > | null;
+    original?: XOR<
+      TransactionNullableScalarRelationFilter,
+      TransactionWhereInput
     > | null;
   };
 
@@ -10644,9 +10754,12 @@ export namespace Prisma {
     deletedAt?: SortOrderInput | SortOrder;
     executedAt?: SortOrderInput | SortOrder;
     fxSnapshotId?: SortOrderInput | SortOrder;
+    relatedTransactionId?: SortOrderInput | SortOrder;
     initiator?: UserOrderByWithRelationInput;
     ledgerEntries?: LedgerEntryOrderByRelationAggregateInput;
     fxSnapshot?: FxSnapshotOrderByWithRelationInput;
+    relatedTransaction?: TransactionOrderByWithRelationInput;
+    original?: TransactionOrderByWithRelationInput;
   };
 
   export type TransactionWhereUniqueInput = Prisma.AtLeast<
@@ -10654,6 +10767,7 @@ export namespace Prisma {
       id?: string;
       idempotencyKey?: string;
       fxSnapshotId?: string;
+      relatedTransactionId?: string;
       AND?: TransactionWhereInput | TransactionWhereInput[];
       OR?: TransactionWhereInput[];
       NOT?: TransactionWhereInput | TransactionWhereInput[];
@@ -10677,8 +10791,16 @@ export namespace Prisma {
         FxSnapshotNullableScalarRelationFilter,
         FxSnapshotWhereInput
       > | null;
+      relatedTransaction?: XOR<
+        TransactionNullableScalarRelationFilter,
+        TransactionWhereInput
+      > | null;
+      original?: XOR<
+        TransactionNullableScalarRelationFilter,
+        TransactionWhereInput
+      > | null;
     },
-    'id' | 'idempotencyKey' | 'fxSnapshotId'
+    'id' | 'idempotencyKey' | 'fxSnapshotId' | 'relatedTransactionId'
   >;
 
   export type TransactionOrderByWithAggregationInput = {
@@ -10694,6 +10816,7 @@ export namespace Prisma {
     deletedAt?: SortOrderInput | SortOrder;
     executedAt?: SortOrderInput | SortOrder;
     fxSnapshotId?: SortOrderInput | SortOrder;
+    relatedTransactionId?: SortOrderInput | SortOrder;
     _count?: TransactionCountOrderByAggregateInput;
     _max?: TransactionMaxOrderByAggregateInput;
     _min?: TransactionMinOrderByAggregateInput;
@@ -10740,6 +10863,10 @@ export namespace Prisma {
       | string
       | null;
     fxSnapshotId?:
+      | StringNullableWithAggregatesFilter<'Transaction'>
+      | string
+      | null;
+    relatedTransactionId?:
       | StringNullableWithAggregatesFilter<'Transaction'>
       | string
       | null;
@@ -11232,6 +11359,8 @@ export namespace Prisma {
     initiator?: UserCreateNestedOneWithoutTransactionsInput;
     ledgerEntries?: LedgerEntryCreateNestedManyWithoutTransactionInput;
     fxSnapshot?: FxSnapshotCreateNestedOneWithoutTransactionInput;
+    relatedTransaction?: TransactionCreateNestedOneWithoutOriginalInput;
+    original?: TransactionCreateNestedOneWithoutRelatedTransactionInput;
   };
 
   export type TransactionUncheckedCreateInput = {
@@ -11247,8 +11376,10 @@ export namespace Prisma {
     deletedAt?: Date | string | null;
     executedAt?: Date | string | null;
     fxSnapshotId?: string | null;
+    relatedTransactionId?: string | null;
     ledgerEntries?: LedgerEntryUncheckedCreateNestedManyWithoutTransactionInput;
     fxSnapshot?: FxSnapshotUncheckedCreateNestedOneWithoutTransactionInput;
+    original?: TransactionUncheckedCreateNestedOneWithoutRelatedTransactionInput;
   };
 
   export type TransactionUpdateInput = {
@@ -11281,6 +11412,8 @@ export namespace Prisma {
     initiator?: UserUpdateOneWithoutTransactionsNestedInput;
     ledgerEntries?: LedgerEntryUpdateManyWithoutTransactionNestedInput;
     fxSnapshot?: FxSnapshotUpdateOneWithoutTransactionNestedInput;
+    relatedTransaction?: TransactionUpdateOneWithoutOriginalNestedInput;
+    original?: TransactionUpdateOneWithoutRelatedTransactionNestedInput;
   };
 
   export type TransactionUncheckedUpdateInput = {
@@ -11311,8 +11444,13 @@ export namespace Prisma {
       | string
       | null;
     fxSnapshotId?: NullableStringFieldUpdateOperationsInput | string | null;
+    relatedTransactionId?:
+      | NullableStringFieldUpdateOperationsInput
+      | string
+      | null;
     ledgerEntries?: LedgerEntryUncheckedUpdateManyWithoutTransactionNestedInput;
     fxSnapshot?: FxSnapshotUncheckedUpdateOneWithoutTransactionNestedInput;
+    original?: TransactionUncheckedUpdateOneWithoutRelatedTransactionNestedInput;
   };
 
   export type TransactionCreateManyInput = {
@@ -11328,6 +11466,7 @@ export namespace Prisma {
     deletedAt?: Date | string | null;
     executedAt?: Date | string | null;
     fxSnapshotId?: string | null;
+    relatedTransactionId?: string | null;
   };
 
   export type TransactionUpdateManyMutationInput = {
@@ -11387,6 +11526,10 @@ export namespace Prisma {
       | string
       | null;
     fxSnapshotId?: NullableStringFieldUpdateOperationsInput | string | null;
+    relatedTransactionId?:
+      | NullableStringFieldUpdateOperationsInput
+      | string
+      | null;
   };
 
   export type LedgerEntryCreateInput = {
@@ -12135,6 +12278,11 @@ export namespace Prisma {
     isNot?: FxSnapshotWhereInput | null;
   };
 
+  export type TransactionNullableScalarRelationFilter = {
+    is?: TransactionWhereInput | null;
+    isNot?: TransactionWhereInput | null;
+  };
+
   export type TransactionCountOrderByAggregateInput = {
     id?: SortOrder;
     type?: SortOrder;
@@ -12148,6 +12296,7 @@ export namespace Prisma {
     deletedAt?: SortOrder;
     executedAt?: SortOrder;
     fxSnapshotId?: SortOrder;
+    relatedTransactionId?: SortOrder;
   };
 
   export type TransactionMaxOrderByAggregateInput = {
@@ -12162,6 +12311,7 @@ export namespace Prisma {
     deletedAt?: SortOrder;
     executedAt?: SortOrder;
     fxSnapshotId?: SortOrder;
+    relatedTransactionId?: SortOrder;
   };
 
   export type TransactionMinOrderByAggregateInput = {
@@ -12176,6 +12326,7 @@ export namespace Prisma {
     deletedAt?: SortOrder;
     executedAt?: SortOrder;
     fxSnapshotId?: SortOrder;
+    relatedTransactionId?: SortOrder;
   };
 
   export type EnumTransactionTypeWithAggregatesFilter<$PrismaModel = never> = {
@@ -12883,6 +13034,24 @@ export namespace Prisma {
     connect?: FxSnapshotWhereUniqueInput;
   };
 
+  export type TransactionCreateNestedOneWithoutOriginalInput = {
+    create?: XOR<
+      TransactionCreateWithoutOriginalInput,
+      TransactionUncheckedCreateWithoutOriginalInput
+    >;
+    connectOrCreate?: TransactionCreateOrConnectWithoutOriginalInput;
+    connect?: TransactionWhereUniqueInput;
+  };
+
+  export type TransactionCreateNestedOneWithoutRelatedTransactionInput = {
+    create?: XOR<
+      TransactionCreateWithoutRelatedTransactionInput,
+      TransactionUncheckedCreateWithoutRelatedTransactionInput
+    >;
+    connectOrCreate?: TransactionCreateOrConnectWithoutRelatedTransactionInput;
+    connect?: TransactionWhereUniqueInput;
+  };
+
   export type LedgerEntryUncheckedCreateNestedManyWithoutTransactionInput = {
     create?:
       | XOR<
@@ -12906,6 +13075,16 @@ export namespace Prisma {
     connectOrCreate?: FxSnapshotCreateOrConnectWithoutTransactionInput;
     connect?: FxSnapshotWhereUniqueInput;
   };
+
+  export type TransactionUncheckedCreateNestedOneWithoutRelatedTransactionInput =
+    {
+      create?: XOR<
+        TransactionCreateWithoutRelatedTransactionInput,
+        TransactionUncheckedCreateWithoutRelatedTransactionInput
+      >;
+      connectOrCreate?: TransactionCreateOrConnectWithoutRelatedTransactionInput;
+      connect?: TransactionWhereUniqueInput;
+    };
 
   export type EnumTransactionTypeFieldUpdateOperationsInput = {
     set?: $Enums.TransactionType;
@@ -12985,6 +13164,44 @@ export namespace Prisma {
     >;
   };
 
+  export type TransactionUpdateOneWithoutOriginalNestedInput = {
+    create?: XOR<
+      TransactionCreateWithoutOriginalInput,
+      TransactionUncheckedCreateWithoutOriginalInput
+    >;
+    connectOrCreate?: TransactionCreateOrConnectWithoutOriginalInput;
+    upsert?: TransactionUpsertWithoutOriginalInput;
+    disconnect?: TransactionWhereInput | boolean;
+    delete?: TransactionWhereInput | boolean;
+    connect?: TransactionWhereUniqueInput;
+    update?: XOR<
+      XOR<
+        TransactionUpdateToOneWithWhereWithoutOriginalInput,
+        TransactionUpdateWithoutOriginalInput
+      >,
+      TransactionUncheckedUpdateWithoutOriginalInput
+    >;
+  };
+
+  export type TransactionUpdateOneWithoutRelatedTransactionNestedInput = {
+    create?: XOR<
+      TransactionCreateWithoutRelatedTransactionInput,
+      TransactionUncheckedCreateWithoutRelatedTransactionInput
+    >;
+    connectOrCreate?: TransactionCreateOrConnectWithoutRelatedTransactionInput;
+    upsert?: TransactionUpsertWithoutRelatedTransactionInput;
+    disconnect?: TransactionWhereInput | boolean;
+    delete?: TransactionWhereInput | boolean;
+    connect?: TransactionWhereUniqueInput;
+    update?: XOR<
+      XOR<
+        TransactionUpdateToOneWithWhereWithoutRelatedTransactionInput,
+        TransactionUpdateWithoutRelatedTransactionInput
+      >,
+      TransactionUncheckedUpdateWithoutRelatedTransactionInput
+    >;
+  };
+
   export type LedgerEntryUncheckedUpdateManyWithoutTransactionNestedInput = {
     create?:
       | XOR<
@@ -13031,6 +13248,26 @@ export namespace Prisma {
       FxSnapshotUncheckedUpdateWithoutTransactionInput
     >;
   };
+
+  export type TransactionUncheckedUpdateOneWithoutRelatedTransactionNestedInput =
+    {
+      create?: XOR<
+        TransactionCreateWithoutRelatedTransactionInput,
+        TransactionUncheckedCreateWithoutRelatedTransactionInput
+      >;
+      connectOrCreate?: TransactionCreateOrConnectWithoutRelatedTransactionInput;
+      upsert?: TransactionUpsertWithoutRelatedTransactionInput;
+      disconnect?: TransactionWhereInput | boolean;
+      delete?: TransactionWhereInput | boolean;
+      connect?: TransactionWhereUniqueInput;
+      update?: XOR<
+        XOR<
+          TransactionUpdateToOneWithWhereWithoutRelatedTransactionInput,
+          TransactionUpdateWithoutRelatedTransactionInput
+        >,
+        TransactionUncheckedUpdateWithoutRelatedTransactionInput
+      >;
+    };
 
   export type TransactionCreateNestedOneWithoutLedgerEntriesInput = {
     create?: XOR<
@@ -13772,6 +14009,8 @@ export namespace Prisma {
     fxSnapshotId?: string | null;
     ledgerEntries?: LedgerEntryCreateNestedManyWithoutTransactionInput;
     fxSnapshot?: FxSnapshotCreateNestedOneWithoutTransactionInput;
+    relatedTransaction?: TransactionCreateNestedOneWithoutOriginalInput;
+    original?: TransactionCreateNestedOneWithoutRelatedTransactionInput;
   };
 
   export type TransactionUncheckedCreateWithoutInitiatorInput = {
@@ -13786,8 +14025,10 @@ export namespace Prisma {
     deletedAt?: Date | string | null;
     executedAt?: Date | string | null;
     fxSnapshotId?: string | null;
+    relatedTransactionId?: string | null;
     ledgerEntries?: LedgerEntryUncheckedCreateNestedManyWithoutTransactionInput;
     fxSnapshot?: FxSnapshotUncheckedCreateNestedOneWithoutTransactionInput;
+    original?: TransactionUncheckedCreateNestedOneWithoutRelatedTransactionInput;
   };
 
   export type TransactionCreateOrConnectWithoutInitiatorInput = {
@@ -13894,6 +14135,7 @@ export namespace Prisma {
     deletedAt?: DateTimeNullableFilter<'Transaction'> | Date | string | null;
     executedAt?: DateTimeNullableFilter<'Transaction'> | Date | string | null;
     fxSnapshotId?: StringNullableFilter<'Transaction'> | string | null;
+    relatedTransactionId?: StringNullableFilter<'Transaction'> | string | null;
   };
 
   export type UserCreateWithoutTokensInput = {
@@ -14144,6 +14386,94 @@ export namespace Prisma {
     >;
   };
 
+  export type TransactionCreateWithoutOriginalInput = {
+    id?: string;
+    type: $Enums.TransactionType;
+    status?: $Enums.TransactionStatus;
+    initiatorType?: $Enums.InitiatorType | null;
+    idempotencyKey?: string | null;
+    metadata?: JsonNullValueInput | InputJsonValue;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    executedAt?: Date | string | null;
+    fxSnapshotId?: string | null;
+    initiator?: UserCreateNestedOneWithoutTransactionsInput;
+    ledgerEntries?: LedgerEntryCreateNestedManyWithoutTransactionInput;
+    fxSnapshot?: FxSnapshotCreateNestedOneWithoutTransactionInput;
+    relatedTransaction?: TransactionCreateNestedOneWithoutOriginalInput;
+  };
+
+  export type TransactionUncheckedCreateWithoutOriginalInput = {
+    id?: string;
+    type: $Enums.TransactionType;
+    status?: $Enums.TransactionStatus;
+    initiatorId?: string | null;
+    initiatorType?: $Enums.InitiatorType | null;
+    idempotencyKey?: string | null;
+    metadata?: JsonNullValueInput | InputJsonValue;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    executedAt?: Date | string | null;
+    fxSnapshotId?: string | null;
+    relatedTransactionId?: string | null;
+    ledgerEntries?: LedgerEntryUncheckedCreateNestedManyWithoutTransactionInput;
+    fxSnapshot?: FxSnapshotUncheckedCreateNestedOneWithoutTransactionInput;
+  };
+
+  export type TransactionCreateOrConnectWithoutOriginalInput = {
+    where: TransactionWhereUniqueInput;
+    create: XOR<
+      TransactionCreateWithoutOriginalInput,
+      TransactionUncheckedCreateWithoutOriginalInput
+    >;
+  };
+
+  export type TransactionCreateWithoutRelatedTransactionInput = {
+    id?: string;
+    type: $Enums.TransactionType;
+    status?: $Enums.TransactionStatus;
+    initiatorType?: $Enums.InitiatorType | null;
+    idempotencyKey?: string | null;
+    metadata?: JsonNullValueInput | InputJsonValue;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    executedAt?: Date | string | null;
+    fxSnapshotId?: string | null;
+    initiator?: UserCreateNestedOneWithoutTransactionsInput;
+    ledgerEntries?: LedgerEntryCreateNestedManyWithoutTransactionInput;
+    fxSnapshot?: FxSnapshotCreateNestedOneWithoutTransactionInput;
+    original?: TransactionCreateNestedOneWithoutRelatedTransactionInput;
+  };
+
+  export type TransactionUncheckedCreateWithoutRelatedTransactionInput = {
+    id?: string;
+    type: $Enums.TransactionType;
+    status?: $Enums.TransactionStatus;
+    initiatorId?: string | null;
+    initiatorType?: $Enums.InitiatorType | null;
+    idempotencyKey?: string | null;
+    metadata?: JsonNullValueInput | InputJsonValue;
+    createdAt?: Date | string;
+    updatedAt?: Date | string;
+    deletedAt?: Date | string | null;
+    executedAt?: Date | string | null;
+    fxSnapshotId?: string | null;
+    ledgerEntries?: LedgerEntryUncheckedCreateNestedManyWithoutTransactionInput;
+    fxSnapshot?: FxSnapshotUncheckedCreateNestedOneWithoutTransactionInput;
+    original?: TransactionUncheckedCreateNestedOneWithoutRelatedTransactionInput;
+  };
+
+  export type TransactionCreateOrConnectWithoutRelatedTransactionInput = {
+    where: TransactionWhereUniqueInput;
+    create: XOR<
+      TransactionCreateWithoutRelatedTransactionInput,
+      TransactionUncheckedCreateWithoutRelatedTransactionInput
+    >;
+  };
+
   export type UserUpsertWithoutTransactionsInput = {
     update: XOR<
       UserUpdateWithoutTransactionsInput,
@@ -14256,6 +14586,181 @@ export namespace Prisma {
     provider?: EnumFxProviderFieldUpdateOperationsInput | $Enums.FxProvider;
   };
 
+  export type TransactionUpsertWithoutOriginalInput = {
+    update: XOR<
+      TransactionUpdateWithoutOriginalInput,
+      TransactionUncheckedUpdateWithoutOriginalInput
+    >;
+    create: XOR<
+      TransactionCreateWithoutOriginalInput,
+      TransactionUncheckedCreateWithoutOriginalInput
+    >;
+    where?: TransactionWhereInput;
+  };
+
+  export type TransactionUpdateToOneWithWhereWithoutOriginalInput = {
+    where?: TransactionWhereInput;
+    data: XOR<
+      TransactionUpdateWithoutOriginalInput,
+      TransactionUncheckedUpdateWithoutOriginalInput
+    >;
+  };
+
+  export type TransactionUpdateWithoutOriginalInput = {
+    id?: StringFieldUpdateOperationsInput | string;
+    type?:
+      | EnumTransactionTypeFieldUpdateOperationsInput
+      | $Enums.TransactionType;
+    status?:
+      | EnumTransactionStatusFieldUpdateOperationsInput
+      | $Enums.TransactionStatus;
+    initiatorType?:
+      | NullableEnumInitiatorTypeFieldUpdateOperationsInput
+      | $Enums.InitiatorType
+      | null;
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null;
+    metadata?: JsonNullValueInput | InputJsonValue;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?:
+      | NullableDateTimeFieldUpdateOperationsInput
+      | Date
+      | string
+      | null;
+    executedAt?:
+      | NullableDateTimeFieldUpdateOperationsInput
+      | Date
+      | string
+      | null;
+    fxSnapshotId?: NullableStringFieldUpdateOperationsInput | string | null;
+    initiator?: UserUpdateOneWithoutTransactionsNestedInput;
+    ledgerEntries?: LedgerEntryUpdateManyWithoutTransactionNestedInput;
+    fxSnapshot?: FxSnapshotUpdateOneWithoutTransactionNestedInput;
+    relatedTransaction?: TransactionUpdateOneWithoutOriginalNestedInput;
+  };
+
+  export type TransactionUncheckedUpdateWithoutOriginalInput = {
+    id?: StringFieldUpdateOperationsInput | string;
+    type?:
+      | EnumTransactionTypeFieldUpdateOperationsInput
+      | $Enums.TransactionType;
+    status?:
+      | EnumTransactionStatusFieldUpdateOperationsInput
+      | $Enums.TransactionStatus;
+    initiatorId?: NullableStringFieldUpdateOperationsInput | string | null;
+    initiatorType?:
+      | NullableEnumInitiatorTypeFieldUpdateOperationsInput
+      | $Enums.InitiatorType
+      | null;
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null;
+    metadata?: JsonNullValueInput | InputJsonValue;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?:
+      | NullableDateTimeFieldUpdateOperationsInput
+      | Date
+      | string
+      | null;
+    executedAt?:
+      | NullableDateTimeFieldUpdateOperationsInput
+      | Date
+      | string
+      | null;
+    fxSnapshotId?: NullableStringFieldUpdateOperationsInput | string | null;
+    relatedTransactionId?:
+      | NullableStringFieldUpdateOperationsInput
+      | string
+      | null;
+    ledgerEntries?: LedgerEntryUncheckedUpdateManyWithoutTransactionNestedInput;
+    fxSnapshot?: FxSnapshotUncheckedUpdateOneWithoutTransactionNestedInput;
+  };
+
+  export type TransactionUpsertWithoutRelatedTransactionInput = {
+    update: XOR<
+      TransactionUpdateWithoutRelatedTransactionInput,
+      TransactionUncheckedUpdateWithoutRelatedTransactionInput
+    >;
+    create: XOR<
+      TransactionCreateWithoutRelatedTransactionInput,
+      TransactionUncheckedCreateWithoutRelatedTransactionInput
+    >;
+    where?: TransactionWhereInput;
+  };
+
+  export type TransactionUpdateToOneWithWhereWithoutRelatedTransactionInput = {
+    where?: TransactionWhereInput;
+    data: XOR<
+      TransactionUpdateWithoutRelatedTransactionInput,
+      TransactionUncheckedUpdateWithoutRelatedTransactionInput
+    >;
+  };
+
+  export type TransactionUpdateWithoutRelatedTransactionInput = {
+    id?: StringFieldUpdateOperationsInput | string;
+    type?:
+      | EnumTransactionTypeFieldUpdateOperationsInput
+      | $Enums.TransactionType;
+    status?:
+      | EnumTransactionStatusFieldUpdateOperationsInput
+      | $Enums.TransactionStatus;
+    initiatorType?:
+      | NullableEnumInitiatorTypeFieldUpdateOperationsInput
+      | $Enums.InitiatorType
+      | null;
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null;
+    metadata?: JsonNullValueInput | InputJsonValue;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?:
+      | NullableDateTimeFieldUpdateOperationsInput
+      | Date
+      | string
+      | null;
+    executedAt?:
+      | NullableDateTimeFieldUpdateOperationsInput
+      | Date
+      | string
+      | null;
+    fxSnapshotId?: NullableStringFieldUpdateOperationsInput | string | null;
+    initiator?: UserUpdateOneWithoutTransactionsNestedInput;
+    ledgerEntries?: LedgerEntryUpdateManyWithoutTransactionNestedInput;
+    fxSnapshot?: FxSnapshotUpdateOneWithoutTransactionNestedInput;
+    original?: TransactionUpdateOneWithoutRelatedTransactionNestedInput;
+  };
+
+  export type TransactionUncheckedUpdateWithoutRelatedTransactionInput = {
+    id?: StringFieldUpdateOperationsInput | string;
+    type?:
+      | EnumTransactionTypeFieldUpdateOperationsInput
+      | $Enums.TransactionType;
+    status?:
+      | EnumTransactionStatusFieldUpdateOperationsInput
+      | $Enums.TransactionStatus;
+    initiatorId?: NullableStringFieldUpdateOperationsInput | string | null;
+    initiatorType?:
+      | NullableEnumInitiatorTypeFieldUpdateOperationsInput
+      | $Enums.InitiatorType
+      | null;
+    idempotencyKey?: NullableStringFieldUpdateOperationsInput | string | null;
+    metadata?: JsonNullValueInput | InputJsonValue;
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string;
+    deletedAt?:
+      | NullableDateTimeFieldUpdateOperationsInput
+      | Date
+      | string
+      | null;
+    executedAt?:
+      | NullableDateTimeFieldUpdateOperationsInput
+      | Date
+      | string
+      | null;
+    fxSnapshotId?: NullableStringFieldUpdateOperationsInput | string | null;
+    ledgerEntries?: LedgerEntryUncheckedUpdateManyWithoutTransactionNestedInput;
+    fxSnapshot?: FxSnapshotUncheckedUpdateOneWithoutTransactionNestedInput;
+    original?: TransactionUncheckedUpdateOneWithoutRelatedTransactionNestedInput;
+  };
+
   export type TransactionCreateWithoutLedgerEntriesInput = {
     id?: string;
     type: $Enums.TransactionType;
@@ -14270,6 +14775,8 @@ export namespace Prisma {
     fxSnapshotId?: string | null;
     initiator?: UserCreateNestedOneWithoutTransactionsInput;
     fxSnapshot?: FxSnapshotCreateNestedOneWithoutTransactionInput;
+    relatedTransaction?: TransactionCreateNestedOneWithoutOriginalInput;
+    original?: TransactionCreateNestedOneWithoutRelatedTransactionInput;
   };
 
   export type TransactionUncheckedCreateWithoutLedgerEntriesInput = {
@@ -14285,7 +14792,9 @@ export namespace Prisma {
     deletedAt?: Date | string | null;
     executedAt?: Date | string | null;
     fxSnapshotId?: string | null;
+    relatedTransactionId?: string | null;
     fxSnapshot?: FxSnapshotUncheckedCreateNestedOneWithoutTransactionInput;
+    original?: TransactionUncheckedCreateNestedOneWithoutRelatedTransactionInput;
   };
 
   export type TransactionCreateOrConnectWithoutLedgerEntriesInput = {
@@ -14375,6 +14884,8 @@ export namespace Prisma {
     fxSnapshotId?: NullableStringFieldUpdateOperationsInput | string | null;
     initiator?: UserUpdateOneWithoutTransactionsNestedInput;
     fxSnapshot?: FxSnapshotUpdateOneWithoutTransactionNestedInput;
+    relatedTransaction?: TransactionUpdateOneWithoutOriginalNestedInput;
+    original?: TransactionUpdateOneWithoutRelatedTransactionNestedInput;
   };
 
   export type TransactionUncheckedUpdateWithoutLedgerEntriesInput = {
@@ -14405,7 +14916,12 @@ export namespace Prisma {
       | string
       | null;
     fxSnapshotId?: NullableStringFieldUpdateOperationsInput | string | null;
+    relatedTransactionId?:
+      | NullableStringFieldUpdateOperationsInput
+      | string
+      | null;
     fxSnapshot?: FxSnapshotUncheckedUpdateOneWithoutTransactionNestedInput;
+    original?: TransactionUncheckedUpdateOneWithoutRelatedTransactionNestedInput;
   };
 
   export type VirtualAccountUpsertWithoutLedgerEntriesInput = {
@@ -14482,6 +14998,8 @@ export namespace Prisma {
     fxSnapshotId?: string | null;
     initiator?: UserCreateNestedOneWithoutTransactionsInput;
     ledgerEntries?: LedgerEntryCreateNestedManyWithoutTransactionInput;
+    relatedTransaction?: TransactionCreateNestedOneWithoutOriginalInput;
+    original?: TransactionCreateNestedOneWithoutRelatedTransactionInput;
   };
 
   export type TransactionUncheckedCreateWithoutFxSnapshotInput = {
@@ -14497,7 +15015,9 @@ export namespace Prisma {
     deletedAt?: Date | string | null;
     executedAt?: Date | string | null;
     fxSnapshotId?: string | null;
+    relatedTransactionId?: string | null;
     ledgerEntries?: LedgerEntryUncheckedCreateNestedManyWithoutTransactionInput;
+    original?: TransactionUncheckedCreateNestedOneWithoutRelatedTransactionInput;
   };
 
   export type TransactionCreateOrConnectWithoutFxSnapshotInput = {
@@ -14557,6 +15077,8 @@ export namespace Prisma {
     fxSnapshotId?: NullableStringFieldUpdateOperationsInput | string | null;
     initiator?: UserUpdateOneWithoutTransactionsNestedInput;
     ledgerEntries?: LedgerEntryUpdateManyWithoutTransactionNestedInput;
+    relatedTransaction?: TransactionUpdateOneWithoutOriginalNestedInput;
+    original?: TransactionUpdateOneWithoutRelatedTransactionNestedInput;
   };
 
   export type TransactionUncheckedUpdateWithoutFxSnapshotInput = {
@@ -14587,7 +15109,12 @@ export namespace Prisma {
       | string
       | null;
     fxSnapshotId?: NullableStringFieldUpdateOperationsInput | string | null;
+    relatedTransactionId?:
+      | NullableStringFieldUpdateOperationsInput
+      | string
+      | null;
     ledgerEntries?: LedgerEntryUncheckedUpdateManyWithoutTransactionNestedInput;
+    original?: TransactionUncheckedUpdateOneWithoutRelatedTransactionNestedInput;
   };
 
   export type OtpTokenCreateManyUserInput = {
@@ -14610,6 +15137,7 @@ export namespace Prisma {
     deletedAt?: Date | string | null;
     executedAt?: Date | string | null;
     fxSnapshotId?: string | null;
+    relatedTransactionId?: string | null;
   };
 
   export type OtpTokenUpdateWithoutUserInput = {
@@ -14665,6 +15193,8 @@ export namespace Prisma {
     fxSnapshotId?: NullableStringFieldUpdateOperationsInput | string | null;
     ledgerEntries?: LedgerEntryUpdateManyWithoutTransactionNestedInput;
     fxSnapshot?: FxSnapshotUpdateOneWithoutTransactionNestedInput;
+    relatedTransaction?: TransactionUpdateOneWithoutOriginalNestedInput;
+    original?: TransactionUpdateOneWithoutRelatedTransactionNestedInput;
   };
 
   export type TransactionUncheckedUpdateWithoutInitiatorInput = {
@@ -14694,8 +15224,13 @@ export namespace Prisma {
       | string
       | null;
     fxSnapshotId?: NullableStringFieldUpdateOperationsInput | string | null;
+    relatedTransactionId?:
+      | NullableStringFieldUpdateOperationsInput
+      | string
+      | null;
     ledgerEntries?: LedgerEntryUncheckedUpdateManyWithoutTransactionNestedInput;
     fxSnapshot?: FxSnapshotUncheckedUpdateOneWithoutTransactionNestedInput;
+    original?: TransactionUncheckedUpdateOneWithoutRelatedTransactionNestedInput;
   };
 
   export type TransactionUncheckedUpdateManyWithoutInitiatorInput = {
@@ -14725,6 +15260,10 @@ export namespace Prisma {
       | string
       | null;
     fxSnapshotId?: NullableStringFieldUpdateOperationsInput | string | null;
+    relatedTransactionId?:
+      | NullableStringFieldUpdateOperationsInput
+      | string
+      | null;
   };
 
   export type LedgerEntryCreateManyAccountInput = {

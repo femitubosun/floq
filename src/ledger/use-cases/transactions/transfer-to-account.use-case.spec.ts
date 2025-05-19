@@ -8,14 +8,14 @@ import { VirtualAccountService } from '@/ledger/services/virtual-account.service
 import { VirtualAccountsCacheKeys } from '@/ledger/utils';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { CreateLedgerEntriesForTransactionsUseCase } from './create-ledger-entries.use-case';
+import { CreateLedgerEntriesForTransactionUseCase } from './create-ledger-entries.use-case';
 import { TransferToAccountUseCase } from './transfer-to-account.use-case';
 
 describe('TransferToAccountUseCase', () => {
   let useCase: TransferToAccountUseCase;
   let vaService: jest.Mocked<VirtualAccountService>;
   let txnService: jest.Mocked<TransactionService>;
-  let crLedgerEntriesUsc: jest.Mocked<CreateLedgerEntriesForTransactionsUseCase>;
+  let crLedgerEntriesUsc: jest.Mocked<CreateLedgerEntriesForTransactionUseCase>;
   let cacheService: jest.Mocked<CacheService>;
   let prismaService: jest.Mocked<PrismaService>;
 
@@ -45,6 +45,7 @@ describe('TransferToAccountUseCase', () => {
     status: 'PENDING' as const,
     initiatorId: 'user-123',
     initiatorType: 'USER' as const,
+    fxSnapshotId: 'fx-snapshot-123',
     createdAt: new Date(),
     updatedAt: new Date(),
     deletedAt: new Date(),
@@ -81,7 +82,7 @@ describe('TransferToAccountUseCase', () => {
           },
         },
         {
-          provide: CreateLedgerEntriesForTransactionsUseCase,
+          provide: CreateLedgerEntriesForTransactionUseCase,
           useValue: {
             execute: jest.fn(),
           },
@@ -105,7 +106,7 @@ describe('TransferToAccountUseCase', () => {
     useCase = module.get<TransferToAccountUseCase>(TransferToAccountUseCase);
     vaService = module.get(VirtualAccountService);
     txnService = module.get(TransactionService);
-    crLedgerEntriesUsc = module.get(CreateLedgerEntriesForTransactionsUseCase);
+    crLedgerEntriesUsc = module.get(CreateLedgerEntriesForTransactionUseCase);
     cacheService = module.get(CacheService);
     prismaService = module.get(PrismaService);
   });
@@ -180,11 +181,11 @@ describe('TransferToAccountUseCase', () => {
     });
     txnService.createTransaction.mockResolvedValue(mockTransaction);
     crLedgerEntriesUsc.execute.mockResolvedValue({
-      debitAmount: new Money(
+      amountToTransfer: new Money(
         new FloqDecimal(mockTransferInput.amount),
         mockTransferInput.currency,
       ),
-      creditAmount: new Money(
+      amountToReceive: new Money(
         new FloqDecimal(mockTransferInput.amount),
         mockTransferInput.currency,
       ),

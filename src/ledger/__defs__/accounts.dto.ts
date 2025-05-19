@@ -7,13 +7,15 @@ import {
 import { PaginatedResultGenericSchema } from '@/infrastructure/prisma/utils';
 import { createZodDto } from 'nestjs-zod';
 import { z } from 'zod';
+import { FloqClientAmount } from '@/common/__defs__';
 
 // Create Virtual Account Dto
 export const CreateVirtualAccountSchema = VirtualAccountSchema.pick({
   name: true,
   currency: true,
   idempotencyKey: true,
-  balance: true,
+}).extend({
+  balance: FloqClientAmount,
 });
 
 export type CreateVirtualAccountInput = z.infer<
