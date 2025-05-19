@@ -14,6 +14,7 @@ import { CreateLedgerEntriesForTransactionUseCase } from '@/ledger/use-cases/tra
 import { TransferToAccountUseCase } from '@/ledger/use-cases/transactions/transfer-to-account.use-case';
 import { TransfersController } from './controller/transfers.controller';
 import { FxModule } from '@/fx/fx.module';
+import { ReverseTransactionUseCase } from '@/ledger/use-cases/transactions/reverse-transaction.use-case';
 
 const REPOSITORIES = [
   VirtualAccountRepository,
@@ -32,6 +33,7 @@ const USE_CASES = [
   UpdateVirtualAccountUseCase,
   CreateLedgerEntriesForTransactionUseCase,
   TransferToAccountUseCase,
+  ReverseTransactionUseCase,
 ];
 
 @Module({

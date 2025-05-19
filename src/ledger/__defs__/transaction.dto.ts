@@ -55,3 +55,23 @@ export class TransferToAccountRequestDto extends createZodDto(
     initiatorType: true,
   }),
 ) {}
+
+export const ReverseTransactionInputDtoSchema = z.object({
+  idempotencyKey: z.string(),
+});
+
+export class ReverseTransactionInputDto extends createZodDto(
+  ReverseTransactionInputDtoSchema,
+) {}
+
+export const ReverseTransactionInput = TransferToAccountInputSchema.pick({
+  idempotencyKey: true,
+  initiatorType: true,
+  initiatorId: true,
+}).extend({
+  originalTransaction: z.object({
+    id: z.string(),
+  }),
+});
+
+export type ReverseTransactionInput = z.infer<typeof ReverseTransactionInput>;

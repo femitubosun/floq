@@ -38,6 +38,7 @@ export class Transfer {
     from: VirtualAccountDetailOutputDto;
     to: VirtualAccountDetailOutputDto;
     amount: Money;
+    reversal?: boolean;
   }) {
     if (input.amount.currency !== input.from.currency) {
       throw new BadRequestException(
@@ -46,6 +47,7 @@ export class Transfer {
     }
 
     if (
+      !input.reversal &&
       new Money(input.from.balance, input.from.currency).isLessThan(
         input.amount,
       )
@@ -167,21 +169,34 @@ export class Transfer {
         tx,
       );
 
-      const reversalSnapshot = await fxService.createSnapshot({
-        baseCurrency,
-        quoteCurrency,
-        rate,
-        transactionId: reversalTransaction.id,
-        provider: 'OPENEXCHANGERATES',
-      });
+      const reversalSnapshot = await fxService.createSnapshot(
+        {
+          baseCurrency,
+          quoteCurrency,
+          rate,
+          transactionId: reversalTransaction.id,
+          provider: 'OPENEXCHANGERATES',
+        },
+        tx,
+      );
 
-      const { creditAmount, debitAmount } = await ledgerUseCase.execute(
+      await txService.update(
+        reversalTransaction.id,
+        {
+          fxSnapshotId: reversalSnapshot.id,
+        },
+        tx,
+      );
+
+      const { creditAmount, debitAmount } = this.#getLedgerAmounts(rate);
+
+      const ledgerResults = await ledgerUseCase.execute(
         {
           fromAccountId: this.to.id,
           toAccountId: this.from.id,
           transactionId: reversalTransaction.id,
-          amountToTransfer: this.#getLedgerAmounts(rate).debitAmount,
-          amountToReceive: this.#getLedgerAmounts(rate).debitAmount,
+          amountToTransfer: creditAmount,
+          amountToReceive: debitAmount,
         },
         tx,
       );
@@ -195,9 +210,9 @@ export class Transfer {
       ]);
 
       return {
-        reversalTransaction,
-        creditAmount,
-        debitAmount,
+        transaction: reversalTransaction,
+        creditAmount: ledgerResults.creditAmount,
+        debitAmount: ledgerResults.debitAmount,
         reversalSnapshot,
       };
     });
